@@ -1,86 +1,84 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import type { MenuItem } from "@/types/menuItems";
 
-// ============================================
-// Helper function to transform Prisma item to MenuItem
-// ============================================
-function transformMenuItem(item: {
-  id: number;
-  name: string;
-  content: string | null;
-  category: string;
-  price: unknown;
-  image: string | null;
-  discount: string | null;
-  freeDelivery: boolean;
-  createdAt: Date;
-}): MenuItem {
-  return {
-    id: item.id,
-    name: item.name,
-    content: item.content ?? "",
-    category: item.category,
-    price: Number(item.price),
-    image: item.image ?? "/placeholder-food.jpg",
-    discount: item.discount ?? undefined,
-    freeDelivery: item.freeDelivery,
-    createdAt: item.createdAt,
-  };
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // ============================================
 // READ Operations
 // ============================================
 
 /**
- * Fetch all menu items from the database
+ * Fetch all menu items from the backend
  */
 export async function getMenuItems(): Promise<MenuItem[]> {
-  const items = await prisma.menuItem.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-
-  return items.map(transformMenuItem);
+  try {
+    const response = await fetch(`${API_URL}/menu`, {
+      cache: "no-store",
+    });
+    const result = await response.json();
+    
+    if (!result.success) return [];
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching menu items:", error);
+    return [];
+  }
 }
 
 /**
  * Fetch menu items filtered by category
  */
 export async function getMenuItemsByCategory(category: string): Promise<MenuItem[]> {
-  const items = await prisma.menuItem.findMany({
-    where: { category },
-    orderBy: { createdAt: "desc" },
-  });
-
-  return items.map(transformMenuItem);
+  try {
+    const response = await fetch(`${API_URL}/menu?category=${category}`, {
+      cache: "no-store",
+    });
+    const result = await response.json();
+    
+    if (!result.success) return [];
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching menu items by category:", error);
+    return [];
+  }
 }
 
 /**
  * Fetch a single menu item by ID
  */
 export async function getMenuItemById(id: number): Promise<MenuItem | null> {
-  const item = await prisma.menuItem.findUnique({
-    where: { id },
-  });
-
-  if (!item) return null;
-
-  return transformMenuItem(item);
+  try {
+    const response = await fetch(`${API_URL}/menu/${id}`, {
+      cache: "no-store",
+    });
+    const result = await response.json();
+    
+    if (!result.success) return null;
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching menu item by id:", error);
+    return null;
+  }
 }
 
 /**
  * Get all unique categories from menu items
  */
 export async function getMenuCategories(): Promise<string[]> {
-  const categories = await prisma.menuItem.findMany({
-    select: { category: true },
-    distinct: ["category"],
-  });
-
-  return categories.map((c) => c.category);
+  try {
+    const response = await fetch(`${API_URL}/menu/categories`, {
+      cache: "no-store",
+    });
+    const result = await response.json();
+    
+    if (!result.success) return [];
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
 }
 
 // ============================================
@@ -108,26 +106,25 @@ export interface ActionResult {
  */
 export async function createMenuItem(input: MenuItemInput): Promise<ActionResult> {
   try {
-    const item = await prisma.menuItem.create({
-      data: {
-        name: input.name,
-        content: input.content,
-        category: input.category,
-        price: input.price,
-        image: input.image,
-        discount: input.discount || null,
-        freeDelivery: input.freeDelivery,
+    const response = await fetch(`${API_URL}/menu`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify(input),
     });
 
-    // Revalidate the menu pages to show the new item
-    revalidatePath("/menu");
-    revalidatePath("/admin/items");
+    const result = await response.json();
+
+    if (result.success) {
+      revalidatePath("/menu");
+      revalidatePath("/admin/items");
+    }
 
     return {
-      success: true,
-      message: "Menu item created successfully",
-      data: transformMenuItem(item),
+      success: result.success,
+      message: result.message || "Action processed",
+      data: result.data,
     };
   } catch (error) {
     console.error("Error creating menu item:", error);
@@ -143,28 +140,26 @@ export async function createMenuItem(input: MenuItemInput): Promise<ActionResult
  */
 export async function updateMenuItem(id: number, input: MenuItemInput): Promise<ActionResult> {
   try {
-    const item = await prisma.menuItem.update({
-      where: { id },
-      data: {
-        name: input.name,
-        content: input.content,
-        category: input.category,
-        price: input.price,
-        image: input.image,
-        discount: input.discount || null,
-        freeDelivery: input.freeDelivery,
+    const response = await fetch(`${API_URL}/menu/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify(input),
     });
 
-    // Revalidate the menu pages to show the updated item
-    revalidatePath("/menu");
-    revalidatePath("/admin/items");
-    revalidatePath(`/admin/items/update-item/${id}`);
+    const result = await response.json();
+
+    if (result.success) {
+      revalidatePath("/menu");
+      revalidatePath("/admin/items");
+      revalidatePath(`/admin/items/update-item/${id}`);
+    }
 
     return {
-      success: true,
-      message: "Menu item updated successfully",
-      data: transformMenuItem(item),
+      success: result.success,
+      message: result.message || "Action processed",
+      data: result.data,
     };
   } catch (error) {
     console.error("Error updating menu item:", error);
@@ -180,17 +175,20 @@ export async function updateMenuItem(id: number, input: MenuItemInput): Promise<
  */
 export async function deleteMenuItem(id: number): Promise<ActionResult> {
   try {
-    await prisma.menuItem.delete({
-      where: { id },
+    const response = await fetch(`${API_URL}/menu/${id}`, {
+      method: "DELETE",
     });
 
-    // Revalidate the menu pages
-    revalidatePath("/menu");
-    revalidatePath("/admin/items");
+    const result = await response.json();
+
+    if (result.success) {
+      revalidatePath("/menu");
+      revalidatePath("/admin/items");
+    }
 
     return {
-      success: true,
-      message: "Menu item deleted successfully",
+      success: result.success,
+      message: result.message || "Action processed",
     };
   } catch (error) {
     console.error("Error deleting menu item:", error);

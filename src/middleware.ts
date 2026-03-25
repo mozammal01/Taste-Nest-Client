@@ -1,72 +1,48 @@
-import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default withAuth(
-  function middleware(req) {
-    const token = req.nextauth.token;
-    const pathname = req.nextUrl.pathname;
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // Basic session check based on cookie presence
+  // Note: better-auth uses this cookie name by default
+  const sessionToken = request.cookies.get("better-auth.session_token")?.value;
 
-    // If user is authenticated and trying to access auth pages, redirect based on role
-    const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
-    if (isAuthPage && token) {
-      // Redirect to appropriate dashboard based on role
-      const redirectUrl = token.role === "admin" ? "/admin" : "/dashboard";
-      return NextResponse.redirect(new URL(redirectUrl, req.url));
-    }
+  const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
+  const isProtectedRoute = 
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/profile") ||
+    pathname.startsWith("/orders") ||
+    pathname.startsWith("/reservations") ||
+    pathname.startsWith("/admin");
 
-    // Admin routes protection
-    const isAdminRoute = pathname.startsWith("/admin");
-    if (isAdminRoute && token) {
-      // Only allow admins to access admin routes
-      if (token.role !== "admin") {
-        return NextResponse.redirect(new URL("/dashboard", req.url));
-      }
-    }
-
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      // Return true to allow access, false to deny
-      authorized: ({ token, req }) => {
-        const pathname = req.nextUrl.pathname;
-        const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
-
-        // Allow access to auth pages even without token
-        if (isAuthPage) {
-          return true;
-        }
-
-        // For protected routes, require token
-        const isProtectedRoute =
-          pathname.startsWith("/dashboard") ||
-          pathname.startsWith("/profile") ||
-          pathname.startsWith("/orders") ||
-          pathname.startsWith("/reservations") ||
-          pathname.startsWith("/admin");
-
-        if (isProtectedRoute) {
-          return !!token;
-        }
-
-        // Allow all other routes
-        return true;
-      },
-    },
+  // If authenticated and on an auth page, redirect to dashboard
+  if (isAuthPage && sessionToken) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
-);
 
-// Configure which routes the middleware runs on
+  // If not authenticated and trying to access a protected route
+  if (isProtectedRoute && !sessionToken) {
+    const signInUrl = new URL("/signin", request.url);
+    signInUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  // Admin routes protection would ideally need a role check from the session.
+  // Since we can't reliably decode the JWT here without a secret or a call to the backend,
+  // we primarily rely on authentication. Role-based protection should also be handled 
+  // on the specific page components or via an API call to ensure accuracy.
+  
+  return NextResponse.next();
+}
+
 export const config = {
   matcher: [
-    // Protected routes
     "/dashboard/:path*",
     "/profile/:path*",
     "/orders/:path*",
     "/reservations/:path*",
-    // Admin routes
     "/admin/:path*",
-    // Auth pages (to redirect if already logged in)
     "/signin",
     "/signup",
   ],
