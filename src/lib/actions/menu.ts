@@ -16,6 +16,7 @@ export async function getMenuItems(): Promise<MenuItem[]> {
   try {
     const response = await fetch(`${API_URL}/menu`, {
       cache: "no-store",
+      credentials: "include",
     });
     const result = await response.json();
     
@@ -34,6 +35,7 @@ export async function getMenuItemsByCategory(category: string): Promise<MenuItem
   try {
     const response = await fetch(`${API_URL}/menu?category=${category}`, {
       cache: "no-store",
+      credentials: "include",
     });
     const result = await response.json();
     
@@ -52,6 +54,7 @@ export async function getMenuItemById(id: number): Promise<MenuItem | null> {
   try {
     const response = await fetch(`${API_URL}/menu/${id}`, {
       cache: "no-store",
+      credentials: "include",
     });
     const result = await response.json();
     
@@ -70,6 +73,7 @@ export async function getMenuCategories(): Promise<string[]> {
   try {
     const response = await fetch(`${API_URL}/menu/categories`, {
       cache: "no-store",
+      credentials: "include",
     });
     const result = await response.json();
     
@@ -111,6 +115,7 @@ export async function createMenuItem(input: MenuItemInput): Promise<ActionResult
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(input),
     });
 
@@ -141,10 +146,11 @@ export async function createMenuItem(input: MenuItemInput): Promise<ActionResult
 export async function updateMenuItem(id: number, input: MenuItemInput): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/menu/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(input),
     });
 
@@ -177,6 +183,7 @@ export async function deleteMenuItem(id: number): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/menu/${id}`, {
       method: "DELETE",
+      credentials: "include",
     });
 
     const result = await response.json();

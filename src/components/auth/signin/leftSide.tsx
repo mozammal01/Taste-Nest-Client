@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
-import { signIn } from "next-auth/react";
+import { signIn } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -39,14 +39,13 @@ export default function SigninLeftSide() {
     setIsLoading(true);
 
     try {
-      const result = await signIn("credentials", {
+      const result = await signIn.email({
         email: formData.email,
         password: formData.password,
-        redirect: false, // Don't redirect automatically
       });
 
       if (result?.error) {
-        setError(result.error);
+        setError(result.error.message || "Invalid credentials");
       } else {
         // Successful login - redirect to home
         router.push("/");
@@ -61,12 +60,12 @@ export default function SigninLeftSide() {
 
   // Handle Google Sign In
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/" });
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=google&callbackURL=${encodeURIComponent("/")}`;
   };
 
   // Handle GitHub Sign In
   const handleGitHubSignIn = () => {
-    signIn("github", { callbackUrl: "/" });
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=github&callbackURL=${encodeURIComponent("/")}`;
   };
 
   return (

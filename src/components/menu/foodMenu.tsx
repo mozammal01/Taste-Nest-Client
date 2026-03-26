@@ -6,11 +6,10 @@ import { useMemo, useEffect } from "react";
 import type { MenuItem } from "@/types/menuItems";
 import { motion } from "framer-motion";
 import { useMenu } from "./MenuContext";
-import { User } from "next-auth";
 
 interface FoodMenuProps {
   items: MenuItem[];
-  user: User | null;
+  user: { id: string } | null;
 }
 
 // Skeleton loader component for menu cards

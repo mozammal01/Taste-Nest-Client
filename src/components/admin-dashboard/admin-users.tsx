@@ -1,7 +1,9 @@
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import prisma from "@/lib/prisma";
+import { cookies } from "next/headers";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default async function AdminUsers() {
   const user = await getCurrentUser();
@@ -11,19 +13,25 @@ export default async function AdminUsers() {
     redirect("/dashboard");
   }
 
-  // Fetch all users from database
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      phone: true,
-      createdAt: true,
-      image: true,
-    },
+  const cookieStore = await cookies();
+  const token = cookieStore.get("better-auth.session_token")?.value;
+  const usersRes = await fetch(`${API_URL}/user`, {
+    cache: "no-store",
+    headers: token ? { Cookie: `better-auth.session_token=${token}` } : undefined,
   });
+  const usersResult = (await usersRes.json()) as {
+    success?: boolean;
+    data?: Array<{
+      id: string;
+      name: string | null;
+      email: string;
+      role: string | null;
+      phone?: string | null;
+      createdAt: string;
+      image?: string | null;
+    }>;
+  };
+  const users = usersResult.success && Array.isArray(usersResult.data) ? usersResult.data : [];
 
   return (
     <div className="p-8">
@@ -137,7 +145,7 @@ export default async function AdminUsers() {
                           : "bg-blue-100 text-blue-700 border border-blue-200"
                       }`}
                     >
-                      {u.role}
+                      {u.role || "user"}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-gray-600">{new Date(u.createdAt).toLocaleDateString()}</td>

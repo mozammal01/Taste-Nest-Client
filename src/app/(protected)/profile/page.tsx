@@ -1,12 +1,12 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth-client";
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function ProfilePage() {
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: session?.user?.name || "",
@@ -14,9 +14,7 @@ export default function ProfilePage() {
   });
 
   const handleSave = async () => {
-    // Here you would call an API to update the user profile
-    // For now, we'll just update the session
-    await update({ name: formData.name });
+    // TODO: connect this to user profile update endpoint
     setIsEditing(false);
   };
 

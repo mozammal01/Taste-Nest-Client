@@ -14,7 +14,10 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
  */
 export async function getCartItems(): Promise<CartItem[]> {
   try {
-    const response = await fetch(`${API_URL}/cart`, { cache: "no-store" });
+    const response = await fetch(`${API_URL}/cart`, {
+      cache: "no-store",
+      credentials: "include",
+    });
     const result = await response.json();
     if (!result.success) return [];
     return result.data;
@@ -28,8 +31,12 @@ export async function getCartItems(): Promise<CartItem[]> {
  * Fetch cart items by user ID
  */
 export async function getCartItemsByUserId(userId: string): Promise<CartItem[]> {
+  void userId;
   try {
-    const response = await fetch(`${API_URL}/cart/user/${userId}`, { cache: "no-store" });
+    const response = await fetch(`${API_URL}/cart`, {
+      cache: "no-store",
+      credentials: "include",
+    });
     const result = await response.json();
     if (!result.success) return [];
     return result.data;
@@ -43,8 +50,12 @@ export async function getCartItemsByUserId(userId: string): Promise<CartItem[]> 
  * Fetch cart items with menu item details by user ID
  */
 export async function getCartItemsWithDetails(userId: string): Promise<CartItemWithDetails[]> {
+  void userId;
   try {
-    const response = await fetch(`${API_URL}/cart/user/${userId}?includeDetails=true`, { cache: "no-store" });
+    const response = await fetch(`${API_URL}/cart`, {
+      cache: "no-store",
+      credentials: "include",
+    });
     const result = await response.json();
     if (!result.success) return [];
     return result.data;
@@ -58,11 +69,15 @@ export async function getCartItemsWithDetails(userId: string): Promise<CartItemW
  * Get cart item count for a user
  */
 export async function getCartItemCount(userId: string): Promise<number> {
+  void userId;
   try {
-    const response = await fetch(`${API_URL}/cart/count/${userId}`, { cache: "no-store" });
+    const response = await fetch(`${API_URL}/cart`, {
+      cache: "no-store",
+      credentials: "include",
+    });
     const result = await response.json();
     if (!result.success) return 0;
-    return result.data;
+    return Array.isArray(result.data) ? result.data.length : 0;
   } catch (error) {
     console.error("Error fetching cart count:", error);
     return 0;
@@ -74,10 +89,13 @@ export async function getCartItemCount(userId: string): Promise<number> {
  */
 export async function getCartItemById(id: number): Promise<CartItem | null> {
   try {
-    const response = await fetch(`${API_URL}/cart/${id}`, { cache: "no-store" });
+    const response = await fetch(`${API_URL}/cart`, {
+      cache: "no-store",
+      credentials: "include",
+    });
     const result = await response.json();
-    if (!result.success) return null;
-    return result.data;
+    if (!result.success || !Array.isArray(result.data)) return null;
+    return result.data.find((item: CartItem) => item.id === id) ?? null;
   } catch (error) {
     console.error("Error fetching cart item by id:", error);
     return null;
@@ -108,7 +126,8 @@ export async function createCartItem(input: CartItemInput): Promise<ActionResult
     const response = await fetch(`${API_URL}/cart`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
+      credentials: "include",
+      body: JSON.stringify({ menuItemId: input.menuItemId, quantity: input.quantity }),
     });
     const result = await response.json();
 
@@ -136,9 +155,10 @@ export async function createCartItem(input: CartItemInput): Promise<ActionResult
 export async function updateCartItem(id: number, input: CartItemInput): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/cart/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
+      credentials: "include",
+      body: JSON.stringify({ quantity: input.quantity }),
     });
     const result = await response.json();
 
@@ -165,9 +185,10 @@ export async function updateCartItem(id: number, input: CartItemInput): Promise<
  */
 export async function updateCartItemQuantity(id: number, quantity: number): Promise<ActionResult> {
   try {
-    const response = await fetch(`${API_URL}/cart/${id}/quantity`, {
-      method: "PATCH",
+    const response = await fetch(`${API_URL}/cart/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ quantity }),
     });
     const result = await response.json();
@@ -194,9 +215,11 @@ export async function updateCartItemQuantity(id: number, quantity: number): Prom
  * Clear all cart items for a user
  */
 export async function clearCart(userId: string): Promise<ActionResult> {
+  void userId;
   try {
-    const response = await fetch(`${API_URL}/cart/user/${userId}`, {
+    const response = await fetch(`${API_URL}/cart`, {
       method: "DELETE",
+      credentials: "include",
     });
     const result = await response.json();
 
@@ -224,6 +247,7 @@ export async function deleteCartItem(id: number): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/cart/${id}`, {
       method: "DELETE",
+      credentials: "include",
     });
     const result = await response.json();
 

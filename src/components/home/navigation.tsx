@@ -9,7 +9,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-
 import { usePathname, useRouter } from "next/navigation";
 import UserMenu from "../auth/UserMenu";
 import { getCartItemCount } from "@/lib/actions/cart";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth-client";
 import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock } from "lucide-react";
 
 export default function Navigation() {
@@ -195,7 +195,7 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex justify-between items-center py-3">
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
+            <Link href="/" className="shrink-0">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Image
                   src={logo}
@@ -223,7 +223,7 @@ export default function Navigation() {
                     {isActive(item) && (
                       <motion.div
                         layoutId="activeNavBg"
-                        className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 rounded-full shadow-lg shadow-primary/30"
+                        className="absolute inset-0 bg-linear-to-r from-primary to-primary/80 rounded-full shadow-lg shadow-primary/30"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
@@ -372,7 +372,7 @@ export default function Navigation() {
                         className={cn(
                           "flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-300 group",
                           isActive(item)
-                            ? "bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/20"
+                            ? "bg-linear-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/20"
                             : "text-gray-700 hover:bg-gray-100 hover:pl-6"
                         )}
                       >
@@ -437,7 +437,7 @@ export default function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-60"
             onClick={() => setIsSearchOpen(false)}
           >
             <motion.div

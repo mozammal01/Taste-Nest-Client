@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
-import { signIn } from "next-auth/react";
+import { signIn, signUp } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -68,27 +68,21 @@ export default function SignupRightSide() {
     }
 
     try {
-      // Call signup API
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      const signUpResult = await signUp.email({
+        email: formData.email,
+        password: formData.password,
+        name: formData.fullName,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Something went wrong");
+      if (signUpResult?.error) {
+        setError(signUpResult.error.message || "Registration failed");
         return;
       }
 
       // Auto sign in after successful registration
-      const signInResult = await signIn("credentials", {
+      const signInResult = await signIn.email({
         email: formData.email,
         password: formData.password,
-        redirect: false,
       });
 
       if (signInResult?.error) {
@@ -109,12 +103,12 @@ export default function SignupRightSide() {
 
   // Handle Google Sign Up
   const handleGoogleSignUp = () => {
-    signIn("google", { callbackUrl: "/" });
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=google&callbackURL=${encodeURIComponent("/")}`;
   };
 
   // Handle GitHub Sign Up
   const handleGitHubSignUp = () => {
-    signIn("github", { callbackUrl: "/" });
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=github&callbackURL=${encodeURIComponent("/")}`;
   };
   return (
     <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-linear-to-br from-gray-50 to-white">

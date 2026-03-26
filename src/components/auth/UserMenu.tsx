@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Heart, CreditCard, HelpCircle } from "lucide-react";
 
 export default function UserMenu() {
-  const { data: session, status } = useSession();
+  const { data: session, isPending: isSessionPending } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ export default function UserMenu() {
   }, []);
 
   // Loading state
-  if (status === "loading") {
+  if (isSessionPending) {
     return (
       <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
@@ -71,11 +71,12 @@ export default function UserMenu() {
       </div>
     );
   }
+  const userRole = (session.user as { role?: string } | undefined)?.role;
 
   const menuItems = [
     {
       label: "Dashboard",
-      href: session.user?.role === "admin" ? "/admin" : "/user",
+      href: userRole === "admin" ? "/admin" : "/user",
       icon: LayoutDashboard,
     },
     { label: "My Orders", href: "/orders", icon: ShoppingBag },
@@ -105,7 +106,7 @@ export default function UserMenu() {
               className="rounded-full border-2 border-primary/20 object-cover"
             />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold text-lg shadow-inner">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold text-lg shadow-inner">
               {session.user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
           )}
@@ -116,7 +117,7 @@ export default function UserMenu() {
         {/* User Info - Hidden on smaller screens */}
         <div className="hidden xl:block text-left">
           <p className="text-sm font-semibold text-gray-900 leading-tight">{session.user?.name?.split(" ")[0] || "User"}</p>
-          <p className="text-xs text-gray-500 leading-tight capitalize">{session.user?.role || "member"}</p>
+          <p className="text-xs text-gray-500 leading-tight capitalize">{userRole || "member"}</p>
         </div>
 
         {/* Chevron */}
@@ -144,7 +145,7 @@ export default function UserMenu() {
               className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden"
             >
               {/* User Info Header */}
-              <div className="px-4 py-4 bg-gradient-to-r from-primary/5 to-primary/10">
+              <div className="px-4 py-4 bg-linear-to-r from-primary/5 to-primary/10">
                 <div className="flex items-center gap-3">
                   {session.user?.image ? (
                     <Image
@@ -155,7 +156,7 @@ export default function UserMenu() {
                       className="rounded-full border-2 border-white shadow-sm object-cover"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white font-bold text-xl">
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-bold text-xl">
                       {session.user?.name?.charAt(0).toUpperCase() || "U"}
                     </div>
                   )}
@@ -163,7 +164,7 @@ export default function UserMenu() {
                     <p className="font-semibold text-gray-900 truncate">{session.user?.name}</p>
                     <p className="text-sm text-gray-500 truncate">{session.user?.email}</p>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary capitalize mt-1">
-                      {session.user?.role || "member"}
+                      {userRole || "member"}
                     </span>
                   </div>
                 </div>
@@ -211,7 +212,10 @@ export default function UserMenu() {
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={async () => {
+                    await signOut();
+                    window.location.href = "/";
+                  }}
                   className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all group"
                 >
                   <div className="w-9 h-9 rounded-lg bg-red-50 group-hover:bg-red-100 flex items-center justify-center transition-colors">

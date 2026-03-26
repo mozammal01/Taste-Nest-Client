@@ -10,14 +10,13 @@ import { useRouter } from "next/navigation";
 import type { MenuItem } from "@/types/menuItems";
 import { deleteMenuItem } from "@/lib/actions/menu";
 import { createCartItem } from "@/lib/actions/cart";
-import { User } from "next-auth";
 import { toast } from "sonner";
 import { ShoppingCart, Check, AlertCircle } from "lucide-react";
 
 interface FoodMenuCardProps {
   item: MenuItem;
   userRole?: string;
-  user?: User | null;
+  user?: { id: string } | null;
 }
 
 export function FoodMenuCard({ item, userRole, user }: FoodMenuCardProps) {
