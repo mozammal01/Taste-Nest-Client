@@ -17,15 +17,15 @@ function MenuCardSkeleton() {
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
       {/* Image skeleton */}
-      <div className="w-full h-[300px] bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%]" />
+      <div className="w-full h-[300px] bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-size-[200%_100%] bg-[linear-gradient(to_right,#e0e0e0,#f0f0f0,#e0e0e0)]" />
       {/* Content skeleton */}
       <div className="p-4 space-y-3">
-        <div className="h-6 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded w-3/4" />
-        <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded w-full" />
-        <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded w-2/3" />
+        <div className="h-6 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-size-[200%_100%] rounded w-3/4" />
+        <div className="h-4 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-size-[200%_100%] rounded w-full" />
+        <div className="h-4 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-size-[200%_100%] rounded w-2/3" />
         <div className="flex justify-end gap-2 pt-2">
-          <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-lg w-24" />
-          <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-lg w-24" />
+          <div className="h-10 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-size-[200%_100%] rounded-lg w-24" />
+          <div className="h-10 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-size-[200%_100%] rounded-lg w-24" />
         </div>
       </div>
     </div>
