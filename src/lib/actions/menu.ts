@@ -1,9 +1,19 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import type { MenuItem } from "@/types/menuItems";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const SESSION_COOKIE_NAME = "better-auth.session_token";
+
+async function getAuthHeaders(): Promise<HeadersInit> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  return token
+    ? { Cookie: `${SESSION_COOKIE_NAME}=${token}`, "Content-Type": "application/json" }
+    : { "Content-Type": "application/json" };
+}
 
 // ============================================
 // READ Operations
@@ -16,10 +26,10 @@ export async function getMenuItems(): Promise<MenuItem[]> {
   try {
     const response = await fetch(`${API_URL}/menu`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
-    
+
     if (!result.success) return [];
     return result.data;
   } catch (error) {
@@ -35,10 +45,10 @@ export async function getMenuItemsByCategory(category: string): Promise<MenuItem
   try {
     const response = await fetch(`${API_URL}/menu?category=${category}`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
-    
+
     if (!result.success) return [];
     return result.data;
   } catch (error) {
@@ -54,10 +64,10 @@ export async function getMenuItemById(id: number): Promise<MenuItem | null> {
   try {
     const response = await fetch(`${API_URL}/menu/${id}`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
-    
+
     if (!result.success) return null;
     return result.data;
   } catch (error) {
@@ -73,10 +83,10 @@ export async function getMenuCategories(): Promise<string[]> {
   try {
     const response = await fetch(`${API_URL}/menu/categories`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
-    
+
     if (!result.success) return [];
     return result.data;
   } catch (error) {
@@ -112,10 +122,7 @@ export async function createMenuItem(input: MenuItemInput): Promise<ActionResult
   try {
     const response = await fetch(`${API_URL}/menu`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+      headers: await getAuthHeaders(),
       body: JSON.stringify(input),
     });
 
@@ -147,10 +154,7 @@ export async function updateMenuItem(id: number, input: MenuItemInput): Promise<
   try {
     const response = await fetch(`${API_URL}/menu/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+      headers: await getAuthHeaders(),
       body: JSON.stringify(input),
     });
 
@@ -183,7 +187,7 @@ export async function deleteMenuItem(id: number): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/menu/${id}`, {
       method: "DELETE",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
 
     const result = await response.json();

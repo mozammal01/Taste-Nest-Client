@@ -1,9 +1,19 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import type { CartItem, CartItemWithDetails } from "@/types/cartItem";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const SESSION_COOKIE_NAME = "better-auth.session_token";
+
+async function getAuthHeaders(): Promise<HeadersInit> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  return token
+    ? { Cookie: `${SESSION_COOKIE_NAME}=${token}`, "Content-Type": "application/json" }
+    : { "Content-Type": "application/json" };
+}
 
 // ============================================
 // READ Operations
@@ -16,7 +26,7 @@ export async function getCartItems(): Promise<CartItem[]> {
   try {
     const response = await fetch(`${API_URL}/cart`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
     if (!result.success) return [];
@@ -35,7 +45,7 @@ export async function getCartItemsByUserId(userId: string): Promise<CartItem[]> 
   try {
     const response = await fetch(`${API_URL}/cart`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
     if (!result.success) return [];
@@ -54,7 +64,7 @@ export async function getCartItemsWithDetails(userId: string): Promise<CartItemW
   try {
     const response = await fetch(`${API_URL}/cart`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
     if (!result.success) return [];
@@ -73,7 +83,7 @@ export async function getCartItemCount(userId: string): Promise<number> {
   try {
     const response = await fetch(`${API_URL}/cart`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
     if (!result.success) return 0;
@@ -91,7 +101,7 @@ export async function getCartItemById(id: number): Promise<CartItem | null> {
   try {
     const response = await fetch(`${API_URL}/cart`, {
       cache: "no-store",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
     if (!result.success || !Array.isArray(result.data)) return null;
@@ -125,8 +135,7 @@ export async function createCartItem(input: CartItemInput): Promise<ActionResult
   try {
     const response = await fetch(`${API_URL}/cart`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: await getAuthHeaders(),
       body: JSON.stringify({ menuItemId: input.menuItemId, quantity: input.quantity }),
     });
     const result = await response.json();
@@ -156,8 +165,7 @@ export async function updateCartItem(id: number, input: CartItemInput): Promise<
   try {
     const response = await fetch(`${API_URL}/cart/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: await getAuthHeaders(),
       body: JSON.stringify({ quantity: input.quantity }),
     });
     const result = await response.json();
@@ -187,8 +195,7 @@ export async function updateCartItemQuantity(id: number, quantity: number): Prom
   try {
     const response = await fetch(`${API_URL}/cart/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: await getAuthHeaders(),
       body: JSON.stringify({ quantity }),
     });
     const result = await response.json();
@@ -219,7 +226,7 @@ export async function clearCart(userId: string): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/cart`, {
       method: "DELETE",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
 
@@ -247,7 +254,7 @@ export async function deleteCartItem(id: number): Promise<ActionResult> {
   try {
     const response = await fetch(`${API_URL}/cart/${id}`, {
       method: "DELETE",
-      credentials: "include",
+      headers: await getAuthHeaders(),
     });
     const result = await response.json();
 

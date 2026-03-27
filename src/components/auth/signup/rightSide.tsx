@@ -9,11 +9,14 @@ import { signIn, signUp } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { AnimatedButton } from "@/components/ui/animated-button";
 import logo from "@/../public/logo/logo.png";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import GithubIcon from "@/components/icons/GithubIcon";
+import { z } from "zod";
+import { registerSchema } from "@/zod/auth.schema";
+
 export default function SignupRightSide() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -23,7 +26,6 @@ export default function SignupRightSide() {
     fullName: "",
     email: "",
     phone: "",
-    role: "user",
     password: "",
     confirmPassword: "",
   });
@@ -38,40 +40,30 @@ export default function SignupRightSide() {
     setError(""); // Clear error when user types
   };
 
-  const handleRoleChange = (value: string) => {
-    setFormData({ ...formData, role: value });
-    setError("");
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // Client-side validation
     if (!termsAccepted) {
       setError("You must accept the Terms of Service and Privacy Policy");
       setIsLoading(false);
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const signUpResult = await signUp.email({
+      const validatedData = registerSchema.parse({
+        name: formData.fullName,
         email: formData.email,
         password: formData.password,
-        name: formData.fullName,
+        confirmPassword: formData.confirmPassword,
+      });
+
+      const signUpResult = await signUp.email({
+        email: validatedData.email,
+        password: validatedData.password,
+        name: validatedData.name,
       });
 
       if (signUpResult?.error) {
@@ -79,23 +71,24 @@ export default function SignupRightSide() {
         return;
       }
 
-      // Auto sign in after successful registration
       const signInResult = await signIn.email({
         email: formData.email,
         password: formData.password,
       });
 
       if (signInResult?.error) {
-        // Registration succeeded but auto-login failed
-        // Redirect to signin page
         router.push("/signin");
       } else {
-        // Success! Redirect to home
         router.push("/");
         router.refresh();
       }
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setError((err as any).errors[0].message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -236,21 +229,7 @@ export default function SignupRightSide() {
             </div>
           </div>
 
-          {/* Role */}
-          <div className="space-y-2">
-            <Label htmlFor="role" className="text-gray-700">
-              Role
-            </Label>
-            <Select value={formData.role} onValueChange={handleRoleChange}>
-              <SelectTrigger id="role" className="w-full h-12 border-gray-300 focus:border-primary focus:ring-primary/20">
-                <SelectValue placeholder="Select your role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="user">User</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+
           {/* Phone */}
           <div className="space-y-2">
             <Label htmlFor="phone" className="text-gray-700">

@@ -13,6 +13,8 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import logo from "@/../public/logo/logo.png";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
+import { z } from "zod";
+import { loginSchema } from "@/zod/auth.schema";
 
 export default function SigninLeftSide() {
   const ref = useRef(null);
@@ -39,20 +41,25 @@ export default function SigninLeftSide() {
     setIsLoading(true);
 
     try {
+      const validatedData = loginSchema.parse(formData);
       const result = await signIn.email({
-        email: formData.email,
-        password: formData.password,
+        email: validatedData.email,
+        password: validatedData.password,
       });
 
       if (result?.error) {
         setError(result.error.message || "Invalid credentials");
       } else {
-        // Successful login - redirect to home
         router.push("/");
         router.refresh();
       }
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setError((err as any).errors[0].message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
