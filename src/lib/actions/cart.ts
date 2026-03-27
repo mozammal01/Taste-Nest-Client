@@ -1,59 +1,17 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import type { CartItem, CartItemWithDetails } from "@/types/cartItem";
+import { handleFetch } from "./utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const SESSION_COOKIE_NAME = "better-auth.session_token";
-
-async function getAuthHeaders(): Promise<HeadersInit> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  return token
-    ? { Cookie: `${SESSION_COOKIE_NAME}=${token}`, "Content-Type": "application/json" }
-    : { "Content-Type": "application/json" };
-}
-
-// ============================================
-// READ Operations
-// ============================================
 
 /**
  * Fetch all cart items from the backend
  */
 export async function getCartItems(): Promise<CartItem[]> {
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      cache: "no-store",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
-    if (!result.success) return [];
-    return result.data;
-  } catch (error) {
-    console.error("Error fetching cart items:", error);
-    return [];
-  }
-}
-
-/**
- * Fetch cart items by user ID
- */
-export async function getCartItemsByUserId(userId: string): Promise<CartItem[]> {
-  void userId;
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      cache: "no-store",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
-    if (!result.success) return [];
-    return result.data;
-  } catch (error) {
-    console.error("Error fetching cart items by user ID:", error);
-    return [];
-  }
+    const result = await handleFetch(`${API_URL}/cart`, { cache: "no-store" });
+    return result.success ? result.data : [];
 }
 
 /**
@@ -61,18 +19,8 @@ export async function getCartItemsByUserId(userId: string): Promise<CartItem[]> 
  */
 export async function getCartItemsWithDetails(userId: string): Promise<CartItemWithDetails[]> {
   void userId;
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      cache: "no-store",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
-    if (!result.success) return [];
-    return result.data;
-  } catch (error) {
-    console.error("Error fetching cart items with details:", error);
-    return [];
-  }
+  const result = await handleFetch(`${API_URL}/cart`, { cache: "no-store" });
+  return result.success ? result.data : [];
 }
 
 /**
@@ -80,41 +28,10 @@ export async function getCartItemsWithDetails(userId: string): Promise<CartItemW
  */
 export async function getCartItemCount(userId: string): Promise<number> {
   void userId;
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      cache: "no-store",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
-    if (!result.success) return 0;
-    return Array.isArray(result.data) ? result.data.length : 0;
-  } catch (error) {
-    console.error("Error fetching cart count:", error);
-    return 0;
-  }
+  const result = await handleFetch(`${API_URL}/cart`, { cache: "no-store" });
+  if (!result.success || !Array.isArray(result.data)) return 0;
+  return result.data.length;
 }
-
-/**
- * Fetch a single cart item by ID
- */
-export async function getCartItemById(id: number): Promise<CartItem | null> {
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      cache: "no-store",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
-    if (!result.success || !Array.isArray(result.data)) return null;
-    return result.data.find((item: CartItem) => item.id === id) ?? null;
-  } catch (error) {
-    console.error("Error fetching cart item by id:", error);
-    return null;
-  }
-}
-
-// ============================================
-// CREATE/UPDATE/DELETE Operations
-// ============================================
 
 export interface CartItemInput {
   userId: string;
@@ -132,90 +49,40 @@ export interface ActionResult {
  * Create a new cart item
  */
 export async function createCartItem(input: CartItemInput): Promise<ActionResult> {
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      method: "POST",
-      headers: await getAuthHeaders(),
-      body: JSON.stringify({ menuItemId: input.menuItemId, quantity: input.quantity }),
-    });
-    const result = await response.json();
+  const result = await handleFetch(`${API_URL}/cart`, {
+    method: "POST",
+    body: JSON.stringify({ menuItemId: input.menuItemId, quantity: input.quantity }),
+  });
 
-    if (result.success) {
-      revalidatePath("/cart");
-    }
-
-    return {
-      success: result.success,
-      message: result.message || "Action processed",
-      data: result.data,
-    };
-  } catch (error) {
-    console.error("Error creating cart item:", error);
-    return {
-      success: false,
-      message: "Failed to create cart item.",
-    };
+  if (result.success) {
+    revalidatePath("/cart");
   }
-}
 
-/**
- * Update an existing cart item
- */
-export async function updateCartItem(id: number, input: CartItemInput): Promise<ActionResult> {
-  try {
-    const response = await fetch(`${API_URL}/cart/${id}`, {
-      method: "PUT",
-      headers: await getAuthHeaders(),
-      body: JSON.stringify({ quantity: input.quantity }),
-    });
-    const result = await response.json();
-
-    if (result.success) {
-      revalidatePath("/cart");
-    }
-
-    return {
-      success: result.success,
-      message: result.message || "Action processed",
-      data: result.data,
-    };
-  } catch (error) {
-    console.error("Error updating cart item:", error);
-    return {
-      success: false,
-      message: "Failed to update cart item.",
-    };
-  }
+  return {
+    success: result.success,
+    message: result.message || "Action processed",
+    data: result.data,
+  };
 }
 
 /**
  * Update cart item quantity
  */
 export async function updateCartItemQuantity(id: number, quantity: number): Promise<ActionResult> {
-  try {
-    const response = await fetch(`${API_URL}/cart/${id}`, {
-      method: "PUT",
-      headers: await getAuthHeaders(),
-      body: JSON.stringify({ quantity }),
-    });
-    const result = await response.json();
+  const result = await handleFetch(`${API_URL}/cart/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ quantity }),
+  });
 
-    if (result.success) {
-      revalidatePath("/cart");
-    }
-
-    return {
-      success: result.success,
-      message: result.message || "Action processed",
-      data: result.data,
-    };
-  } catch (error) {
-    console.error("Error updating quantity:", error);
-    return {
-      success: false,
-      message: "Failed to update quantity.",
-    };
+  if (result.success) {
+    revalidatePath("/cart");
   }
+
+  return {
+    success: result.success,
+    message: result.message || "Action processed",
+    data: result.data,
+  };
 }
 
 /**
@@ -223,54 +90,34 @@ export async function updateCartItemQuantity(id: number, quantity: number): Prom
  */
 export async function clearCart(userId: string): Promise<ActionResult> {
   void userId;
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      method: "DELETE",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
+  const result = await handleFetch(`${API_URL}/cart`, {
+    method: "DELETE",
+  });
 
-    if (result.success) {
-      revalidatePath("/cart");
-    }
-
-    return {
-      success: result.success,
-      message: result.message || "Cart cleared",
-    };
-  } catch (error) {
-    console.error("Error clearing cart:", error);
-    return {
-      success: false,
-      message: "Failed to clear cart.",
-    };
+  if (result.success) {
+    revalidatePath("/cart");
   }
+
+  return {
+    success: result.success,
+    message: result.message || "Cart cleared",
+  };
 }
 
 /**
  * Delete a cart item
  */
 export async function deleteCartItem(id: number): Promise<ActionResult> {
-  try {
-    const response = await fetch(`${API_URL}/cart/${id}`, {
-      method: "DELETE",
-      headers: await getAuthHeaders(),
-    });
-    const result = await response.json();
+  const result = await handleFetch(`${API_URL}/cart/${id}`, {
+    method: "DELETE",
+  });
 
-    if (result.success) {
-      revalidatePath("/cart");
-    }
-
-    return {
-      success: result.success,
-      message: result.message || "Item deleted",
-    };
-  } catch (error) {
-    console.error("Error deleting cart item:", error);
-    return {
-      success: false,
-      message: "Failed to delete item.",
-    };
+  if (result.success) {
+    revalidatePath("/cart");
   }
+
+  return {
+    success: result.success,
+    message: result.message || "Item deleted",
+  };
 }

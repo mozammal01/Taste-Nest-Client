@@ -101,7 +101,7 @@ export default function CartItemCard({ item, index }: CartItemProps) {
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-1">
             <span className="text-sm text-gray-500">$</span>
-            <span className="text-xl font-bold text-primary">{item.menuItem.price.toFixed(2)}</span>
+            <span className="text-xl font-bold text-primary">{Number(item.menuItem.price).toFixed(2)}</span>
             <span className="text-sm text-gray-400">each</span>
           </div>
 

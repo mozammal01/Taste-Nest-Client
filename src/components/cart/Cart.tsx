@@ -168,10 +168,12 @@ export default function Cart({ items, userId }: CartProps) {
           </div>
 
           {/* Checkout Button */}
-          <Button className="w-full mt-6 bg-primary hover:bg-primary/90 text-white py-6 rounded-xl text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all">
-            <ShoppingBag className="w-5 h-5 mr-2" />
-            Proceed to Checkout
-          </Button>
+          <Link href="/checkout" className="block w-full">
+            <Button className="w-full mt-6 bg-primary hover:bg-primary/90 text-white py-6 rounded-xl text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all">
+              <ShoppingBag className="w-5 h-5 mr-2" />
+              Proceed to Checkout
+            </Button>
+          </Link>
 
           {/* Security Badge */}
           <div className="mt-6 flex items-center justify-center gap-2 text-gray-400 text-sm">
