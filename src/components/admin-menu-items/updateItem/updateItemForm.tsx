@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { MenuItem } from "@/types/menuItems";
 import { updateMenuItem } from "@/lib/actions/menu";
+import { uploadMenuImage } from "@/lib/actions/upload";
 
 interface FormData {
   name: string;
@@ -45,6 +46,7 @@ export default function UpdateItemForm({ data }: { data: MenuItem }) {
   });
 
   const [imageError, setImageError] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -66,6 +68,30 @@ export default function UpdateItemForm({ data }: { data: MenuItem }) {
   const handleFreeDeliveryChange = useCallback((checked: boolean) => {
     setFormData((prev) => ({ ...prev, freeDelivery: checked }));
   }, []);
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setError(null);
+    setSuccess(null);
+    setImageError(false);
+
+    if (!file) return;
+
+    const fd = new FormData();
+    fd.append("image", file);
+
+    setIsUploadingImage(true);
+    const result = await uploadMenuImage(fd);
+    setIsUploadingImage(false);
+
+    if (!result.success || !result.url) {
+      setError(result.message);
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, image: result.url || "" }));
+    setSuccess("Image uploaded successfully");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -228,17 +254,28 @@ export default function UpdateItemForm({ data }: { data: MenuItem }) {
             <div className="p-6 space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="image" className="text-gray-700 font-medium">
-                  Image URL <span className="text-primary">*</span>
+                  Upload Image <span className="text-primary">*</span>
                 </Label>
-                <Input
-                  id="image"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleInputChange}
-                  placeholder="https://images.unsplash.com/..."
-                  className="h-12 rounded-xl border-gray-200 focus:border-primary focus:ring-primary/20 transition-all"
-                />
-                <p className="text-xs text-gray-400">Paste a URL from Unsplash, Pixels, or your own hosting</p>
+                <Input id="imageFile" name="imageFile" type="file" accept="image/*" onChange={handleImageFileChange} className="h-12 rounded-xl border-gray-200" />
+                <div className="flex items-center justify-between text-xs text-gray-400">
+                  <span>JPG/PNG/WEBP up to 5MB</span>
+                  {isUploadingImage && <span className="text-primary font-medium">Uploading...</span>}
+                </div>
+
+                <div className="space-y-2 pt-2">
+                  <Label htmlFor="image" className="text-gray-700 font-medium">
+                    Image URL (auto-filled)
+                  </Label>
+                  <Input
+                    id="image"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleInputChange}
+                    placeholder="Will be filled after upload"
+                    className="h-12 rounded-xl border-gray-200 focus:border-primary focus:ring-primary/20 transition-all"
+                    readOnly
+                  />
+                </div>
               </div>
 
               {/* Image Preview */}

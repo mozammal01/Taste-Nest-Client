@@ -2,10 +2,27 @@ import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default async function AdminUsers() {
+type SearchParams = {
+  page?: string;
+  limit?: string;
+  searchTerm?: string;
+  role?: string;
+};
+
+function buildQuery(params: SearchParams) {
+  const sp = new URLSearchParams();
+  if (params.page) sp.set("page", params.page);
+  if (params.limit) sp.set("limit", params.limit);
+  if (params.searchTerm) sp.set("searchTerm", params.searchTerm);
+  if (params.role) sp.set("role", params.role);
+  return sp.toString();
+}
+
+export default async function AdminUsers({ searchParams }: { searchParams?: Promise<SearchParams> }) {
   const user = await getCurrentUser();
 
   // Redirect non-admin users
@@ -13,14 +30,20 @@ export default async function AdminUsers() {
     redirect("/dashboard");
   }
 
+  const sp = (await searchParams) || {};
+  const page = Number(sp.page || 1);
+  const limit = Number(sp.limit || 10);
+  const query = buildQuery({ ...sp, page: String(page), limit: String(limit) });
+
   const cookieStore = await cookies();
   const token = cookieStore.get("better-auth.session_token")?.value;
-  const usersRes = await fetch(`${API_URL}/user`, {
+  const usersRes = await fetch(`${API_URL}/user?${query}`, {
     cache: "no-store",
     headers: token ? { Cookie: `better-auth.session_token=${token}` } : undefined,
   });
   const usersResult = (await usersRes.json()) as {
     success?: boolean;
+    meta?: { page?: number; limit?: number; total?: number };
     data?: Array<{
       id: string;
       name: string | null;
@@ -32,6 +55,8 @@ export default async function AdminUsers() {
     }>;
   };
   const users = usersResult.success && Array.isArray(usersResult.data) ? usersResult.data : [];
+  const total = usersResult.meta?.total ?? users.length;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <div className="p-8">
@@ -43,9 +68,42 @@ export default async function AdminUsers() {
         </div>
         <div className="flex items-center gap-3">
           <span className="px-4 py-2 bg-gray-100 border border-gray-200 rounded-xl text-gray-700 font-medium">
-            {users.length} total users
+            {total} total users
           </span>
         </div>
+      </div>
+
+      {/* Search + Filters */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-6">
+        <form className="flex flex-col md:flex-row gap-3 md:items-center">
+          <input
+            name="searchTerm"
+            defaultValue={sp.searchTerm || ""}
+            placeholder="Search by name or email..."
+            className="h-11 w-full md:flex-1 rounded-xl border border-gray-200 px-4 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+          <select
+            name="role"
+            defaultValue={sp.role || ""}
+            className="h-11 w-full md:w-48 rounded-xl border border-gray-200 px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          >
+            <option value="">All roles</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+          <button
+            type="submit"
+            className="h-11 px-5 rounded-xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
+          >
+            Apply
+          </button>
+          <Link
+            href="/admin/users"
+            className="h-11 px-5 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
+          >
+            Reset
+          </Link>
+        </form>
       </div>
 
       {/* Stats Cards */}
@@ -177,6 +235,32 @@ export default async function AdminUsers() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="mt-6 flex items-center justify-between">
+        <p className="text-sm text-gray-500">
+          Page <span className="font-medium text-gray-900">{page}</span> of{" "}
+          <span className="font-medium text-gray-900">{totalPages}</span>
+        </p>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/admin/users?${buildQuery({ ...sp, page: String(Math.max(1, page - 1)), limit: String(limit) })}`}
+            className={`h-10 px-4 rounded-xl border border-gray-200 text-sm font-semibold flex items-center justify-center ${
+              page <= 1 ? "pointer-events-none opacity-50" : "hover:bg-gray-50"
+            }`}
+          >
+            Prev
+          </Link>
+          <Link
+            href={`/admin/users?${buildQuery({ ...sp, page: String(Math.min(totalPages, page + 1)), limit: String(limit) })}`}
+            className={`h-10 px-4 rounded-xl border border-gray-200 text-sm font-semibold flex items-center justify-center ${
+              page >= totalPages ? "pointer-events-none opacity-50" : "hover:bg-gray-50"
+            }`}
+          >
+            Next
+          </Link>
         </div>
       </div>
     </div>
