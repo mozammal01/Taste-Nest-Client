@@ -42,8 +42,8 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
   try {
-    // Calling better-auth session endpoint directly
-    const res = await fetch(`${process.env.BETTER_AUTH_URL}/api/auth/get-session`, {
+    // Calling my custom backend profile endpoint to get rich data (_count, rewards, etc.)
+    const res = await fetch(`${API_URL}/user/me`, {
       method: "GET",
       cache: "no-store",
       headers: {
@@ -52,14 +52,15 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     });
 
     if (!res.ok) {
-        console.error(`[auth] Session endpoint failed: ${res.status} ${res.statusText}`);
+        console.error(`[auth] User profile endpoint failed: ${res.status} ${res.statusText}`);
         return null;
     }
 
-    const session = (await res.json()) as { user?: CurrentUser };
-    const user = session?.user;
-    if (!user?.id || !user?.email || !user?.role) {
-        console.error("[auth] Invalid session data received", session);
+    const response = await res.json();
+    const user = response?.data;
+    
+    if (!user?.id || !user?.email) {
+        console.warn("[auth] No user data found in profile response", response);
         return null;
     }
 

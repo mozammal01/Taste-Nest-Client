@@ -120,21 +120,26 @@ function FoodLoader({ size }: { size: string }) {
       </div>
 
       {/* Floating food items */}
-      <div className="absolute inset-0">
-        {["🍕", "🍔", "🍰", "☕"].map((emoji, i) => (
-          <span
-            key={i}
-            className="absolute text-xl animate-pulse"
-            style={{
-              top: `${20 + Math.sin(i * 1.5) * 30}%`,
-              left: `${20 + Math.cos(i * 1.5) * 30}%`,
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: "2s",
-            }}
-          >
-            {emoji}
-          </span>
-        ))}
+      <div className="absolute inset-0 animate-[spin_20s_linear_infinite]">
+        {["🍕", "🍔", "🍰", "☕"].map((emoji, i) => {
+          const angle = (i * 90) * (Math.PI / 180);
+          const radius = 35; // percentage
+          return (
+            <span
+              key={i}
+              className="absolute text-xl animate-pulse flex items-center justify-center w-8 h-8"
+              style={{
+                top: `${50 + Math.sin(angle) * radius}%`,
+                left: `${50 + Math.cos(angle) * radius}%`,
+                transform: 'translate(-50%, -50%)',
+                animationDelay: `${i * 0.3}s`,
+                animationDuration: "2s",
+              }}
+            >
+              {emoji}
+            </span>
+          );
+        })}
       </div>
     </div>
   );
@@ -144,8 +149,8 @@ function FoodLoader({ size }: { size: string }) {
 export function CardSkeleton({ className }: { className?: string }) {
   return (
     <div className={cn("bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden", className)}>
-      <div className="h-48 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[shimmer_2s_infinite]" />
+      <div className="h-48 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-transparent animate-[shimmer_2s_infinite]" />
       </div>
       <div className="p-5 space-y-3">
         <div className="h-6 bg-gray-200 rounded-lg w-3/4 animate-pulse"></div>

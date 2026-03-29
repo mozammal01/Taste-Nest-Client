@@ -83,18 +83,24 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
   }
   const userRole = (session.user as { role?: string } | undefined)?.role;
 
-  const menuItems = [
-    {
-      label: "Dashboard",
-      href: userRole === "admin" ? "/admin" : "/user",
-      icon: LayoutDashboard,
-    },
-    { label: "My Orders", href: "/orders", icon: ShoppingBag },
-    { label: "Favorites", href: "/favorites", icon: Heart },
-    { label: "Reservations", href: "/reservations", icon: Calendar },
-    { label: "Payment Methods", href: "/payments", icon: CreditCard },
+  const userMenuItems = [
+    { label: "Dashboard", href: "/user", icon: LayoutDashboard },
+    { label: "My Orders", href: "/user/orders", icon: ShoppingBag },
+    { label: "My Reservations", href: "/user/reservations", icon: Calendar },
+    { label: "My Rewards", href: "/user/rewards", icon: Heart },
+    { label: "Payment History", href: "/user/payments", icon: CreditCard },
     { label: "Settings", href: "/profile", icon: Settings },
   ];
+
+  const adminMenuItems = [
+    { label: "Admin Panel", href: "/admin", icon: LayoutDashboard },
+    { label: "Menu Items", href: "/admin/items", icon: ShoppingBag },
+    { label: "All Payments", href: "/admin/payments", icon: CreditCard },
+    { label: "Users", href: "/admin/users", icon: Settings },
+    { label: "My Profile", href: "/profile", icon: Settings },
+  ];
+
+  const menuItems = userRole === "admin" ? adminMenuItems : userMenuItems;
 
   // Authenticated - show user menu
   return (
@@ -127,7 +133,6 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
         {/* User Info - Hidden on smaller screens */}
         <div className="hidden xl:block text-left">
           <p className="text-sm font-semibold text-gray-900 leading-tight">{session.user?.name?.split(" ")[0] || "User"}</p>
-          <p className="text-xs text-gray-500 leading-tight capitalize">{userRole || "member"}</p>
         </div>
 
         {/* Chevron */}
@@ -173,9 +178,6 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 truncate">{session.user?.name}</p>
                     <p className="text-sm text-gray-500 truncate">{session.user?.email}</p>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary capitalize mt-1">
-                      {userRole || "member"}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -203,19 +205,6 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
                 ))}
               </div>
 
-              {/* Help Section */}
-              <div className="px-2 py-2 border-t border-gray-100">
-                <Link
-                  href="/help"
-                  onClick={handleLinkClick}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 transition-all group"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-blue-50 flex items-center justify-center transition-colors">
-                    <HelpCircle className="w-4.5 h-4.5 text-gray-500 group-hover:text-blue-500 transition-colors" />
-                  </div>
-                  <span className="font-medium">Help & Support</span>
-                </Link>
-              </div>
 
               {/* Sign Out */}
               <div className="px-2 py-2 border-t border-gray-100">
