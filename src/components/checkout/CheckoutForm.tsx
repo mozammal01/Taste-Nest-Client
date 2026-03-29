@@ -14,8 +14,10 @@ import {
   Lock,
   Truck,
   CreditCardIcon,
-  ShoppingBag
+  ShoppingBag,
+  AlertCircle
 } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +32,11 @@ import Image from "next/image";
 import StripePaymentForm from "./StripePaymentForm";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder");
+
+const checkoutSchema = z.object({
+  address: z.string().min(5, "Delivery address must be at least 5 characters long"),
+  phone: z.string().regex(/^\+?[0-9\s-]{10,15}$/, "Invalid phone number format"),
+});
 
 interface CheckoutFormProps {
   items: CartItemWithDetails[];
@@ -48,6 +55,7 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
     address: "",
     phone: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Calculate totals
   const subtotal = items.reduce((acc, item) => acc + Number(item.menuItem.price) * item.quantity, 0);
@@ -56,7 +64,17 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
   const totalAmount = subtotal + deliveryFee + tax;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    
+    // Clear error for this field
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handleFetchClientSecret = async () => {
@@ -106,8 +124,15 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.address || !formData.phone) {
-      toast.error("Please fill in all delivery details");
+    // Zod Validation
+    const validationResult = checkoutSchema.safeParse(formData);
+    if (!validationResult.success) {
+      const fieldErrors: Record<string, string> = {};
+      validationResult.error.issues.forEach((issue) => {
+        if (issue.path[0]) fieldErrors[issue.path[0] as string] = issue.message;
+      });
+      setErrors(fieldErrors);
+      toast.error("Please correct the delivery details.");
       return;
     }
 
@@ -167,8 +192,16 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
             
             <Card className="border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden ring-1 ring-black/2">
               <CardContent className="p-8 space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="address" className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Delivery Address</Label>
+                <div className="space-y-3">
+                  <Label 
+                    htmlFor="address" 
+                    className={cn(
+                      "text-xs font-bold uppercase tracking-widest transition-colors",
+                      errors.address ? "text-red-500" : "text-slate-700"
+                    )}
+                  >
+                    Delivery Address
+                  </Label>
                   <div className="relative group">
                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
                     <Input
@@ -177,14 +210,39 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
                       placeholder="Street name, building number, area..."
                       value={formData.address}
                       onChange={handleChange}
-                      className="pl-12 h-14 bg-gray-50/30 border-2 border-transparent focus:border-primary/10 focus:bg-white transition-all rounded-xl font-medium"
-                      required
+                      className={cn(
+                        "pl-12 h-14 transition-all rounded-xl font-medium border-2",
+                        errors.address 
+                          ? "border-red-500 bg-red-50/50" 
+                          : "border-gray-100 bg-gray-50/30 focus:border-primary/20 focus:bg-white"
+                      )}
                     />
                   </div>
+                  <AnimatePresence mode="wait">
+                    {errors.address && (
+                      <motion.div 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        className="flex items-center gap-1.5 mt-2 text-xs font-bold text-red-600 overflow-hidden"
+                      >
+                        <AlertCircle size={14} className="shrink-0" />
+                        {errors.address}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Phone Number</Label>
+                <div className="space-y-3">
+                  <Label 
+                    htmlFor="phone" 
+                    className={cn(
+                      "text-xs font-bold uppercase tracking-widest transition-colors",
+                      errors.phone ? "text-red-500" : "text-slate-700"
+                    )}
+                  >
+                    Phone Number
+                  </Label>
                   <div className="relative group">
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
                     <Input
@@ -194,10 +252,27 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
                       placeholder="Your contact number for the courier"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="pl-12 h-14 bg-gray-50/30 border-2 border-transparent focus:border-primary/10 focus:bg-white transition-all rounded-xl font-medium"
-                      required
+                      className={cn(
+                        "pl-12 h-14 transition-all rounded-xl font-medium border-2",
+                        errors.phone 
+                          ? "border-red-500 bg-red-50/50" 
+                          : "border-gray-100 bg-gray-50/30 focus:border-primary/20 focus:bg-white"
+                      )}
                     />
                   </div>
+                  <AnimatePresence mode="wait">
+                    {errors.phone && (
+                      <motion.div 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        className="flex items-center gap-1.5 mt-2 text-xs font-bold text-red-600 overflow-hidden"
+                      >
+                        <AlertCircle size={14} className="shrink-0" />
+                        {errors.phone}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </CardContent>
             </Card>
@@ -405,4 +480,8 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
       </div>
     </form>
   );
+}
+
+function cn(...classes: any[]) {
+  return classes.filter(Boolean).join(" ");
 }

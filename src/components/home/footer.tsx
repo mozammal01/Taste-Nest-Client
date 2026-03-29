@@ -5,6 +5,7 @@ import logo from "@/../public/logo/logoWhite.png";
 import leftArrow from "@/../public/icons/leftArrow.png";
 import { Input } from "../ui/input";
 import { AnimatedButton } from "../ui/animated-button";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -30,50 +31,50 @@ export default function Footer() {
           </div>
           {/* Left Middle Content */}
           <div>
-            <h2 className="font-extrabold border-b-4 border-secondary text-xl">About</h2>
+            <h2 className="font-extrabold border-b-4 border-secondary text-xl font-outfit">About</h2>
             <div className="flex flex-col space-y-3 mt-10">
-              <div className="flex items-center gap-2 font-semibold">
+              <Link href="/under-construction" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
-                <span>Fredoke one</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+                <span>Our Story</span>
+              </Link>
+              <Link href="/under-construction" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>Special Dish</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+              </Link>
+              <Link href="/#menu" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>Reservation</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+              </Link>
+              <Link href="/under-construction" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
-                <span>Contact</span>
-              </div>
+                <span>Contact Card</span>
+              </Link>
             </div>
           </div>
           {/* Right Middle Content */}
           <div>
-            <h2 className="font-extrabold border-b-4 border-secondary text-xl">Menu</h2>
+            <h2 className="font-extrabold border-b-4 border-secondary text-xl font-outfit">Menu</h2>
             <div className="flex flex-col space-y-3 mt-10">
-              <div className="flex items-center gap-2 font-semibold">
+              <Link href="/menu" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>Steaks</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+              </Link>
+              <Link href="/menu" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>Burgers</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+              </Link>
+              <Link href="/menu" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>BBQ</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+              </Link>
+              <Link href="/under-construction" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>Cocktails</span>
-              </div>
-              <div className="flex items-center gap-2 font-semibold">
+              </Link>
+              <Link href="/under-construction" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                 <Image src={leftArrow} alt="menu arrow" width={10} height={10} />
                 <span>Desserts</span>
-              </div>
+              </Link>
             </div>
           </div>
           {/* Right Content */}

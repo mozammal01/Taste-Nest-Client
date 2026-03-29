@@ -15,7 +15,7 @@ export default function MenuDishes({ user }: MenuDishesProps) {
         <Reservation user={user} />
       </div>
 
-      <div className="bg-slate-100/30">
+      <div className="bg-slate-100/30 py-1">
         <Dishes />
       </div>
     </div>

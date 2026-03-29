@@ -9,6 +9,8 @@ export interface ReservationInput {
   date: string;
   time: string;
   guests: number;
+  phone: string;
+  occasion?: string;
   message?: string;
 }
 

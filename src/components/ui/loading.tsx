@@ -195,11 +195,41 @@ export function StatsCardSkeleton() {
 // Page Loading Component
 export function PageLoading({ title }: { title?: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="text-center">
         <Loading variant="food" size="xl" />
-        <h2 className="mt-6 text-2xl font-bold text-gray-900">{title || "Loading..."}</h2>
-        <p className="mt-2 text-gray-500">Please wait while we prepare everything for you</p>
+        <h2 className="mt-6 text-2xl font-bold text-gray-900">{title || "Preparing your experience"}</h2>
+        <p className="mt-2 text-gray-500 animate-pulse">Sourcing the freshest ingredients...</p>
+      </div>
+    </div>
+  );
+}
+
+// Specialized Skeletons for different sections
+export function HeroSkeleton() {
+  return (
+    <div className="min-h-screen lg:h-[831px] w-full bg-gray-50 flex items-center px-20">
+      <div className="max-w-2xl space-y-8 animate-pulse">
+        <div className="h-20 bg-gray-200 rounded-2xl w-full"></div>
+        <div className="h-20 bg-gray-200 rounded-2xl w-3/4"></div>
+        <div className="h-10 bg-gray-100 rounded-xl w-1/2"></div>
+        <div className="h-16 bg-gray-200 rounded-full w-48 pt-10"></div>
+      </div>
+    </div>
+  );
+}
+
+export function SectionSkeleton({ lines = 3 }: { lines?: number }) {
+  return (
+    <div className="container mx-auto py-20 px-4 space-y-12 animate-pulse">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="h-6 bg-gray-100 rounded-full w-32"></div>
+        <div className="h-12 bg-gray-200 rounded-2xl w-2/3"></div>
+      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {Array.from({ length: lines }).map((_, i) => (
+          <CardSkeleton key={i} />
+        ))}
       </div>
     </div>
   );

@@ -103,14 +103,17 @@ export default function SignupRightSide() {
     }
   };
 
-  // Handle Google Sign Up
-  const handleGoogleSignUp = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=google&callbackURL=${encodeURIComponent("/")}`;
-  };
-
-  // Handle GitHub Sign Up
-  const handleGitHubSignUp = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=github&callbackURL=${encodeURIComponent("/")}`;
+  // Handle Social Sign In
+  const handleSocialSignUp = async (provider: "google" | "github") => {
+    try {
+      await signIn.social({
+        provider,
+        callbackURL: window.location.origin,
+      });
+    } catch (err) {
+      console.error(`${provider} sign up error:`, err);
+      toast.error(`Failed to sign up with ${provider}`);
+    }
   };
   return (
     <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-linear-to-br from-gray-50 to-white">
@@ -152,7 +155,7 @@ export default function SignupRightSide() {
         <div className="flex gap-3 mb-6">
           <button
             type="button"
-            onClick={handleGoogleSignUp}
+            onClick={() => handleSocialSignUp("google")}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:border-primary/50 hover:shadow-md"
           >
             <GoogleIcon />
@@ -160,7 +163,7 @@ export default function SignupRightSide() {
           </button>
           <button
             type="button"
-            onClick={handleGitHubSignUp}
+            onClick={() => handleSocialSignUp("github")}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:border-primary/50 hover:shadow-md"
           >
             <GithubIcon />

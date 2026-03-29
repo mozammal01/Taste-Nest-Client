@@ -82,14 +82,17 @@ export default function SigninLeftSide() {
     }
   };
 
-  // Handle Google Sign In
-  const handleGoogleSignIn = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=google&callbackURL=${encodeURIComponent("/")}`;
-  };
-
-  // Handle GitHub Sign In
-  const handleGitHubSignIn = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-in/social?provider=github&callbackURL=${encodeURIComponent("/")}`;
+  // Handle Social Sign In
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    try {
+      await signIn.social({
+        provider,
+        callbackURL: window.location.origin,
+      });
+    } catch (err) {
+      console.error(`${provider} sign in error:`, err);
+      toast.error(`Failed to sign in with ${provider}`);
+    }
   };
 
   return (
@@ -132,7 +135,7 @@ export default function SigninLeftSide() {
         <div className="flex gap-3 mb-6">
           <button
             type="button"
-            onClick={handleGoogleSignIn}
+            onClick={() => handleSocialSignIn("google")}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:border-primary/50 hover:shadow-md group"
           >
             <GoogleIcon />
@@ -141,7 +144,7 @@ export default function SigninLeftSide() {
           </button>
           <button
             type="button"
-            onClick={handleGitHubSignIn}
+            onClick={() => handleSocialSignIn("github")}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:border-primary/50 hover:shadow-md group"
           >
             <GithubIcon />
