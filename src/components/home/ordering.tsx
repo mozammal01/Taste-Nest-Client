@@ -12,6 +12,7 @@ import saladImg from "@/../public/ordering/salad.png";
 import { AnimatedButton } from "../ui/animated-button";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 
 export default function Ordering() {
   const ref = useRef(null);
@@ -43,14 +44,18 @@ export default function Ordering() {
               <span>Exclusive offers & discounts</span>
             </div>
             <div className="flex gap-2 mt-10">
-              <AnimatedButton variant="threeDimensional" size="lg">
-                <Image src={playIcon} alt="Google Play store icon" width={15} height={15} />
-                <span>Google Play</span>
-              </AnimatedButton>
-              <AnimatedButton size="lg" variant="threeDimensional">
-                <Image src={appleIcon} alt="Apple App Store icon" width={15} height={15} />
-                <span>Apple Store</span>
-              </AnimatedButton>
+              <Link href="/under-construction">
+                <AnimatedButton variant="threeDimensional" size="lg">
+                  <Image src={playIcon} alt="Google Play store icon" width={15} height={15} />
+                  <span>Google Play</span>
+                </AnimatedButton>
+              </Link>
+              <Link href="/under-construction">
+                <AnimatedButton size="lg" variant="threeDimensional">
+                  <Image src={appleIcon} alt="Apple App Store icon" width={15} height={15} />
+                  <span>Apple Store</span>
+                </AnimatedButton>
+              </Link>
             </div>
           </motion.div>
           {/* Right Content */}

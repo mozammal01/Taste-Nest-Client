@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { User, Mail, Phone, Calendar, ShieldCheck, Trash2, Edit2, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import UserFilter from "./UserFilter";
+import UserActions from "./UserActions";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,6 +16,7 @@ type SearchParams = {
   role?: string;
 };
 
+// Utility to build query string safely
 function buildQuery(params: SearchParams) {
   const sp = new URLSearchParams();
   if (params.page) sp.set("page", params.page);
@@ -20,6 +24,11 @@ function buildQuery(params: SearchParams) {
   if (params.searchTerm) sp.set("searchTerm", params.searchTerm);
   if (params.role) sp.set("role", params.role);
   return sp.toString();
+}
+
+// Helper for conditional classes
+function cn(...classes: (string | boolean | undefined)[]) {
+  return classes.filter(Boolean).join(" ");
 }
 
 export default async function AdminUsers({ searchParams }: { searchParams?: Promise<SearchParams> }) {
@@ -37,10 +46,13 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
 
   const cookieStore = await cookies();
   const token = cookieStore.get("better-auth.session_token")?.value;
+  
+  // Note: Fetch directly from server-side using the session token for secure data access
   const usersRes = await fetch(`${API_URL}/user?${query}`, {
     cache: "no-store",
     headers: token ? { Cookie: `better-auth.session_token=${token}` } : undefined,
   });
+
   const usersResult = (await usersRes.json()) as {
     success?: boolean;
     meta?: { page?: number; limit?: number; total?: number };
@@ -54,213 +66,162 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
       image?: string | null;
     }>;
   };
+
   const users = usersResult.success && Array.isArray(usersResult.data) ? usersResult.data : [];
-  const total = usersResult.meta?.total ?? users.length;
+  const total = usersResult.meta?.total ?? 0;
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
-          <p className="text-gray-500 mt-1">Manage all registered users</p>
+    <div className="p-4 md:p-8 bg-slate-50/50 min-h-screen">
+      {/* Header Section with Animation Feel */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight font-outfit">User Management</h1>
+          <p className="text-slate-500 font-bold text-sm uppercase tracking-widest opacity-70">Authorized Members Administration</p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="px-4 py-2 bg-gray-100 border border-gray-200 rounded-xl text-gray-700 font-medium">
-            {total} total users
-          </span>
-        </div>
-      </div>
-
-      {/* Search + Filters */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-6">
-        <form className="flex flex-col md:flex-row gap-3 md:items-center">
-          <input
-            name="searchTerm"
-            defaultValue={sp.searchTerm || ""}
-            placeholder="Search by name or email..."
-            className="h-11 w-full md:flex-1 rounded-xl border border-gray-200 px-4 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-          />
-          <select
-            name="role"
-            defaultValue={sp.role || ""}
-            className="h-11 w-full md:w-48 rounded-xl border border-gray-200 px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-          >
-            <option value="">All roles</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </select>
-          <button
-            type="submit"
-            className="h-11 px-5 rounded-xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-          >
-            Apply
-          </button>
-          <Link
-            href="/admin/users"
-            className="h-11 px-5 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
-          >
-            Reset
-          </Link>
-        </form>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Total Users</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{users.length}</p>
-            </div>
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Admins</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{users.filter((u) => u.role === "admin").length}</p>
-            </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Regular Users</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{users.filter((u) => u.role === "user").length}</p>
-            </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </div>
+        <div className="bg-white px-6 py-3 rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/40 flex items-center gap-4 group hover:border-primary/30 transition-all">
+          <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-sm shadow-primary/40" />
+          <div className="text-slate-700 font-black text-sm uppercase tracking-[0.15em] flex items-center gap-1.5 font-outfit">
+            <span className="text-primary text-base">{total}</span>
+            <span className="opacity-50">Members Found</span>
           </div>
         </div>
       </div>
 
-      {/* Users Table */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      {/* Integration of Client-Side Filter (Dynamic + Secure) */}
+      <UserFilter 
+        key={query}
+        initialSearch={sp.searchTerm || ""} 
+        initialRole={sp.role || ""} 
+      />
+
+      {/* Advanced Unified Users Table */}
+      <div className="bg-white rounded-[32px] border border-slate-200 shadow-2xl shadow-slate-200/50 overflow-hidden relative">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-100">
-              <tr>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">User</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Phone</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Role</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Joined</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-slate-50/80 border-b border-slate-100">
+                <th className="text-left px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] font-outfit">Profile Identity</th>
+                <th className="text-left px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] font-outfit">Access Email</th>
+                <th className="text-left px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] font-outfit">Permissions</th>
+                <th className="text-left px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] font-outfit">Joined Since</th>
+                <th className="text-right px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] font-outfit">Administration</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {users.map((u) => (
-                <tr key={u.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center overflow-hidden ring-2 ring-gray-100">
-                        {u.image ? (
-                          <Image src={u.image} alt={u.name || ""} width={40} height={40} className="rounded-full object-cover" />
-                        ) : (
-                          <span className="text-white font-semibold">{u.name?.charAt(0)?.toUpperCase() || "U"}</span>
-                        )}
+            <tbody className="divide-y divide-slate-100">
+              {users.length > 0 ? users.map((u) => (
+                <tr key={u.id} className="group hover:bg-slate-50/50 transition-all duration-500 cursor-default">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-5">
+                      <div className="relative group/avatar">
+                        <div className="w-14 h-14 bg-linear-to-br from-slate-100 to-slate-200 rounded-[20px] flex items-center justify-center overflow-hidden border-2 border-white shadow-xl shadow-slate-200 transition-all group-hover/avatar:scale-105 group-hover/avatar:rotate-3">
+                          {u.image ? (
+                            <Image src={u.image} alt={u.name || ""} width={56} height={56} className="object-cover" />
+                          ) : (
+                            <User className="text-slate-400 w-7 h-7" />
+                          )}
+                        </div>
+                        <div className={cn(
+                          "absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-white shadow-md ring-2 ring-white/50",
+                          u.role === 'admin' ? 'bg-amber-400' : 'bg-primary'
+                        )} />
                       </div>
-                      <span className="text-gray-900 font-medium">{u.name || "No name"}</span>
+                      <div>
+                        <p className="text-slate-900 font-black text-[15px] tracking-tight font-outfit">{u.name || "Anonymous User"}</p>
+                        <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mt-1 opacity-60">Serial ID: #{u.id.substring(0, 8)}</p>
+                      </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{u.email}</td>
-                  <td className="px-6 py-4 text-gray-600">{u.phone || "—"}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide ${
-                        u.role === "admin"
-                          ? "bg-primary/10 text-primary border border-primary/20"
-                          : "bg-blue-100 text-blue-700 border border-blue-200"
-                      }`}
-                    >
+                  <td className="px-8 py-6">
+                    <div className="flex flex-col gap-1.5">
+                       <div className="flex items-center gap-3 text-slate-600 font-bold text-sm tracking-tight opacity-90 transition-all group-hover:translate-x-1">
+                          <Mail size={15} className="text-primary/40" />
+                          <span>{u.email}</span>
+                       </div>
+                       {u.phone && (
+                         <div className="flex items-center gap-3 text-slate-400 font-medium text-xs tracking-wide">
+                           <Phone size={13} className="text-slate-300" />
+                           <span>{u.phone}</span>
+                         </div>
+                       )}
+                    </div>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className={cn(
+                      "inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border shadow-xs transition-all",
+                      u.role === "admin"
+                        ? "bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100"
+                        : "bg-slate-50 text-slate-500 border-slate-100 hover:bg-slate-100"
+                    )}>
+                      {u.role === 'admin' ? <ShieldCheck size={13} strokeWidth={3} /> : null}
                       {u.role || "user"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">{new Date(u.createdAt).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-500 hover:text-gray-900">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                          />
-                        </svg>
-                      </button>
-                      <button className="p-2 hover:bg-red-50 rounded-lg transition-colors text-gray-500 hover:text-red-600">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
                     </div>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-3 text-slate-700 font-black text-xs uppercase tracking-[0.15em] font-outfit group-hover:text-slate-900">
+                       <Calendar size={16} className="text-primary/30" />
+                       {new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </div>
+                  </td>
+                  <td className="px-8 py-6">
+                    <UserActions 
+                      userId={u.id} 
+                      userName={u.name || "Anonymous User"} 
+                      currentRole={u.role || "user"} 
+                      token={token}
+                    />
                   </td>
                 </tr>
-              ))}
+              )) : (
+                <tr>
+                  <td colSpan={5} className="py-32 text-center space-y-5 bg-slate-50/20">
+                     <div className="relative inline-flex mb-4">
+                        <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl animate-pulse" />
+                        <div className="relative w-20 h-20 bg-white rounded-[28px] shadow-xl border border-slate-100 flex items-center justify-center mx-auto">
+                           <Search className="text-primary/30 w-10 h-10 animate-bounce duration-2000" />
+                        </div>
+                     </div>
+                     <div className="space-y-1">
+                        <p className="text-slate-900 font-black text-lg font-outfit tracking-tight">Zero Members Found</p>
+                        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest max-w-xs mx-auto opacity-70">We couldn't find any users matching your criteria. Try adjusting your filters.</p>
+                     </div>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
-      </div>
 
-      {/* Pagination */}
-      <div className="mt-6 flex items-center justify-between">
-        <p className="text-sm text-gray-500">
-          Page <span className="font-medium text-gray-900">{page}</span> of{" "}
-          <span className="font-medium text-gray-900">{totalPages}</span>
-        </p>
-        <div className="flex items-center gap-2">
-          <Link
-            href={`/admin/users?${buildQuery({ ...sp, page: String(Math.max(1, page - 1)), limit: String(limit) })}`}
-            className={`h-10 px-4 rounded-xl border border-gray-200 text-sm font-semibold flex items-center justify-center ${
-              page <= 1 ? "pointer-events-none opacity-50" : "hover:bg-gray-50"
-            }`}
-          >
-            Prev
-          </Link>
-          <Link
-            href={`/admin/users?${buildQuery({ ...sp, page: String(Math.min(totalPages, page + 1)), limit: String(limit) })}`}
-            className={`h-10 px-4 rounded-xl border border-gray-200 text-sm font-semibold flex items-center justify-center ${
-              page >= totalPages ? "pointer-events-none opacity-50" : "hover:bg-gray-50"
-            }`}
-          >
-            Next
-          </Link>
+        {/* High-End Pagination Footer */}
+        <div className="bg-slate-50/50 px-10 py-6 flex flex-col sm:flex-row items-center justify-between border-t border-slate-100 gap-6">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] font-outfit">
+            System Data Rendering &bull; <span className="text-primary/70">{users.length} Records Shown</span>
+          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              href={`/admin/users?${buildQuery({ ...sp, page: String(Math.max(1, page - 1)) })}`}
+              className={cn(
+                "w-12 h-12 rounded-[18px] bg-white border border-slate-200 text-slate-400 flex items-center justify-center transition-all hover:shadow-xl hover:text-primary hover:border-primary/20 shadow-sm disabled:opacity-30",
+                page <= 1 && "pointer-events-none opacity-30"
+              )}
+            >
+              <ChevronLeft size={22} strokeWidth={3} />
+            </Link>
+            
+            <div className="bg-white px-6 h-12 rounded-[18px] border border-slate-100 flex items-center justify-center text-[13px] font-black text-slate-900 shadow-xl shadow-slate-200/40 font-outfit">
+              <span className="text-primary italic mr-1">{page}</span> / <span className="opacity-40">{totalPages}</span>
+            </div>
+
+            <Link
+              href={`/admin/users?${buildQuery({ ...sp, page: String(Math.min(totalPages, page + 1)) })}`}
+              className={cn(
+                "w-12 h-12 rounded-[18px] bg-white border border-slate-200 text-slate-400 flex items-center justify-center transition-all hover:shadow-xl hover:text-primary hover:border-primary/20 shadow-sm disabled:opacity-30",
+                page >= totalPages && "pointer-events-none opacity-30"
+              )}
+            >
+              <ChevronRight size={22} strokeWidth={3} />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
