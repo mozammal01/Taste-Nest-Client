@@ -17,3 +17,9 @@ export async function createPaymentIntent(amount: number) {
     return { success: false, message: "Failed to initialize payment." };
   }
 }
+export async function getMyPayments() {
+  const result = await handleFetch(`${API_URL}/payment/my-payments`, {
+    cache: "no-store",
+  });
+  return result;
+}

@@ -288,6 +288,8 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
                                 isProcessing={isSubmitting}
                                 setIsProcessing={setIsSubmitting}
                                 onSuccess={handleOrderSubmission}
+                                address={formData.address}
+                                phone={formData.phone}
                             />
                         </Elements>
                       </motion.div>

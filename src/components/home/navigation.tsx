@@ -185,11 +185,18 @@ export default function Navigation() {
       <motion.nav
         ref={ref}
         initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className={cn(
-          "w-full fixed left-0 right-0 z-50 transition-all duration-500",
-          isScrolled ? "top-0 bg-white/95 backdrop-blur-lg shadow-lg" : "top-8 bg-white/80 backdrop-blur-sm shadow-sm"
-        )}
+        animate={{ 
+          y: 0,
+          top: isScrolled ? 0 : 32,
+          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.8)",
+          backdropFilter: isScrolled ? "blur(12px)" : "blur(4px)",
+          boxShadow: isScrolled ? "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+        }}
+        transition={{ 
+          duration: 0.5, 
+          ease: [0.4, 0, 0.2, 1] 
+        }}
+        className="w-full fixed left-0 right-0 z-50"
       >
         <div className="max-w-[1500px] mx-auto px-4">
           {/* Desktop Navigation */}
@@ -280,7 +287,7 @@ export default function Navigation() {
               <div className="w-px h-8 bg-gray-200" />
 
               {/* User Menu */}
-              <UserMenu />
+              <UserMenu onLinkClick={() => setIsMobileMenuOpen(false)} />
             </div>
           </div>
 
@@ -395,7 +402,7 @@ export default function Navigation() {
                   transition={{ delay: 0.3 }}
                   className="mt-4 pt-4 border-t border-gray-100"
                 >
-                  <UserMenu />
+                  <UserMenu onLinkClick={() => setIsMobileMenuOpen(false)} />
                 </motion.div>
 
                 {/* Mobile Contact Info */}
@@ -497,8 +504,16 @@ export default function Navigation() {
         )}
       </AnimatePresence>
 
-      {/* Spacer for fixed nav */}
-      <div className={cn("transition-all duration-300", isScrolled ? "h-[72px]" : "h-[104px]")} />
+      {/* Spacer for fixed nav to prevent content jump */}
+      <motion.div
+        animate={{ 
+          height: isScrolled ? 76 : 108 
+        }}
+        transition={{ 
+          duration: 0.5, 
+          ease: [0.4, 0, 0.2, 1] 
+        }}
+      />
     </>
   );
 }

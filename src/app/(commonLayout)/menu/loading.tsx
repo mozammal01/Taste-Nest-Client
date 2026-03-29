@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Navigation from "@/components/home/navigation";
+
 
 // Skeleton shimmer animation component
 function Shimmer({ className }: { className?: string }) {
@@ -66,10 +66,9 @@ function MenuCardSkeleton({ index }: { index: number }) {
 export default function MenuLoading() {
   return (
     <>
-      <Navigation />
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
         {/* Hero Section Skeleton */}
-        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-secondary/10 py-16">
+        <div className="bg-linear-to-r from-primary/5 via-primary/10 to-secondary/10 py-16">
           <div className="container mx-auto px-4">
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
               {/* Subtitle */}

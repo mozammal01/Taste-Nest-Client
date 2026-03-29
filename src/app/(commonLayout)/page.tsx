@@ -6,8 +6,11 @@ import OurExperts from "@/components/home/ourExperts";
 import News from "@/components/home/news";
 import Ordering from "@/components/home/ordering";
 import Categories from "@/components/home/categories";
+import { getCurrentUser } from "@/lib/auth";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
+
   return (
     <>
       <div>
@@ -20,7 +23,7 @@ export default function Home() {
         <Categories />
       </div>
       <div>
-        <MenuDishes />
+        <MenuDishes user={user} />
       </div>
       <div>
         <Testimonials />

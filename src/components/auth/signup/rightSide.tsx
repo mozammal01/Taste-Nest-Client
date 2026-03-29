@@ -16,6 +16,7 @@ import GoogleIcon from "@/components/icons/GoogleIcon";
 import GithubIcon from "@/components/icons/GithubIcon";
 import { z } from "zod";
 import { registerSchema } from "@/zod/auth.schema";
+import { toast } from "sonner";
 
 export default function SignupRightSide() {
   const ref = useRef(null);
@@ -67,7 +68,9 @@ export default function SignupRightSide() {
       });
 
       if (signUpResult?.error) {
-        setError(signUpResult.error.message || "Registration failed");
+        const errorMessage = signUpResult.error.message || "Registration failed";
+        setError(errorMessage);
+        toast.error(errorMessage);
         return;
       }
 
@@ -77,17 +80,23 @@ export default function SignupRightSide() {
       });
 
       if (signInResult?.error) {
+        toast.success("Account created! Please sign in.");
         router.push("/signin");
       } else {
+        toast.success("Account created successfully! Welcome to TasteNest.");
         router.push("/");
         router.refresh();
       }
     } catch (err: unknown) {
       if (err instanceof z.ZodError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setError((err as any).errors[0].message);
+        const errorMessage = (err as any).errors[0].message;
+        setError(errorMessage);
+        toast.error(errorMessage);
       } else {
-        setError("Something went wrong. Please try again.");
+        const errorMessage = "Something went wrong. Please try again.";
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
     } finally {
       setIsLoading(false);

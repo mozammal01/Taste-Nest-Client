@@ -8,7 +8,7 @@ import { AnimatedButton } from "../ui/animated-button";
 
 export default function Footer() {
   return (
-    <div id="contact" className="bg-slate-50 relative h-[580px] hidden 2xl:block">
+    <div id="contact" className="bg-slate-50 relative lg:h-[580px] py-10 lg:py-0 pt-20 lg:pt-0">
       <div className="flex justify-between items-center">
         <div className="absolute bottom-0 left-0">
           <Image src={footerLeftImg} alt="decorative footer left image" width={200} height={200} />
@@ -17,10 +17,10 @@ export default function Footer() {
           <Image src={footerRightImg} alt="decorative footer right image" width={200} height={200} />
         </div>
       </div>
-      <div className="flex flex-col justify-between items-center max-w-[1200px] mx-auto pt-20">
-        <div className="flex justify-between w-full gap-10">
+      <div className="flex flex-col justify-between items-center max-w-[1200px] mx-auto pt-20 px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full gap-10">
           {/* Left Content */}
-          <div className="flex flex-col gap-4 bg-primary h-[330px] w-[400px] rounded-2xl text-white">
+          <div className="flex flex-col gap-4 bg-primary h-[330px] w-full max-w-[400px] rounded-2xl text-white">
             <Image src={logo} alt="TasteNest restaurant logo" width={200} height={200} />
             <div className="flex flex-col gap-2 ps-10">
               <span className="font-extrabold -mt-5">Tuesday – Saturday: 12:00pm – 23:00pm</span>

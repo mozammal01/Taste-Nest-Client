@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import { signIn } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
@@ -15,11 +15,21 @@ import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import { z } from "zod";
 import { loginSchema } from "@/zod/auth.schema";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export default function SigninLeftSide() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const message = searchParams.get("message");
+    if (message) {
+      toast.info(message);
+    }
+  }, [searchParams]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -48,17 +58,24 @@ export default function SigninLeftSide() {
       });
 
       if (result?.error) {
-        setError(result.error.message || "Invalid credentials");
+        const errorMessage = result.error.message || "Invalid credentials";
+        setError(errorMessage);
+        toast.error(errorMessage);
       } else {
+        toast.success("Welcome back! Happy dining.");
         router.push("/");
         router.refresh();
       }
     } catch (err: unknown) {
       if (err instanceof z.ZodError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setError((err as any).errors[0].message);
+        const errorMessage = (err as any).errors[0].message;
+        setError(errorMessage);
+        toast.error(errorMessage);
       } else {
-        setError("Something went wrong. Please try again.");
+        const errorMessage = "Something went wrong. Please try again.";
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
     } finally {
       setIsLoading(false);

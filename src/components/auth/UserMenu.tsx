@@ -7,10 +7,20 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Heart, CreditCard, HelpCircle } from "lucide-react";
 
-export default function UserMenu() {
+export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) {
   const { data: session, isPending: isSessionPending } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+    if (onLinkClick) onLinkClick();
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -33,14 +43,14 @@ export default function UserMenu() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // Loading state
-  if (isSessionPending) {
+  // Loading state or before mounting
+  if (!mounted || isSessionPending) {
     return (
       <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
         <div className="hidden lg:block">
           <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
-          <div className="h-3 w-16 bg-gray-200 rounded animate-pulse mt-1" />
+          <div className="h-3 w-16 bg-gray-200 rounded mt-1 animate-pulse" />
         </div>
       </div>
     );
@@ -50,7 +60,7 @@ export default function UserMenu() {
   if (!session) {
     return (
       <div className="flex items-center gap-3">
-        <Link href="/signin">
+        <Link href="/signin" onClick={handleLinkClick}>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -59,7 +69,7 @@ export default function UserMenu() {
             Sign In
           </motion.button>
         </Link>
-        <Link href="/signup">
+        <Link href="/signup" onClick={handleLinkClick}>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -181,7 +191,7 @@ export default function UserMenu() {
                   >
                     <Link
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={handleLinkClick}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary transition-all group"
                     >
                       <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-primary/10 flex items-center justify-center transition-colors">
@@ -197,7 +207,7 @@ export default function UserMenu() {
               <div className="px-2 py-2 border-t border-gray-100">
                 <Link
                   href="/help"
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleLinkClick}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 transition-all group"
                 >
                   <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-blue-50 flex items-center justify-center transition-colors">

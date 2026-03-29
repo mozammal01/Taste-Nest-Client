@@ -13,6 +13,8 @@ interface StripePaymentFormProps {
   isProcessing: boolean;
   setIsProcessing: (val: boolean) => void;
   amount: number;
+  address: string;
+  phone: string;
 }
 
 export default function StripePaymentForm({ 
@@ -20,7 +22,9 @@ export default function StripePaymentForm({
   onSuccess, 
   isProcessing, 
   setIsProcessing,
-  amount 
+  amount,
+  address,
+  phone
 }: StripePaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -30,6 +34,14 @@ export default function StripePaymentForm({
     e.preventDefault();
 
     if (!stripe || !elements || !clientSecret) {
+      return;
+    }
+
+    if (!address || !phone) {
+      toast.error("Please fill in your delivery address and phone number", {
+        description: "These details are required for delivery coordination.",
+        icon: <ShieldCheck className="w-5 h-5 text-red-500" />
+      });
       return;
     }
 
@@ -118,8 +130,8 @@ export default function StripePaymentForm({
 
       <Button
         onClick={handleSubmit}
-        disabled={!stripe || isProcessing}
-        className="relative w-full h-14 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 transition-all active:scale-95"
+        disabled={!stripe || isProcessing || !address || !phone}
+        className="relative w-full h-14 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 disabled:opacity-50"
       >
         {isProcessing ? (
           <div className="flex items-center justify-center gap-2">

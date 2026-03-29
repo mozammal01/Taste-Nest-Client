@@ -11,15 +11,17 @@ export interface CurrentUser {
   name?: string | null;
   image?: string | null;
   role: UserRole;
+  _count?: {
+    orders: number;
+    reservations: number;
+    favorites: number;
+    rewards: number;
+  };
+  rewards?: any[];
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const SESSION_COOKIE_NAME = "better-auth.session_token";
-
-async function getSessionTokenFromCookies(): Promise<string | null> {
-  const cookieStore = await cookies();
-  return cookieStore.get(SESSION_COOKIE_NAME)?.value ?? null;
-}
 
 /**
  * Returns the current authenticated user by calling the backend using the
@@ -29,47 +31,56 @@ async function getSessionTokenFromCookies(): Promise<string | null> {
  * Response shape (recommended): { success: boolean, data?: user }
  */
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  const token = await getSessionTokenFromCookies();
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!token) return null;
 
   if (!API_URL) {
-    // If API url isn't configured, we can't resolve the user.
-    // Treat as unauthenticated to avoid leaking protected pages.
     return null;
   }
 
+  const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+
   try {
-    const res = await fetch(`${API_URL}/user/me`, {
+    // Calling better-auth session endpoint directly
+    const res = await fetch(`${process.env.BETTER_AUTH_URL}/api/auth/get-session`, {
       method: "GET",
       cache: "no-store",
       headers: {
-        // Forward cookie to backend so it can resolve the session
-        Cookie: `${SESSION_COOKIE_NAME}=${token}`,
+        Cookie: allCookies,
       },
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+        console.error(`[auth] Session endpoint failed: ${res.status} ${res.statusText}`);
+        return null;
+    }
 
-    const result = (await res.json()) as { success?: boolean; data?: CurrentUser };
-    const user = result?.data;
-    if (!user?.id || !user?.email || !user?.role) return null;
+    const session = (await res.json()) as { user?: CurrentUser };
+    const user = session?.user;
+    if (!user?.id || !user?.email || !user?.role) {
+        console.error("[auth] Invalid session data received", session);
+        return null;
+    }
 
     return user;
-  } catch {
+  } catch (err) {
+    console.error("[auth] Error fetching current user:", err);
     return null;
   }
 }
 
-/**
+ /**
  * Redirects to /signin if no valid authenticated session exists.
  * Use inside Server Components / Server Layouts.
  */
-export async function requireAuth(options?: { callbackUrl?: string }) {
+export async function requireAuth(options?: { callbackUrl?: string; message?: string }) {
   const user = await getCurrentUser();
   if (user) return user;
 
   const callbackUrl = options?.callbackUrl ?? "/";
-  redirect(`/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+  const message = options?.message ? `&message=${encodeURIComponent(options.message)}` : "";
+  redirect(`/signin?callbackUrl=${encodeURIComponent(callbackUrl)}${message}`);
 }
 
 /**

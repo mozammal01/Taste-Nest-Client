@@ -73,6 +73,20 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    href: "/user/payments",
+    label: "Payment History",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+        />
+      </svg>
+    ),
+  },
 ];
 
 interface UserSidebarProps {
@@ -113,7 +127,7 @@ export default function UserSidebar({ userName }: UserSidebarProps) {
       {/* Logo Section */}
       <div className="p-6 border-b border-gray-100">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
+          <div className="relative w-12 h-12 rounded-xl bg-linear-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
             <Image src="/logo/logoWhite.png" alt="TasteNest" width={32} height={32} className="object-contain" />
           </div>
           <div>
@@ -142,7 +156,7 @@ export default function UserSidebar({ userName }: UserSidebarProps) {
               )}
             >
               {/* Active indicator glow */}
-              {isItemActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />}
+              {isItemActive && <div className="absolute inset-0 bg-linear-to-r from-primary/20 to-transparent" />}
 
               {/* Loading spinner or icon */}
               <span className={cn("relative z-10 transition-transform duration-200", isItemActive ? "scale-110" : "group-hover:scale-110")}>
@@ -232,9 +246,9 @@ export default function UserSidebar({ userName }: UserSidebarProps) {
 
       {/* Footer - User info */}
       <div className="p-4 border-t border-gray-100">
-        <div className="px-4 py-3 rounded-xl bg-gradient-to-r from-primary/5 to-secondary/5 border border-gray-100">
+        <div className="px-4 py-3 rounded-xl bg-linear-to-r from-primary/5 to-secondary/5 border border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center shadow-md">
               <span className="text-white font-bold text-sm">{userInitial}</span>
             </div>
             <div className="flex-1 min-w-0">

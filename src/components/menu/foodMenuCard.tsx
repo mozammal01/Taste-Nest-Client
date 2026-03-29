@@ -12,6 +12,7 @@ import { deleteMenuItem } from "@/lib/actions/menu";
 import { createCartItem } from "@/lib/actions/cart";
 import { toast } from "sonner";
 import { ShoppingCart, Check, AlertCircle } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
 
 interface FoodMenuCardProps {
   item: MenuItem;
@@ -19,12 +20,16 @@ interface FoodMenuCardProps {
   user?: { id: string } | null;
 }
 
-export function FoodMenuCard({ item, userRole, user }: FoodMenuCardProps) {
+export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardProps) {
+  const { data: session } = useSession();
+  const user = session?.user || serverUser;
+  const currentRole = userRole || (user as any)?.role;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isOrderingNow, setIsOrderingNow] = useState(false);
 
   const handleDeleteItem = async () => {
     if (!confirm(`Are you sure you want to delete "${item.name}"?`)) {
@@ -51,7 +56,7 @@ export function FoodMenuCard({ item, userRole, user }: FoodMenuCardProps) {
     router.push(`/admin/items/update-item/${id}`);
   };
 
-  const handleOrderNow = () => {
+  const handleOrderNow = async () => {
     if (!user) {
       toast.error("Please sign in to place an order", {
         action: {
@@ -61,7 +66,26 @@ export function FoodMenuCard({ item, userRole, user }: FoodMenuCardProps) {
       });
       return;
     }
-    router.push("/cart");
+
+    setIsOrderingNow(true);
+    try {
+      const result = await createCartItem({
+        userId: user.id,
+        menuItemId: item.id,
+        quantity: 1,
+      });
+
+      if (result.success) {
+        router.push("/cart");
+        router.refresh();
+      } else {
+        toast.error(result.message);
+      }
+    } catch {
+      toast.error("Failed to process order. Please try again.");
+    } finally {
+      setIsOrderingNow(false);
+    }
   };
 
   const handleAddToCart = async (id: number) => {
@@ -132,7 +156,7 @@ export function FoodMenuCard({ item, userRole, user }: FoodMenuCardProps) {
           <CardDescription>{item.content}</CardDescription>
         </CardContent>
         <CardFooter className="flex justify-end items-center gap-4">
-          {userRole === "admin" ? (
+          {currentRole === "admin" ? (
             <>
               <AnimatedButton onClick={handleDeleteItem} className="cursor-pointer" variant="ripple" size="lg" disabled={isDeleting}>
                 {isDeleting ? "Deleting..." : "Delete Item"}
@@ -143,15 +167,28 @@ export function FoodMenuCard({ item, userRole, user }: FoodMenuCardProps) {
             </>
           ) : (
             <>
-              <AnimatedButton onClick={handleOrderNow} className="cursor-pointer" variant="ripple" size="lg">
-                Order Now
+              <AnimatedButton
+                onClick={handleOrderNow}
+                className="cursor-pointer"
+                variant="ripple"
+                size="lg"
+                disabled={isOrderingNow || isAddingToCart}
+              >
+                {isOrderingNow ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Processing...
+                  </span>
+                ) : (
+                  "Order Now"
+                )}
               </AnimatedButton>
               <AnimatedButton
                 onClick={() => handleAddToCart(item.id)}
                 className="cursor-pointer"
                 variant="rippleYellow"
                 size="lg"
-                disabled={isAddingToCart}
+                disabled={isAddingToCart || isOrderingNow}
               >
                 {isAddingToCart ? (
                   <span className="flex items-center gap-2">

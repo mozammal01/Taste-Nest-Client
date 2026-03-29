@@ -55,22 +55,21 @@ export default function FoodMenu({ items, user }: FoodMenuProps) {
   const category = params.get("category");
   const { isLoading, stopLoading } = useMenu();
 
-  // Stop loading after URL has updated and a short delay for animation
+  // Stop loading after items have been updated from the server
   useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        stopLoading();
-      }, 400);
-      return () => clearTimeout(timer);
-    }
-  }, [category, isLoading, stopLoading]);
+    stopLoading();
+  }, [items, stopLoading]);
 
   // Filter items based on category
   const displayedItems = useMemo(() => {
+    const rawItems = items || [];
     if (!category || category === "all") {
-      return items;
+      return rawItems;
     }
-    return items.filter((item) => item.category === category);
+    const lowerCategory = category.toLowerCase().trim();
+    return rawItems.filter((item) => 
+      item.category?.toLowerCase().trim() === lowerCategory
+    );
   }, [items, category]);
 
   // Show skeleton when loading
@@ -101,7 +100,7 @@ export default function FoodMenu({ items, user }: FoodMenuProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.05 }}
         >
-          <FoodMenuCard item={item} user={user} />
+          <FoodMenuCard item={item} user={user} userRole={(user as any)?.role} />
         </motion.div>
       ))}
     </motion.div>

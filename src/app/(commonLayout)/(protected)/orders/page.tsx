@@ -1,7 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { getMyOrders } from "@/lib/actions/order";
 import { redirect } from "next/navigation";
-import Navigation from "@/components/home/navigation";
+
 import { 
   Package, 
   Clock, 
@@ -52,7 +52,7 @@ export default async function OrdersPage() {
 
   return (
     <>
-      <Navigation />
+
       <main className="min-h-screen bg-linear-to-b from-gray-50 to-white pt-20 pb-20">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="flex items-center justify-between mb-8 text-wrap">

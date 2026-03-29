@@ -2,7 +2,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCartItemsWithDetails } from "@/lib/actions/cart";
 import { redirect } from "next/navigation";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
-import Navigation from "@/components/home/navigation";
+
 
 export const metadata = {
   title: "Checkout | TasteNest",
@@ -24,7 +24,7 @@ export default async function CheckoutPage() {
 
   return (
     <>
-      <Navigation />
+
       <main className="min-h-screen bg-linear-to-b from-gray-50 to-white pt-20 pb-20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">

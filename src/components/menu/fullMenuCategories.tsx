@@ -3,7 +3,7 @@ import BurgerIcon from "../icons/BurgerIcon";
 import CoffeeIcon from "../icons/CoffeeIcon";
 import DessertIcon from "../icons/DessertIcon";
 import SteakIcon from "../icons/SteakIcon";
-import { useState, useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -26,27 +26,57 @@ export default function FullMenuCategories() {
   const router = useRouter();
   const { startLoading } = useMenu();
 
-  // Initialize active state from URL params
-  const categoryFromUrl = params.get("category");
-  const [active, setActive] = useState(categoryFromUrl ?? "all");
+  // DERIVE initial active from URL
+  const activeFromUrl = params.get("category") ?? "all";
+  
+  // Optimistic state for immediate feedback
+  const [optimisticActive, setOptimisticActive] = useState(activeFromUrl);
+
+  // Sync optimistic state if URL changes (e.g. back button)
+  useEffect(() => {
+    setOptimisticActive(activeFromUrl);
+  }, [activeFromUrl]);
 
   const handleCategoryChange = (categoryId: string) => {
-    if (categoryId === active) return; // Don't reload if same category
+    if (categoryId === optimisticActive) return;
 
-    setActive(categoryId);
-    startLoading(); // Immediately show loading
-    router.push(`/menu?category=${categoryId}`);
+    // 1. Update UI immediately
+    setOptimisticActive(categoryId);
+    
+    // 2. Show skeletons/loading in FoodMenu
+    startLoading(); 
+    
+    // 3. Navigate to update URL
+    router.push(`/menu?category=${categoryId}`, { scroll: false });
   };
 
+  // Use optimisticActive for visual highlight
+  const active = optimisticActive;
+
   return (
-    <div className="flex flex-col md:flex-row gap-4">
+    <motion.div 
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={{
+        visible: {
+          transition: {
+            staggerChildren: 0.1
+          }
+        }
+      }}
+      className="flex flex-col md:flex-row gap-4"
+    >
       {categories.map((cat) => {
+        const isActive = active === cat.id;
+
         return (
           <motion.div
-            ref={ref}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="relative"
             key={cat.id}
           >
@@ -65,8 +95,8 @@ export default function FullMenuCategories() {
                 className="absolute inset-0 bg-primary"
                 initial={false}
                 animate={{
-                  opacity: active === cat.id ? 1 : 0,
-                  scale: active === cat.id ? 1 : 0.8,
+                  opacity: isActive ? 1 : 0,
+                  scale: isActive ? 1 : 0.8,
                 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
               />
@@ -75,26 +105,27 @@ export default function FullMenuCategories() {
               <motion.div
                 className="relative z-10"
                 animate={{
-                  scale: active === cat.id ? 1.1 : 1,
+                  scale: isActive ? 1.1 : 1,
                 }}
                 transition={{ duration: 0.2 }}
               >
-                <cat.icon className={cn("size-[70px] transition-colors duration-300", active === cat.id ? "text-white" : "text-primary")} />
+                <cat.icon className={cn("size-[70px] transition-colors duration-300", isActive ? "text-white" : "text-primary")} />
               </motion.div>
               <motion.span
                 className={cn(
                   "font-extrabold relative z-10 transition-colors duration-300",
-                  active === cat.id ? "text-white" : "text-black"
+                  isActive ? "text-white" : "text-black"
                 )}
                 animate={{
-                  y: active === cat.id ? -2 : 0,
+                  y: isActive ? -2 : 0,
                 }}
                 transition={{ duration: 0.2 }}
               >
                 {cat.label}
               </motion.span>
             </motion.div>
-            {active === cat.id && (
+            
+            {isActive && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8, y: -25 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -107,19 +138,21 @@ export default function FullMenuCategories() {
                 </div>
               </motion.div>
             )}
+            
             <motion.span
               onClick={() => handleCategoryChange(cat.id)}
               className={cn(
-                "font-extrabold cursor-pointer flex items-center gap-2 md:hidden relative ",
-                active === cat.id ? "text-primary" : "text-black"
+                "font-extrabold cursor-pointer flex items-center gap-2 md:hidden relative py-2",
+                isActive ? "text-primary" : "text-black hover:text-primary/70"
               )}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.1 }}
             >
               {cat.label}
-              {active === cat.id && (
+              {isActive && (
                 <motion.div
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                  layoutId="mobileActiveUnderline"
+                  className="absolute -bottom-1 left-0 right-0 h-0.8 bg-primary rounded-full"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0 }}
@@ -130,6 +163,6 @@ export default function FullMenuCategories() {
           </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }

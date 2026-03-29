@@ -32,7 +32,7 @@ export default async function UserDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">12</p>
+                <p className="text-2xl font-bold text-gray-900">{user?._count?.orders || 0}</p>
                 <p className="text-sm text-gray-500">Total Orders</p>
               </div>
             </div>
@@ -46,8 +46,8 @@ export default async function UserDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">3</p>
-                <p className="text-sm text-gray-500">Active Reservations</p>
+                <p className="text-2xl font-bold text-gray-900">{user?._count?.reservations || 0}</p>
+                <p className="text-sm text-gray-500">Total Reservations</p>
               </div>
             </div>
           </div>
@@ -65,7 +65,9 @@ export default async function UserDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">250</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {user?.rewards?.reduce((acc: number, r: any) => r.type === 'earn' ? acc + r.points : acc - r.points, 0) || 0}
+                </p>
                 <p className="text-sm text-gray-500">Loyalty Points</p>
               </div>
             </div>
@@ -84,8 +86,8 @@ export default async function UserDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">8</p>
-                <p className="text-sm text-gray-500">Favorite Dishes</p>
+                <p className="text-2xl font-bold text-gray-900">{user?._count?.favorites || 0}</p>
+                <p className="text-sm text-gray-500">Favorite Items</p>
               </div>
             </div>
           </div>
