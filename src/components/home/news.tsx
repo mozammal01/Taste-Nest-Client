@@ -22,7 +22,7 @@ export default function News() {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="text-6xl font-extrabold"
           >
-            Recent News
+            Culinary Journal
           </motion.h2>
           <div className="border-b-8 border-secondary pb-4 md:mx-[250px] lg:mx-[450px] mx-[120px]"></div>
         </div>
@@ -33,10 +33,10 @@ export default function News() {
             </div>
             <div className="flex flex-col gap-4 justify-center items-center my-4">
               <p className="bg-secondary p-1 px-3 rounded-xl w-fit font-extrabold">April 7, 2025</p>
-              <h2 className="text-2xl font-extrabold"> Chicken Alfredo</h2>
+              <h2 className="text-2xl font-extrabold text-gray-900 group-hover:text-primary transition-colors">The Alchemy of Truffles: A Seasonal Guide</h2>
               <div className="flex gap-2 items-center">
                 <Image src={authorImg} alt="author profile" width={50} height={50} />
-                <p className="font-extrabold">Willimes James</p>
+                <p className="font-extrabold">Chef Julian Ames</p>
               </div>
             </div>
           </motion.div>
@@ -47,10 +47,10 @@ export default function News() {
             </div>
             <div className="flex flex-col gap-4 justify-center items-center my-4">
               <p className="bg-secondary p-1 px-3 rounded-xl w-fit font-extrabold">April 7, 2025</p>
-              <h2 className="text-2xl font-extrabold">Air Fryer Salmon</h2>
+              <h2 className="text-2xl font-extrabold text-gray-900 group-hover:text-primary transition-colors">Sustainable Sourcing: From Farm to Fork</h2>
               <div className="flex gap-2 items-center">
                 <Image src={authorImg} alt="author profile" width={50} height={50} />
-                <p className="font-extrabold">Willimes James</p>
+                <p className="font-extrabold">Chef Sophia Chen</p>
               </div>
             </div>
           </motion.div>
@@ -66,8 +66,8 @@ export default function News() {
           <div className="bg-primary rounded-full p-2 w-16 h-16 flex justify-center items-center mx-auto">
             <Image src={instaIcon} alt="Instagram icon" width={30} height={30} />
           </div>
-          <h2 className="text-2xl font-extrabold">Follow @mozammal01</h2>
-          <p className="font-semibold ">Join our community to inspire your desires</p>
+          <h2 className="text-2xl font-extrabold">Follow @TasteNestOfficial</h2>
+          <p className="font-semibold ">Join our community to inspire your culinary desires</p>
         </div>
       </div>
     </>

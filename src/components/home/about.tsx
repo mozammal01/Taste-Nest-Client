@@ -24,8 +24,8 @@ export default function About() {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="flex flex-col gap-4 lg:w-[50%] space-y-4"
           >
-            <p className="text-primary font-extrabold text-lg uppercase">About the food restaurant</p>
-            <h2 className="md:text-6xl text-4xl font-extrabold">New Ground with Dishes to be Enjoyed</h2>
+            <p className="text-primary font-extrabold text-lg uppercase tracking-widest">Our Story & Philosophy</p>
+            <h2 className="md:text-6xl text-4xl font-extrabold leading-tight text-gray-900">Crafting Moments Through <span className="text-primary italic">Authentic</span> Flavors</h2>
           </motion.div>
           <motion.div
             ref={ref}
@@ -34,18 +34,19 @@ export default function About() {
             transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
             className="lg:w-[60%] lg:pl-40 mt-5 lg:mt-0"
           >
-            <p>
-              Lorem ipsum dolor sit consectetur quod, eum tempore ex a nam ea nostrum vitae. Libero non Lorem ipsum dolor sit consectetur
-              quod, eum tempore ex a nam ea nostrum vitae. Libero non Lorem ipsum dolor sit consectetur quod, eum tempore ex a nam ea
-              nostrum vitae. Libero non
+            <p className="text-gray-600 leading-relaxed">
+              Founded on the belief that dining is an art form, TasteNest has evolved from a small family kitchen into a sanctuary for food lovers. We celebrate the intersection of traditional techniques and modern innovation, sourcing only the finest organic ingredients from local sustainable producers.
+            </p>
+            <p className="text-gray-600 leading-relaxed mt-4">
+              Our philosophy is simple: honor the ingredient, respect the season, and create memories that linger long after the final course. Whether it's a quiet morning espresso or a grand evening feast, every moment here is crafted with passion.
             </p>
             <div className="flex gap-4 items-center mt-5">
               <div>
                 <Image src={authorImg} alt="author profile" width={50} height={50} />
               </div>
               <div className="flex flex-col gap-1">
-                <p className="font-bold text-2xl">Williams James</p>
-                <p>Director and Chief Operations Officer</p>
+                <p className="font-bold text-2xl text-gray-900">Chef Julian Marco</p>
+                <p className="text-primary font-medium">Founder & Executive Chef</p>
               </div>
             </div>
           </motion.div>

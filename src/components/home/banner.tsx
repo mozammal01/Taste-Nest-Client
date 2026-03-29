@@ -26,8 +26,8 @@ export default function Banner() {
           transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
           className="text-white lg:w-[50%] min-h-screen lg:h-[831px] flex flex-col gap-4 justify-center px-4 lg:px-20 space-y-6"
         >
-          <h2 className="xl:text-6xl lg:text-5xl text-4xl font-bold mt-8">The Perfect Space to Enjoy Fantastic Food</h2>
-          <p className="text-xl">Festive dining at Farthings where we are strong believers in using the very best produce</p>
+          <h2 className="xl:text-7xl lg:text-5xl text-4xl font-extrabold mt-8 leading-tight">Artisan Flavors & <span className="text-secondary">Atmospheric</span> Sessions</h2>
+          <p className="text-xl text-gray-100 max-w-xl">Experience the pinnacle of culinary artistry at TasteNest, where every ingredient tells a story of local farms and global inspiration.</p>
           <div className="flex gap-8 justify-start items-center my-8">
             <Link href="#menu">
               <AnimatedButton className="cursor-pointer" variant="ripple" size="lg">

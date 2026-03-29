@@ -24,7 +24,7 @@ export default function OurExperts() {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="relative"
         >
-          <ExpertsCircle img={nicholas.src} title="Dessert specialist" name="Nicholas" signatureImg={signatureImg.src} />
+          <ExpertsCircle img={nicholas.src} title="Executive Pastry Chef" name="Chef Nicholas" signatureImg={signatureImg.src} />
         </motion.div>
         <motion.div
           ref={ref}
@@ -33,7 +33,7 @@ export default function OurExperts() {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="relative"
         >
-          <ExpertsCircle img={jamesJohnson.src} title="Chef Master" name="James Johnson" signatureImg={signatureImg.src} />
+          <ExpertsCircle img={jamesJohnson.src} title="Master Chef de Cuisine" name="Chef James Johnson" signatureImg={signatureImg.src} />
         </motion.div>
         <motion.div
           ref={ref}
@@ -42,7 +42,7 @@ export default function OurExperts() {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="relative md:my-40 lg:my-0"
         >
-          <ExpertsCircle img={marcos.src} title="Dessert specialist" name="Marcos" signatureImg={signatureImg.src} />
+          <ExpertsCircle img={marcos.src} title="Head Sommelier" name="Marcos V." signatureImg={signatureImg.src} />
         </motion.div>
       </div>
     </div>

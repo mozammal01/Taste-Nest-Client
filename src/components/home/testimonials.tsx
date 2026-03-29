@@ -14,36 +14,24 @@ export default function Testimonials() {
 
   const testimonials: Testimonial[] = [
     {
-      author: "Bratlee Hamint",
-      review: "A good restaurant is like a vacation; it transports you, and it becomes a lot more than just about the food.",
+      author: "Eleanor Vance",
+      review: "The Madagascar Vanilla Cheesecake is a masterclass in balance; the texture is sublime and the crust provides a perfect buttery snap.",
     },
     {
-      author: "Sarah Johnson",
-      review: "The desserts here are heavenly! The chocolate lava cake melted perfectly in my mouth. Definitely coming back.",
+      author: "Marcus Thorne",
+      review: "Rarely do you find a Ribeye with such consistent marbling. The bone marrow butter elevates the whole experience to another level.",
     },
     {
-      author: "David Chen",
-      review: "Best steak I’ve had in years. Cooked to perfection and seasoned just right. Worth every penny.",
+      author: "Isabella Rossi",
+      review: "A truly atmospheric dining experience. The Single-Origin Espresso has a clarity of flavor that is hard to find even in specialty cafes.",
     },
     {
-      author: "Emily Carter",
-      review: "The coffee is rich, aromatic, and smooth. Perfect way to start the morning.",
+      author: "Julian Ames",
+      review: "The Signature Burger isn't just a meal; it's a gourmet journey. The truffle aioli is the subtle hero that brings everything together.",
     },
     {
-      author: "Michael Lee",
-      review: "I tried the cheeseburger, and it was loaded with flavor! Fresh buns and juicy meat. Highly recommended.",
-    },
-    {
-      author: "Olivia Brown",
-      review: "The ambiance is cozy, and the staff are very friendly. It felt like dining at home.",
-    },
-    {
-      author: "Daniel Smith",
-      review: "Excellent service! They made sure everything was just perfect. I’ll be bringing my family next time.",
-    },
-    {
-      author: "Sophia Wilson",
-      review: "I love how they combine modern dishes with traditional flavors. A truly unique dining experience.",
+      author: "Sophia Chen",
+      review: "Impeccable service and an even more impressive wine list. TasteNest has become our go-to for celebrating life's milestones.",
     },
   ];
 

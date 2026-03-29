@@ -17,45 +17,45 @@ import { motion, useInView } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
 import Link from "next/link";
 
-// Sample data
+// Curated Menu Data
 const categories = [
-  { id: "dessert", label: "Dessert", icon: DessertIcon },
-  { id: "steak", label: "Steak", icon: SteakIcon },
-  { id: "coffee", label: "Coffee", icon: CoffeeIcon },
-  { id: "burger", label: "Burger", icon: BurgerIcon },
+  { id: "steak", label: "Premium Steaks", icon: SteakIcon },
+  { id: "dessert", label: "Artisan Desserts", icon: DessertIcon },
+  { id: "coffee", label: "Gourmet Coffee", icon: CoffeeIcon },
+  { id: "burger", label: "Signature Burgers", icon: BurgerIcon },
 ];
 
 const items: Record<string, { image: StaticImageData; title: string; items: { name: string; description: string; price: string }[] }> = {
   dessert: {
     image: dessertImg,
-    title: "Desserts",
+    title: "Signature Sweet Endings",
     items: [
-      { name: "Chocolate Lava Cake", description: "Warm cake with molten chocolate center.", price: "$5.99" },
-      { name: "Cheesecake", description: "Classic creamy cheesecake with crust.", price: "$6.50" },
+      { name: "Belgian Chocolate Fondant", description: "Warm lava cake with a molten heart, served with Tahitian vanilla bean gelato.", price: "$12.50" },
+      { name: "Madagascar Vanilla Cheesecake", description: "Rich, creamy New York style cheesecake on a slow-baked buttery graham cracker crust.", price: "$9.95" },
     ],
   },
   steak: {
     image: steakImg,
-    title: "Steaks",
+    title: "The Butcher's Selection",
     items: [
-      { name: "Ribeye Steak", description: "Juicy ribeye with garlic butter.", price: "$19.99" },
-      { name: "T-Bone Steak", description: "Tender T-bone with smoky flavor.", price: "$22.50" },
+      { name: "Australian Grain-Fed Wagyu", description: "Marble score 7-8 ribeye, flame-grilled and rested with rosemary-infused bone marrow butter.", price: "$48.99" },
+      { name: "Signature T-Bone 'Fiorentina'", description: "500g bone-in cut, dry-aged for 28 days for maximum tenderness and deep, nutty flavor.", price: "$42.50" },
     ],
   },
   coffee: {
     image: coffeeImg,
-    title: "Coffee",
+    title: "Roasted Bean Collection",
     items: [
-      { name: "Espresso", description: "Strong coffee shot.", price: "$2.50" },
-      { name: "Cappuccino", description: "Espresso with steamed milk.", price: "$3.50" },
+      { name: "Single-Origin Double Espresso", description: "Ethically sourced Ethiopian Yirgacheffe beans with notes of jasmine and citrus.", price: "$4.50" },
+      { name: "Silk-Road Cappuccino", description: "Velvety micro-foam layered over a robust house blend with a hint of dark cocoa dusting.", price: "$5.95" },
     ],
   },
   burger: {
     image: burgerImg,
-    title: "Burgers",
+    title: "Elevated Classics",
     items: [
-      { name: "Classic Beef Burger", description: "Beef patty with cheese & veggies.", price: "$7.99" },
-      { name: "Veggie Burger", description: "Plant-based patty with avocado.", price: "$6.50" },
+      { name: "The TasteNest Signature", description: "Angus beef brisket blend pot-seared with Gruyère cheese, caramelized onions, and truffle aioli.", price: "$18.99" },
+      { name: "Garden State Umami Burger", description: "House-made plant-based patty, miso-glazed shiitake mushrooms, and fresh avocado salsa.", price: "$16.50" },
     ],
   },
 };
@@ -115,7 +115,7 @@ export default function PopularMenu() {
                 </motion.div>
                 <motion.span
                   className={cn(
-                    "font-extrabold relative z-10 transition-colors duration-300",
+                    "font-extrabold text-center relative z-10 transition-colors duration-300 max-w-[140px] px-2",
                     active === cat.id ? "text-white" : "text-black"
                   )}
                   animate={{
@@ -132,7 +132,7 @@ export default function PopularMenu() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: -25 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="hidden md:block absolute top-[168px] left-3"
+                  className="hidden md:block absolute top-[168px] left-[11px]"
                 >
                   <div className="relative">
                     <Image src={mask} alt={cat.label} width={168} height={40} />
@@ -142,22 +142,13 @@ export default function PopularMenu() {
               <motion.span
                 onClick={() => setActive(cat.id)}
                 className={cn(
-                  "font-extrabold cursor-pointer flex items-center gap-2 md:hidden relative",
-                  active === cat.id ? "text-primary" : "text-black"
+                  "font-extrabold text-center cursor-pointer flex items-center justify-center gap-2 md:hidden relative px-4 py-2",
+                  active === cat.id ? "text-primary border-b-2 border-primary" : "text-black"
                 )}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.1 }}
               >
                 {cat.label}
-                {active === cat.id && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    exit={{ scaleX: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-                )}
               </motion.span>
             </motion.div>
           );
@@ -167,56 +158,83 @@ export default function PopularMenu() {
       {/* Content */}
       <motion.div
         key={active}
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -25, scale: 0.95 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="flex flex-col md:flex-row items-center w-full md:max-w-4xl rounded-2xl min-h-[300px] my-10 mt-20"
+        exit={{ opacity: 0, y: -25, scale: 0.98 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex flex-col md:flex-row items-stretch w-full md:max-w-5xl bg-white border border-gray-100 rounded-[32px] overflow-hidden shadow-xl shadow-gray-200/50 my-10 mt-20"
       >
-        {/* Food Image with animation */}
+        {/* Food Image Wrapper */}
         <motion.div
-          className="relative"
+          className="relative md:w-2/5 min-h-[300px] overflow-hidden group"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <Image src={items[active].image} alt={items[active].title} height={300} width={300} className="object-cover rounded-2xl" />
+          <div className="absolute inset-0 bg-linear-to-tr from-primary/10 to-transparent" />
+          <Image 
+            src={items[active].image} 
+            alt={items[active].title} 
+            fill 
+            className="object-cover transition-transform duration-700 group-hover:scale-110" 
+          />
+          <div className="absolute top-6 left-6">
+            <span className="bg-white/90 backdrop-blur-md text-primary font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-sm">
+              Chef's Pick
+            </span>
+          </div>
         </motion.div>
 
-        {/* Content Card with animation */}
-        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-          <CardContent className="p-6 md:min-w-[580px] min-w-[300px] md:h-[300px] bg-slate-50 rounded-2xl">
-            <motion.h2
-              className="text-2xl font-bold mb-4"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-            >
+        {/* Content Section */}
+        <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="h-[2px] w-8 bg-primary rounded-full" />
+              <span className="text-primary font-bold uppercase tracking-[0.2em] text-xs">Exquisite Selection</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-8 leading-tight">
               {items[active].title}
-            </motion.h2>
-            <motion.ul className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.4 }}>
-              {items[active].items.map((item, i) => (
-                <motion.li
-                  key={i}
-                  className="flex justify-between items-start"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: 0.5 + i * 0.1,
-                    ease: "easeOut",
-                  }}
-                >
-                  <div>
-                    <h3 className="font-semibold">{item.name}</h3>
-                    <p className="text-sm text-gray-500">{item.description}</p>
-                  </div>
-                  <span className="text-red-500 font-semibold">{item.price}</span>
-                </motion.li>
-              ))}
-            </motion.ul>
-          </CardContent>
-        </motion.div>
+            </h2>
+          </motion.div>
+
+          <motion.ul 
+            className="space-y-8" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            {items[active].items.map((item, i) => (
+              <motion.li
+                key={i}
+                className="group cursor-default"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: 0.5 + i * 0.15,
+                  ease: "easeOut",
+                }}
+              >
+                <div className="flex justify-between items-end mb-2">
+                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-primary transition-colors duration-300">
+                    {item.name}
+                  </h3>
+                  <div className="grow border-b-2 border-dotted border-gray-200 mx-4 mb-2 group-hover:border-primary/30 transition-colors duration-300" />
+                  <span className="text-xl font-black text-primary">
+                    {item.price}
+                  </span>
+                </div>
+                <p className="text-gray-500 leading-relaxed text-sm italic pr-12">
+                  {item.description}
+                </p>
+              </motion.li>
+            ))}
+          </motion.ul>
+        </div>
       </motion.div>
       {/* Full Menu Button */}
       <AnimatedButton variant="ripple" size="lg" className="w-fit" asChild>
