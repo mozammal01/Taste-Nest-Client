@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Trophy, Gift, CreditCard, HelpCircle } from "lucide-react";
+import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Trophy, CreditCard } from "lucide-react";
 
 export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) {
   const { data: session, isPending: isSessionPending } = useSession();

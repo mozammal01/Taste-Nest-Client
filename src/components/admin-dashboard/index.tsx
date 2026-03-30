@@ -1,7 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 
 async function getAdminStats() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -22,7 +22,7 @@ async function getAdminStats() {
     }
     const response = await res.json();
     return response?.data;
-  } catch (err) {
+  } catch {
     return null;
   }
 }

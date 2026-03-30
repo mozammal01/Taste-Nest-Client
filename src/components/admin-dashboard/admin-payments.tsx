@@ -23,6 +23,21 @@ async function getAdminPayments() {
   }
 }
 
+interface Payment {
+  id: number;
+  amount: string | number;
+  status: string;
+  paymentMethod: string;
+  transactionId?: string;
+  createdAt: string;
+  order?: {
+    user?: {
+      name?: string | null;
+      email?: string;
+    };
+  };
+}
+
 export default async function AdminPayments() {
   const user = await getCurrentUser();
 
@@ -31,16 +46,16 @@ export default async function AdminPayments() {
     redirect("/unauthorized");
   }
 
-  const paymentsData = await getAdminPayments();
+  const paymentsData = await getAdminPayments() as Payment[];
 
   // Define payment stats
   const totalRevenue = paymentsData
-    .filter((p: any) => p.status === "completed" || p.status === "succeeded")
-    .reduce((sum: number, p: any) => sum + Number(p.amount), 0);
+    .filter((p: Payment) => p.status === "completed" || p.status === "succeeded")
+    .reduce((sum: number, p: Payment) => sum + Number(p.amount), 0);
 
-  const completedCount = paymentsData.filter((p: any) => p.status === "completed" || p.status === "succeeded").length;
-  const pendingCount = paymentsData.filter((p: any) => p.status === "pending").length;
-  const failedCount = paymentsData.filter((p: any) => p.status === "failed" || p.status === "refunded").length;
+  const completedCount = paymentsData.filter((p: Payment) => p.status === "completed" || p.status === "succeeded").length;
+  const pendingCount = paymentsData.filter((p: Payment) => p.status === "pending").length;
+  const failedCount = paymentsData.filter((p: Payment) => p.status === "failed" || p.status === "refunded").length;
 
   return (
     <div className="p-8">
@@ -148,7 +163,7 @@ export default async function AdminPayments() {
                   </td>
                 </tr>
               ) : (
-                paymentsData.map((payment: any) => (
+                paymentsData.map((payment: Payment) => (
                   <tr key={payment.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4">
                       <span className="text-primary font-mono font-medium">#{payment.id || payment.transactionId?.slice(-6) || "N/A"}</span>

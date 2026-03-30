@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { User, Mail, Phone, Calendar, ShieldCheck, Trash2, Edit2, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { User, Mail, Phone, Calendar, ShieldCheck, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import UserFilter from "./UserFilter";
 import UserActions from "./UserActions";
 
@@ -183,7 +183,7 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
                      </div>
                      <div className="space-y-1">
                         <p className="text-slate-900 font-black text-lg font-outfit tracking-tight">Zero Members Found</p>
-                        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest max-w-xs mx-auto opacity-70">We couldn't find any users matching your criteria. Try adjusting your filters.</p>
+                        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest max-w-xs mx-auto opacity-70">We couldn&apos;t find any users matching your criteria. Try adjusting your filters.</p>
                      </div>
                   </td>
                 </tr>
