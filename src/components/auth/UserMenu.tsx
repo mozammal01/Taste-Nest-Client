@@ -19,7 +19,8 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
   };
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Close menu when clicking outside

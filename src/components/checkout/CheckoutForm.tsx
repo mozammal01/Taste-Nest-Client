@@ -21,11 +21,10 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { CartItemWithDetails } from "@/types/cartItem";
 import { createOrder } from "@/lib/actions/order";
 import { createPaymentIntent } from "@/lib/actions/payment";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
@@ -44,7 +43,7 @@ interface CheckoutFormProps {
   userId: string;
 }
 
-export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
+export default function CheckoutForm({ items }: CheckoutFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [orderId, setOrderId] = useState<number | null>(null);

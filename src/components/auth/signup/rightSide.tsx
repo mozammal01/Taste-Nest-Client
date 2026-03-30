@@ -93,7 +93,7 @@ export default function SignupRightSide() {
       
     } catch (err: unknown) {
       if (err instanceof z.ZodError) {
-        const errorMessage = (err as any).errors[0].message;
+        const errorMessage = err.issues[0].message;
         setError(errorMessage);
         toast.error(errorMessage);
       } else {
@@ -125,7 +125,7 @@ export default function SignupRightSide() {
         router.push("/");
         router.refresh();
       }
-    } catch (err) {
+    } catch {
       setError("Verification failed. Please try again.");
       toast.error("Verification failed.");
     } finally {
@@ -359,7 +359,7 @@ export default function SignupRightSide() {
                   </div>
                   <h2 className="text-3xl font-black text-slate-900 tracking-tight font-outfit">Verify Your Email</h2>
                   <p className="text-slate-500 font-medium">
-                     We've sent a 6-digit verification code to <br />
+                     We&apos;ve sent a 6-digit verification code to <br />
                      <span className="text-slate-900 font-black italic">{formData.email}</span>
                   </p>
                 </div>
@@ -400,7 +400,7 @@ export default function SignupRightSide() {
                 </form>
 
                 <div className="text-center p-6 bg-slate-50 rounded-[32px] border border-slate-100">
-                    <p className="text-xs text-slate-500 font-bold mb-1">Didn't receive the code?</p>
+                    <p className="text-xs text-slate-500 font-bold mb-1">Didn&apos;t receive the code?</p>
                     <button className="text-[11px] font-black uppercase tracking-widest text-primary hover:underline">Resend Verification Code</button>
                 </div>
             </motion.div>
