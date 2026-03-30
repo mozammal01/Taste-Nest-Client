@@ -45,12 +45,21 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
   const query = buildQuery({ ...sp, page: String(page), limit: String(limit) });
 
   const cookieStore = await cookies();
-  const token = cookieStore.get("better-auth.session_token")?.value;
   
-  // Note: Fetch directly from server-side using the session token for secure data access
+  // Support both standard and production (__Secure-) cookie names
+  const sessionCookie = 
+    cookieStore.get("__Secure-better-auth.session_token") ||
+    cookieStore.get("better-auth.session_token") || 
+    cookieStore.get("better_auth_session_token");
+
   const usersRes = await fetch(`${API_URL}/user?${query}`, {
     cache: "no-store",
-    headers: token ? { Cookie: `better-auth.session_token=${token}` } : undefined,
+    headers: sessionCookie 
+      ? { 
+          Cookie: `${sessionCookie.name}=${sessionCookie.value}`,
+          "Content-Type": "application/json"
+        } 
+      : { "Content-Type": "application/json" },
   });
 
   const usersResult = (await usersRes.json()) as {
