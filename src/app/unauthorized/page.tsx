@@ -59,7 +59,7 @@ export default function UnauthorizedPage() {
           transition={{ delay: 0.4 }}
           className="text-gray-600 text-lg md:text-xl mb-12 max-w-lg mx-auto leading-relaxed"
         >
-          Oops! It looks like you don't have the necessary permissions to access this exclusive area of <span className="font-semibold text-gray-900">TasteNest</span>.
+          Oops! It looks like you don&apos;t have the necessary permissions to access this exclusive area of <span className="font-semibold text-gray-900">TasteNest</span>.
         </motion.p>
 
         {/* Actions */}

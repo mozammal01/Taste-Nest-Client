@@ -20,7 +20,7 @@ export default function NotFound() {
         <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 -mt-12 tracking-tight">Lost in the kitchen?</h2>
         
         <p className="text-slate-500 text-lg mb-10 max-w-sm mx-auto leading-relaxed">
-          The page you're searching for isn't on our menu today. Let's get you back to something delicious.
+          The page you&apos;re searching for isn&apos;t on our menu today. Let&apos;s get you back to something delicious.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">

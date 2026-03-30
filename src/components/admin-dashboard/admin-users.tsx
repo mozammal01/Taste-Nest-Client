@@ -168,7 +168,6 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
                       userId={u.id} 
                       userName={u.name || "Anonymous User"} 
                       currentRole={u.role || "user"} 
-                      token={token}
                     />
                   </td>
                 </tr>

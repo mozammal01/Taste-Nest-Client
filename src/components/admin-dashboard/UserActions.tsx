@@ -13,7 +13,7 @@ type UserActionsProps = {
   token?: string;
 };
 
-export default function UserActions({ userId, userName, currentRole, token }: UserActionsProps) {
+export default function UserActions({ userId, userName, currentRole }: Omit<UserActionsProps, "token">) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
@@ -160,7 +160,7 @@ export default function UserActions({ userId, userName, currentRole, token }: Us
                 
                 <h3 className="text-2xl font-black text-slate-900 tracking-tight font-outfit mb-2">Delete Account</h3>
                 <p className="text-slate-500 font-medium leading-relaxed">
-                  Are you absolutely sure you want to remove <span className="text-slate-900 font-black">"{userName}"</span> from the system? This process is irreversible.
+                  Are you absolutely sure you want to remove <span className="text-slate-900 font-black">&quot;{userName}&quot;</span> from the system? This process is irreversible.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 w-full mt-8">
