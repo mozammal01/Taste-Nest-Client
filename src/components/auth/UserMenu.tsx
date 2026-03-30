@@ -113,22 +113,21 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
         className={`flex items-center gap-2.5 p-1.5 pr-3 rounded-full transition-all ${isOpen ? "bg-gray-100" : "hover:bg-gray-50"}`}
       >
         {/* Avatar */}
-        <div className="relative">
+        <div className="relative w-10 h-10 flex-shrink-0">
           {session.user?.image ? (
             <Image
               src={session.user.image}
               alt={session.user.name || "User"}
-              width={40}
-              height={40}
+              fill
               className="rounded-full border-2 border-primary/20 object-cover"
             />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold text-lg shadow-inner">
+            <div className="w-full h-full rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold text-lg shadow-inner">
               {session.user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
           )}
           {/* Online indicator */}
-          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full z-10" />
         </div>
 
         {/* User Info - Hidden on smaller screens */}
@@ -163,19 +162,20 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
               {/* User Info Header */}
               <div className="px-4 py-4 bg-linear-to-r from-primary/5 to-primary/10">
                 <div className="flex items-center gap-3">
-                  {session.user?.image ? (
-                    <Image
-                      src={session.user.image}
-                      alt={session.user.name || "User"}
-                      width={48}
-                      height={48}
-                      className="rounded-full border-2 border-white shadow-sm object-cover"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-bold text-xl">
-                      {session.user?.name?.charAt(0).toUpperCase() || "U"}
-                    </div>
-                  )}
+                  <div className="relative w-12 h-12 flex-shrink-0">
+                    {session.user?.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt={session.user.name || "User"}
+                        fill
+                        className="rounded-full border-2 border-white shadow-sm object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-bold text-xl">
+                        {session.user?.name?.charAt(0).toUpperCase() || "U"}
+                      </div>
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 truncate">{session.user?.name}</p>
                     <p className="text-sm text-gray-500 truncate">{session.user?.email}</p>

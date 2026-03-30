@@ -68,7 +68,7 @@ export default function PopularMenu() {
   return (
     <div id="menu" className="w-full flex flex-col items-center gap-6">
       {/* Category Tabs */}
-      <div className="w-full max-w-5xl px-4 overflow-x-auto no-scrollbar pb-4 md:pb-0">
+      <div className="w-full max-w-5xl px-4 overflow-x-auto overflow-y-hidden no-scrollbar pb-4 md:pb-0">
         <div className="flex flex-row md:flex-row gap-4 md:gap-6 md:justify-center min-w-max md:min-w-0 mx-auto">
           {categories.map((cat) => {
             return (
