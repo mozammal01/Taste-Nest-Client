@@ -87,7 +87,7 @@ export default async function UserDashboard() {
               <span className="text-sm font-medium text-gray-700">Browse Menu</span>
             </Link>
             <Link
-              href="/reservations"
+              href="/#reservation"
               className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
             >
               <span className="text-2xl">📅</span>

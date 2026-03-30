@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, Users, MessageSquare, ChevronRight, CheckCircle2, Star, Utensils, Sparkles, Phone, PartyPopper, AlertCircle } from "lucide-react";
 import { createReservation } from "@/lib/actions/reservation";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import Image from "next/image";
 import { z } from "zod";
 import backgroundImg from "@/../public/menu&dishes/reservation-bg.png";
@@ -43,6 +44,17 @@ export default function Reservation({ user }: ReservationSectionProps) {
     occasion: "",
     message: "",
   });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#reservation') {
+      const el = document.getElementById('reservation');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 500); // Small delay to let animations/layout settle
+      }
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
