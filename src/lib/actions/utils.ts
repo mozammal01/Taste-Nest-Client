@@ -6,13 +6,21 @@ const SESSION_COOKIE_NAME = "better-auth.session_token";
 
 export async function getAuthHeaders(): Promise<HeadersInit> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("better-auth.session_token")?.value || 
-                cookieStore.get("better_auth_session_token")?.value ||
-                cookieStore.get("__Secure-better-auth.session_token")?.value;
+  
+  // Find the session token under any of its potential names
+  const sessionCookie = 
+    cookieStore.get("__Secure-better-auth.session_token") ||
+    cookieStore.get("better-auth.session_token") || 
+    cookieStore.get("better_auth_session_token");
 
-  return token
-    ? { Cookie: `better-auth.session_token=${token}`, "Content-Type": "application/json" }
-    : { "Content-Type": "application/json" };
+  if (!sessionCookie) {
+    return { "Content-Type": "application/json" };
+  }
+
+  return { 
+    Cookie: `${sessionCookie.name}=${sessionCookie.value}`, 
+    "Content-Type": "application/json" 
+  };
 }
 
 export async function handleFetch(url: string, options?: RequestInit) {
