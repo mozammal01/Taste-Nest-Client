@@ -5,7 +5,7 @@ import dessertImg from "@/../public/categories/dessert.png";
 import steakImg from "@/../public/categories/steak.png";
 import coffeeImg from "@/../public/categories/coffee.png";
 import burgerImg from "@/../public/categories/burger.png";
-import { CardContent } from "@/components/ui/card";
+
 import { cn } from "@/lib/utils";
 import DessertIcon from "../icons/DessertIcon";
 import SteakIcon from "../icons/SteakIcon";
@@ -180,7 +180,7 @@ export default function PopularMenu() {
           />
           <div className="absolute top-6 left-6">
             <span className="bg-white/90 backdrop-blur-md text-primary font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-sm">
-              Chef's Pick
+              Chef&apos;s Pick
             </span>
           </div>
         </motion.div>

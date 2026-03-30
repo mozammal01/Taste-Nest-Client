@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { cancelReservation } from "@/lib/actions/reservation";
 import { toast } from "sonner";
-import { ChevronRight, Loader2, X, AlertTriangle } from "lucide-react";
+import { ChevronRight, Loader2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,7 +21,7 @@ export default function CancelButton({ id, status }: { id: number, status: strin
       } else {
         toast.error(result.message || "Failed to cancel reservation");
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsPending(false);

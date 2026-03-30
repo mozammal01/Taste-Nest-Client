@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const SESSION_COOKIE_NAME = "better-auth.session_token";
 
 export async function updateMyProfile(formData: FormData) {
   console.log("[update-profile] Server action triggered");
@@ -46,8 +45,9 @@ export async function updateMyProfile(formData: FormData) {
     }
     
     return { success: false, message: data.message || "Failed to update profile" };
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Internal Server Error";
     console.error("[update-profile] Server action crash:", error);
-    return { success: false, message: error.message || "Internal Server Error" };
+    return { success: false, message: errorMessage };
   }
 }

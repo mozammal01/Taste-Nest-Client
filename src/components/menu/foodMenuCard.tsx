@@ -23,7 +23,7 @@ interface FoodMenuCardProps {
 export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardProps) {
   const { data: session } = useSession();
   const user = session?.user || serverUser;
-  const currentRole = userRole || (user as any)?.role;
+  const currentRole = userRole || (user as { role?: string })?.role;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const router = useRouter();

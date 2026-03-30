@@ -16,7 +16,7 @@ export interface CurrentUser {
     reservations: number;
     rewards: number;
   };
-  rewards?: any[];
+  rewards?: unknown[];
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
