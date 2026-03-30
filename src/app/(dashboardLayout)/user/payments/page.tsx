@@ -2,7 +2,6 @@ import { getCurrentUser } from "@/lib/auth";
 import { getMyPayments } from "@/lib/actions/payment";
 import { redirect } from "next/navigation";
 import { 
-  CreditCard, 
   Download, 
   ArrowUpRight, 
   ArrowDownLeft, 
@@ -20,6 +19,16 @@ export const metadata = {
   title: "Payment History | TasteNest",
   description: "View and manage your billing history",
 };
+
+interface MyPayment {
+  id: string;
+  orderId: string;
+  status: string;
+  amount: string | number;
+  paymentMethod?: string;
+  transactionId?: string;
+  createdAt: string;
+}
 
 export default async function PaymentHistoryPage() {
   const user = await getCurrentUser();
@@ -73,7 +82,7 @@ export default async function PaymentHistoryPage() {
              </div>
 
              {/* Payments List */}
-             {payments.map((payment: any) => (
+             {payments.map((payment: MyPayment) => (
                 <Card key={payment.id} className="border-gray-100 shadow-xl shadow-gray-200/10 rounded-2xl ring-1 ring-black/2 hover:-translate-y-1 transition-all duration-300 group overflow-hidden">
                     <CardContent className="p-0">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:items-center px-6 lg:px-8 py-6">

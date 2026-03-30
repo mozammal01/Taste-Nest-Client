@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, RewardRecord } from "@/lib/auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -66,7 +66,7 @@ export default async function UserDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900">
-                  {user?.rewards?.reduce((acc: number, r: any) => r.type === 'earn' ? acc + r.points : acc - r.points, 0) || 0}
+                  {(user?.rewards || []).reduce((acc: number, r: RewardRecord) => r.type === 'earn' ? acc + r.points : acc - r.points, 0)}
                 </p>
                 <p className="text-sm text-gray-500">Loyalty Points</p>
               </div>

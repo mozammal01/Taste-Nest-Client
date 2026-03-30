@@ -5,6 +5,11 @@ import { redirect } from "next/navigation";
 
 export type UserRole = "admin" | "user" | (string & {});
 
+export interface RewardRecord {
+  type: 'earn' | 'redeem';
+  points: number;
+}
+
 export interface CurrentUser {
   id: string;
   email: string;
@@ -16,7 +21,7 @@ export interface CurrentUser {
     reservations: number;
     rewards: number;
   };
-  rewards?: unknown[];
+  rewards?: RewardRecord[];
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;

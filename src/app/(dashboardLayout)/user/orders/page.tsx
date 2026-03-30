@@ -8,9 +8,7 @@ import {
   MapPin, 
   Clock, 
   CheckCircle2, 
-  Circle,
-  ShoppingBag,
-  ArrowLeft
+  ShoppingBag
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -28,6 +26,27 @@ export default async function MyOrdersPage() {
   if (!user) {
     redirect("/signin");
   }
+
+interface OrderItem {
+  id: string;
+  quantity: number;
+  price: string | number;
+  menuItem: {
+    name: string;
+    image?: string;
+  };
+}
+
+interface Order {
+  id: string;
+  status: string;
+  paymentStatus: string;
+  totalAmount: string | number;
+  createdAt: string;
+  address: string;
+  transactionId?: string;
+  items: OrderItem[];
+}
 
   const result = await getMyOrders();
   const orders = result.success ? result.data : [];
@@ -66,7 +85,7 @@ export default async function MyOrdersPage() {
         {/* Orders List */}
         {orders.length > 0 ? (
           <div className="space-y-6">
-            {orders.map((order: any) => (
+            {orders.map((order: Order) => (
               <Card key={order.id} className="border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden ring-1 ring-black/2 group hover:ring-primary/20 transition-all duration-300">
                 <CardContent className="p-0">
                   {/* Order Header */}
@@ -106,7 +125,7 @@ export default async function MyOrdersPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                       {/* Items Column */}
                       <div className="lg:col-span-8 space-y-4">
-                        {order.items.map((item: any) => (
+                        {order.items.map((item: OrderItem) => (
                           <div key={item.id} className="flex items-center gap-4 group/item">
                             <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100 shrink-0 group-hover/item:scale-105 transition-transform duration-300">
                               <Image 
@@ -189,7 +208,7 @@ export default async function MyOrdersPage() {
   );
 }
 
-function ArrowRight(props: any) {
+function ArrowRight(props: { className?: string }) {
   return (
     <svg
       {...props}
