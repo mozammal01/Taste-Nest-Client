@@ -11,7 +11,7 @@ export default function Dishes() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <div className="max-w-[1200px] mx-auto md:my-28 text-center">
+    <div className="container mx-auto mt-12 md:my-28 text-center" id="menu">
       <SubTitle title="Featured Dishes" />
       <motion.div
         ref={ref}
@@ -23,7 +23,7 @@ export default function Dishes() {
         {dishes.map((dish) => (
           <div
             key={dish.id}
-            className="border-4 border-secondary rounded-2xl p-10 w-[400px] h-[450px] flex flex-col justify-between relative"
+            className="border-4 border-secondary rounded-2xl p-6 md:p-10 w-full max-w-[400px] min-h-[450px] flex flex-col justify-between relative mx-auto"
           >
             <div className="relative">
               <div className="absolute top-16 left-0">

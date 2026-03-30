@@ -36,33 +36,73 @@ export default function Testimonials() {
   ];
 
   return (
-    <div id="testimonials" className="md:max-w-[1200px] max-w-[500px] md:mx-auto my-20 md:flex justify-between items-end mx-2 px-4">
-      <div className="lg:w-[40%] w-full md:flex flex-col gap-10 space-y-10">
-        <div className="space-y-4">
-          <p className="text-primary font-bold text-lg uppercase">Testimonials & Reviews</p>
-          <h2 className="text-5xl font-extrabold">Our Customer Feedback</h2>
+    <div id="testimonials" className="container mx-auto my-20 px-6">
+      <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        {/* Feedback Section */}
+        <div className="w-full lg:w-1/2 space-y-12">
+          <div className="space-y-6 text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start gap-4">
+              <div className="h-px w-8 bg-primary" />
+              <p className="text-primary font-black text-xs uppercase tracking-[0.3em]">Testimonials & Reviews</p>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tighter leading-tight">
+              Our Customer <span className="text-primary italic">Feedback</span>
+            </h2>
+          </div>
+          <Feedback feedbacks={testimonials} />
         </div>
-        <Feedback feedbacks={testimonials} />
+
+        {/* Visual Section - Hidden on mobile, visible on large screens */}
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.9 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="hidden lg:block w-1/2 relative h-[600px]"
+        >
+          {/* Main Large Image */}
+          <div className="absolute top-0 right-0 w-3/4 h-3/4 rounded-[40px] overflow-hidden shadow-2xl border-8 border-white group">
+            <Image 
+              className="object-cover transition-transform duration-700 group-hover:scale-110" 
+              src={redImg} 
+              alt="customer enjoying meal" 
+              fill
+            />
+          </div>
+          
+          {/* Bottom Floating Image */}
+          <motion.div 
+            animate={{ y: [0, -20, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-10 left-0 w-1/2 h-1/2 rounded-[32px] overflow-hidden shadow-2xl border-8 border-white group z-10"
+          >
+            <Image 
+              src={coffeeImg} 
+              alt="delicious coffee" 
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110" 
+            />
+          </motion.div>
+
+          {/* Side Floating Image */}
+          <motion.div 
+            animate={{ x: [0, 20, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-1/4 -right-10 w-1/3 h-1/3 rounded-[24px] overflow-hidden shadow-2xl border-4 border-white group z-20"
+          >
+            <Image 
+              src={strawberryImg} 
+              alt="fresh strawberry" 
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110" 
+            />
+          </motion.div>
+
+          {/* Decorative Elements */}
+          <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl -z-10" />
+          <div className="absolute -top-4 -right-4 w-32 h-32 bg-secondary/20 rounded-full blur-3xl -z-10" />
+        </motion.div>
       </div>
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="md:w-[50%] w-full ml-28 hidden lg:block"
-      >
-        <div className="relative flex justify-between">
-          <div className="bg-[#F3274C] rounded-3xl overflow-hidden">
-            <Image className="object-cover w-full h-full" src={redImg} alt="customer enjoying meal" width={290} height={290} />
-          </div>
-          <div className="absolute bottom-60 left-48">
-            <Image src={coffeeImg} alt="delicious coffee and pastries" width={290} height={290} className="object-cover rounded-3xl" />
-          </div>
-          <div className="absolute top-20 left-80">
-            <Image src={strawberryImg} alt="fresh strawberry dessert" width={290} height={290} className="object-cover rounded-3xl" />
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 }

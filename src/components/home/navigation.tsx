@@ -213,30 +213,23 @@ export default function Navigation() {
             </Link>
 
             {/* Desktop Navigation Items */}
-            <div className="flex items-center gap-1 bg-gray-50/80 rounded-full p-1.5">
+            <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md rounded-full p-1.5 border border-slate-200/50 shadow-sm">
               {navItems.map((item) => (
                 <Link key={item.id} href={getHref(item)} onClick={(e) => handleNavClick(item, e)} scroll={!item.isSection}>
                   <motion.div
                     className={cn(
-                      "relative px-5 py-2 rounded-full font-medium text-[15px] transition-all duration-300 overflow-hidden",
-                      isActive(item) ? "text-white" : "text-gray-600 hover:text-gray-900"
+                      "relative px-6 py-2.5 rounded-full text-[14px] font-black uppercase tracking-widest transition-all duration-300 overflow-hidden",
+                      isActive(item) ? "text-white" : "text-slate-600 hover:text-primary"
                     )}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {/* Background for active state */}
                     {isActive(item) && (
                       <motion.div
                         layoutId="activeNavBg"
-                        className="absolute inset-0 bg-linear-to-r from-primary to-primary/80 rounded-full shadow-lg shadow-primary/30"
+                        className="absolute inset-0 bg-linear-to-r from-primary to-primary/80 shadow-lg shadow-primary/20"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
-                    {/* Hover background */}
-                    {!isActive(item) && (
-                      <motion.div
-                        className="absolute inset-0 bg-gray-200/0 hover:bg-gray-200/50 rounded-full transition-colors duration-200"
-                        whileHover={{ backgroundColor: "rgba(229, 231, 235, 0.5)" }}
                       />
                     )}
                     <span className="relative z-10">{item.label}</span>

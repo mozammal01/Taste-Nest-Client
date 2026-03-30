@@ -51,7 +51,7 @@ export default function About() {
             </div>
           </motion.div>
         </div>
-        <div className="items-center justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[400px] md:max-w-[1200px] mx-auto gap-5 my-10 space-y-10 md:space-y-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl mx-auto gap-8 lg:gap-12 my-16 px-6">
           <motion.div
             ref={ref}
             initial={{ opacity: 0, x: -100 }}

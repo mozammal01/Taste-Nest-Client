@@ -68,91 +68,74 @@ export default function PopularMenu() {
   return (
     <div id="menu" className="w-full flex flex-col items-center gap-6">
       {/* Category Tabs */}
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Category Tabs */}
-        {categories.map((cat) => {
-          return (
-            <motion.div
-              ref={ref}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="relative"
-              key={cat.id}
-            >
+      <div className="w-full max-w-5xl px-4 overflow-x-auto no-scrollbar pb-4 md:pb-0">
+        <div className="flex flex-row md:flex-row gap-4 md:gap-6 md:justify-center min-w-max md:min-w-0 mx-auto">
+          {categories.map((cat) => {
+            return (
               <motion.div
-                onClick={() => setActive(cat.id)}
-                className={cn(
-                  "hidden md:flex flex-col justify-center items-center gap-2 border shadow-sm rounded-xl cursor-pointer p-8 relative overflow-hidden",
-                  "w-[190px] h-[190px]"
-                )}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                ref={ref}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.9 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="relative shrink-0"
+                key={cat.id}
               >
-                {/* Background animation */}
+                {/* Desktop view */}
                 <motion.div
-                  className="absolute inset-0 bg-primary"
-                  initial={false}
-                  animate={{
-                    opacity: active === cat.id ? 1 : 0,
-                    scale: active === cat.id ? 1 : 0.8,
-                  }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                />
-
-                {/* Content */}
-                <motion.div
-                  className="relative z-10"
-                  animate={{
-                    scale: active === cat.id ? 1.1 : 1,
-                  }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <cat.icon
-                    className={cn("size-[70px] transition-colors duration-300", active === cat.id ? "text-white" : "text-primary")}
-                  />
-                </motion.div>
-                <motion.span
+                  onClick={() => setActive(cat.id)}
                   className={cn(
-                    "font-extrabold text-center relative z-10 transition-colors duration-300 max-w-[140px] px-2",
-                    active === cat.id ? "text-white" : "text-black"
+                    "hidden md:flex flex-col justify-center items-center gap-2 border shadow-sm rounded-xl cursor-pointer p-8 relative overflow-hidden",
+                    "w-[190px] h-[190px]"
                   )}
-                  animate={{
-                    y: active === cat.id ? -2 : 0,
-                  }}
-                  transition={{ duration: 0.2 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  {cat.label}
-                </motion.span>
-              </motion.div>
-              {active === cat.id && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8, y: -25 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, y: -25 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="hidden md:block absolute top-[168px] left-[11px]"
-                >
-                  <div className="relative">
-                    <Image src={mask} alt={cat.label} width={168} height={40} />
-                  </div>
+                  <motion.div
+                    className="absolute inset-0 bg-primary"
+                    initial={false}
+                    animate={{
+                      opacity: active === cat.id ? 1 : 0,
+                      scale: active === cat.id ? 1 : 0.8,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  />
+
+                  <motion.div className="relative z-10" animate={{ scale: active === cat.id ? 1.1 : 1 }}>
+                    <cat.icon className={cn("size-[70px] transition-colors duration-300", active === cat.id ? "text-white" : "text-primary")} />
+                  </motion.div>
+                  <motion.span className={cn("font-black text-center relative z-10 transition-colors px-2", active === cat.id ? "text-white" : "text-slate-900")}>
+                    {cat.label}
+                  </motion.span>
                 </motion.div>
-              )}
-              <motion.span
-                onClick={() => setActive(cat.id)}
-                className={cn(
-                  "font-extrabold text-center cursor-pointer flex items-center justify-center gap-2 md:hidden relative px-4 py-2",
-                  active === cat.id ? "text-primary border-b-2 border-primary" : "text-black"
+
+                {/* Mobile view */}
+                <motion.div
+                  onClick={() => setActive(cat.id)}
+                  className={cn(
+                    "md:hidden flex items-center gap-3 px-6 py-4 rounded-2xl border-2 transition-all min-w-[200px]",
+                    active === cat.id ? "bg-primary border-primary text-white shadow-lg shadow-primary/20" : "bg-white border-slate-100 text-slate-600"
+                  )}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <cat.icon className={cn("size-6", active === cat.id ? "text-white" : "text-primary")} />
+                  <span className="font-black whitespace-nowrap">{cat.label}</span>
+                </motion.div>
+
+                {active === cat.id && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8, y: -25 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="hidden md:block absolute top-[182px] left-1/2 -translate-x-1/2"
+                  >
+                    <Image src={mask} alt="mask" width={168} height={40} className="w-[170px]" />
+                  </motion.div>
                 )}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.1 }}
-              >
-                {cat.label}
-              </motion.span>
-            </motion.div>
-          );
-        })}
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Content */}

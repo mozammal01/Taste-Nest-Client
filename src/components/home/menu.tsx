@@ -10,7 +10,7 @@ export default function Menu() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   return (
-    <div className="md:max-w-[1200px] max-w-[300px] mx-auto mt-12 md:my-28 text-center" id="menu">
+    <div className="container mx-auto mt-12 md:my-28 text-center px-4" id="menu">
       <div className="md:mb-20">
         <SubTitle title="Discover Menu" />
       </div>
