@@ -5,15 +5,16 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   // Basic session check based on cookie presence
-  // Note: better-auth uses this cookie name by default
-  const sessionToken = request.cookies.get("better-auth.session_token")?.value;
+  // Supports both standard and production (__Secure-) cookie names
+  const sessionToken = 
+    request.cookies.get("__Secure-better-auth.session_token")?.value ||
+    request.cookies.get("better-auth.session_token")?.value ||
+    request.cookies.get("better_auth_session_token")?.value;
 
   const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
   const isProtectedRoute = 
-    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/user") ||
     pathname.startsWith("/profile") ||
-    pathname.startsWith("/orders") ||
-    pathname.startsWith("/reservations") ||
     pathname.startsWith("/admin");
 
   // If authenticated and on an auth page, redirect to dashboard
@@ -38,10 +39,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
+    "/user/:path*",
     "/profile/:path*",
-    "/orders/:path*",
-    "/reservations/:path*",
     "/admin/:path*",
     "/signin",
     "/signup",
