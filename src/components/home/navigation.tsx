@@ -38,12 +38,10 @@ export default function Navigation() {
     let isMounted = true;
 
     const fetchCartCount = async () => {
-      if (userId) {
-        const count = await getCartItemCount(userId);
+        const count = await getCartItemCount();
         if (isMounted) {
           setCartItemCount(count);
         }
-      }
     };
 
     fetchCartCount();

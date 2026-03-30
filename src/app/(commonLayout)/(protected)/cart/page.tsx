@@ -16,11 +16,10 @@ export default async function CartPage() {
     redirect("/signin");
   }
 
-  const cartItems = await getCartItemsWithDetails(user.id);
+  const cartItems = await getCartItemsWithDetails();
 
   return (
     <>
-
       <main className="min-h-screen bg-linear-to-b from-gray-50 to-white pt-20">
         {/* Hero Section */}
         <div className="bg-linear-to-r from-primary/5 via-primary/10 to-secondary/10 py-12">
@@ -32,7 +31,7 @@ export default async function CartPage() {
 
         {/* Cart Content */}
         <div className="container mx-auto px-4 py-8">
-          <Cart items={cartItems} userId={user.id} />
+          <Cart items={cartItems} />
         </div>
       </main>
     </>

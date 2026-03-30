@@ -13,10 +13,9 @@ import { toast } from "sonner";
 
 interface CartProps {
   items: CartItemWithDetails[];
-  userId: string;
 }
 
-export default function Cart({ items, userId }: CartProps) {
+export default function Cart({ items }: CartProps) {
   const router = useRouter();
   const [isClearing, setIsClearing] = useState(false);
 
@@ -30,7 +29,7 @@ export default function Cart({ items, userId }: CartProps) {
     if (!confirm("Are you sure you want to clear your cart?")) return;
 
     setIsClearing(true);
-    const result = await clearCart(userId);
+    const result = await clearCart();
     if (result.success) {
       toast.success("Cart cleared successfully");
     } else {

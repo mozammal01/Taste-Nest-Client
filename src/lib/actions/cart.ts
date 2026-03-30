@@ -15,19 +15,17 @@ export async function getCartItems(): Promise<CartItem[]> {
 }
 
 /**
- * Fetch cart items with menu item details by user ID
+ * Fetch cart items with menu item details
  */
-export async function getCartItemsWithDetails(userId: string): Promise<CartItemWithDetails[]> {
-  void userId;
+export async function getCartItemsWithDetails(): Promise<CartItemWithDetails[]> {
   const result = await handleFetch(`${API_URL}/cart`, { cache: "no-store" });
   return result.success ? result.data : [];
 }
 
 /**
- * Get cart item count for a user
+ * Get cart item count
  */
-export async function getCartItemCount(userId: string): Promise<number> {
-  void userId;
+export async function getCartItemCount(): Promise<number> {
   const result = await handleFetch(`${API_URL}/cart`, { cache: "no-store" });
   if (!result.success || !Array.isArray(result.data)) return 0;
   return result.data.length;
@@ -86,10 +84,9 @@ export async function updateCartItemQuantity(id: number, quantity: number): Prom
 }
 
 /**
- * Clear all cart items for a user
+ * Clear all cart items
  */
-export async function clearCart(userId: string): Promise<ActionResult> {
-  void userId;
+export async function clearCart(): Promise<ActionResult> {
   const result = await handleFetch(`${API_URL}/cart`, {
     method: "DELETE",
   });

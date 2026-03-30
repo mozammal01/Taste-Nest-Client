@@ -40,6 +40,26 @@ const getStatusIcon = (status: string) => {
   }
 };
 
+interface OrderItem {
+  id: string;
+  quantity: number;
+  price: string | number;
+  menuItem: {
+    name: string;
+    image?: string;
+  };
+}
+
+interface Order {
+  id: string;
+  status: string;
+  createdAt: string;
+  totalAmount: string | number;
+  address: string;
+  phone: string;
+  items: OrderItem[];
+}
+
 export default async function OrdersPage() {
   const user = await getCurrentUser();
 
@@ -85,7 +105,7 @@ export default async function OrdersPage() {
             </div>
           ) : (
             <div className="space-y-6">
-              {orders.map((order: any) => (
+              {orders.map((order: Order) => (
                 <div 
                   key={order.id}
                   className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
@@ -124,7 +144,7 @@ export default async function OrdersPage() {
                   {/* Items List */}
                   <div className="p-6">
                     <div className="space-y-4">
-                      {order.items?.map((item: any) => (
+                      {order.items?.map((item: OrderItem) => (
                         <div key={item.id} className="flex items-center gap-4 group">
                           <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
                             <Image
@@ -176,7 +196,7 @@ export default async function OrdersPage() {
   );
 }
 
-function MapPin(props: any) {
+function MapPin(props: { className?: string }) {
   return (
     <svg
       {...props}
@@ -196,7 +216,7 @@ function MapPin(props: any) {
   );
 }
 
-function Phone(props: any) {
+function Phone(props: { className?: string }) {
   return (
     <svg
       {...props}
