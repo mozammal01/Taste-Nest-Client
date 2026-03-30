@@ -17,4 +17,17 @@ export const registerSchema = z.object({
   path: ["confirmPassword"],
 });
 
+
 export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  otp: z.string().min(6, "OTP must be 6 characters").max(6, "OTP must be 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Please confirm your password"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
