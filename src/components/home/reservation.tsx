@@ -20,7 +20,12 @@ const reservationSchema = z.object({
 });
 
 interface ReservationSectionProps {
-  user?: any;
+  user?: { 
+    id: string; 
+    role?: string;
+    name?: string | null;
+    email?: string | null;
+  } | null;
 }
 
 export default function Reservation({ user }: ReservationSectionProps) {
@@ -91,7 +96,7 @@ export default function Reservation({ user }: ReservationSectionProps) {
       } else {
         toast.error(result.message || "Failed to make reservation");
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -119,7 +124,7 @@ export default function Reservation({ user }: ReservationSectionProps) {
           <div className="space-y-4">
             <h2 className="text-4xl font-black tracking-tighter lg:text-6xl">CONFIRMED!</h2>
             <p className="max-w-xl text-lg text-slate-400 leading-relaxed font-medium">
-              We've secured your table at <span className="text-primary italic font-bold">TasteNest</span>. 
+              We&apos;ve secured your table at <span className="text-primary italic font-bold">TasteNest</span>. 
               Get ready for an unforgettable dining experience.
             </p>
           </div>
@@ -190,7 +195,7 @@ export default function Reservation({ user }: ReservationSectionProps) {
                     </div>
                     <div>
                       <h4 className="text-base font-bold text-slate-900">Fine Dining</h4>
-                      <p className="text-xs text-slate-500 font-medium">Chef's Signature Menu</p>
+                      <p className="text-xs text-slate-500 font-medium">Chef&apos;s Signature Menu</p>
                     </div>
                  </div>
                  <div className="group flex items-start gap-4">
@@ -536,6 +541,6 @@ export default function Reservation({ user }: ReservationSectionProps) {
   );
 }
 
-function cn(...classes: any[]) {
+function cn(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(" ");
 }

@@ -2,11 +2,7 @@ import Dishes from "./dishes";
 import Menu from "./menu";
 import Reservation from "./reservation";
 
-interface MenuDishesProps {
-  user?: any;
-}
-
-export default function MenuDishes({ user }: MenuDishesProps) {
+export default function MenuDishes({ user }: { user?: { id: string; role?: string } | null }) {
   return (
     <div id="menu">
       <Menu />

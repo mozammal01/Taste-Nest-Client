@@ -38,7 +38,7 @@ export default function About() {
               Founded on the belief that dining is an art form, TasteNest has evolved from a small family kitchen into a sanctuary for food lovers. We celebrate the intersection of traditional techniques and modern innovation, sourcing only the finest organic ingredients from local sustainable producers.
             </p>
             <p className="text-gray-600 leading-relaxed mt-4">
-              Our philosophy is simple: honor the ingredient, respect the season, and create memories that linger long after the final course. Whether it's a quiet morning espresso or a grand evening feast, every moment here is crafted with passion.
+              Our philosophy is simple: honor the ingredient, respect the season, and create memories that linger long after the final course. Whether it&apos;s a quiet morning espresso or a grand evening feast, every moment here is crafted with passion.
             </p>
             <div className="flex gap-4 items-center mt-5">
               <div>

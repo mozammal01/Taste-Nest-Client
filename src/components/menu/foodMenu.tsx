@@ -100,7 +100,7 @@ export default function FoodMenu({ items, user }: FoodMenuProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.05 }}
         >
-          <FoodMenuCard item={item} user={user} userRole={(user as any)?.role} />
+          <FoodMenuCard item={item} user={user} userRole={(user as { role?: string })?.role} />
         </motion.div>
       ))}
     </motion.div>
