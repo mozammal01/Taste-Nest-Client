@@ -6,18 +6,13 @@ import {
   Clock, 
   Users, 
   MessageSquare, 
-  ChevronRight,
   Plus,
-  History,
-  AlertCircle,
-  MapPin,
   Utensils,
-  Phone,
   PartyPopper
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import CancelButton from "@/components/reservations/CancelButton";
 
@@ -35,6 +30,16 @@ export default async function MyReservationsPage() {
 
   const result = await getMyReservations();
   const reservations = result.success ? result.data : [];
+
+interface Reservation {
+  id: number;
+  status: string;
+  date: string;
+  time: string;
+  guests: number;
+  occasion?: string;
+  message?: string;
+}
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -72,7 +77,7 @@ export default async function MyReservationsPage() {
 
         {reservations.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {reservations.map((reservation: any) => (
+            {reservations.map((reservation: Reservation) => (
               <Card key={reservation.id} className="border border-slate-100 bg-white rounded-[32px] shadow-sm overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-300 group">
                 <CardHeader className="p-6 pb-0">
                   <div className="flex justify-between items-center">

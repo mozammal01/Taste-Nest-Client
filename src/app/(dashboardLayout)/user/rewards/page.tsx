@@ -7,13 +7,11 @@ import {
   Gift, 
   History, 
   TrendingUp, 
-  ArrowRight,
   ShieldCheck,
   Award,
   ChevronRight,
   Star
 } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -34,8 +32,16 @@ export default async function MyRewardsPage() {
   const result = await getMyRewards();
   const rewards = result.success ? result.data : [];
   
+interface RewardRecord {
+  id: string;
+  type: 'earn' | 'redeem';
+  points: number;
+  description: string;
+  createdAt: string;
+}
+
   // Calculate total points
-  const totalPoints = rewards.reduce((acc: number, r: any) => {
+  const totalPoints = rewards.reduce((acc: number, r: RewardRecord) => {
     return r.type === 'earn' ? acc + r.points : acc - r.points;
   }, 0);
 
@@ -155,7 +161,7 @@ export default async function MyRewardsPage() {
         {rewards.length > 0 ? (
           <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/20 border border-gray-100 overflow-hidden ring-1 ring-black/2 px-1 py-1">
              <div className="divide-y divide-gray-50">
-               {rewards.map((reward: any) => (
+               {rewards.map((reward: RewardRecord) => (
                  <div key={reward.id} className="p-6 flex items-center justify-between hover:bg-gray-50/80 transition-colors">
                    <div className="flex items-center gap-4">
                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm ${reward.type === 'earn' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
@@ -192,7 +198,7 @@ export default async function MyRewardsPage() {
   );
 }
 
-function Package(props: any) {
+function Package(props: { className?: string }) {
     return (
       <svg
         {...props}
