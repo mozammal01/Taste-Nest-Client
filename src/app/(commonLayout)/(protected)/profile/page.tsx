@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Loader2, User, Mail, Calendar, Trash2, Edit2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { updateMyProfile } from "@/lib/actions/user";
-import { useRouter } from "next/navigation";
+
 
 export default function ProfilePage() {
   const { data: session, isPending: isSessionPending } = useSession();

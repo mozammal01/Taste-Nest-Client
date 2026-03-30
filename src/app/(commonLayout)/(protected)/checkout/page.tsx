@@ -16,7 +16,7 @@ export default async function CheckoutPage() {
     redirect("/signin");
   }
 
-  const cartItems = await getCartItemsWithDetails(user.id);
+  const cartItems = await getCartItemsWithDetails();
 
   if (cartItems.length === 0) {
     redirect("/cart");
