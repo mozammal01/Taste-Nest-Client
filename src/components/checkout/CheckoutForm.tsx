@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
 import StripePaymentForm from "./StripePaymentForm";
+import { cn } from "@/lib/utils";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder");
 
@@ -77,7 +78,7 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
     }
   };
 
-  const handleFetchClientSecret = async () => {
+  const handleFetchClientSecret = useCallback(async () => {
     if (paymentMethod === "card" && !clientSecret) {
       setIsSubmitting(true);
       const result = await createPaymentIntent(totalAmount);
@@ -89,13 +90,13 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
       }
       setIsSubmitting(false);
     }
-  };
+  }, [paymentMethod, clientSecret, totalAmount]);
 
   useEffect(() => {
     if (paymentMethod === "card") {
       handleFetchClientSecret();
     }
-  }, [paymentMethod]);
+  }, [paymentMethod, handleFetchClientSecret]);
 
   const handleOrderSubmission = async (transactionId?: string) => {
     const orderItems = items.map(item => ({
@@ -482,6 +483,4 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
   );
 }
 
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
-}
+
