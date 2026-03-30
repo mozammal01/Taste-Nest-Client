@@ -63,7 +63,8 @@ export default function SigninLeftSide() {
         toast.error(errorMessage);
       } else {
         toast.success("Welcome back! Happy dining.");
-        router.push("/");
+        const callbackUrl = searchParams.get("callbackUrl") || "/";
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch (err: unknown) {

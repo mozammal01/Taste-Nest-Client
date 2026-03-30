@@ -92,10 +92,10 @@ export default async function MyOrdersPage() {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                      <Badge className={`${getStatusColor(order.status)} border px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm`}>
+                      <Badge className={`${getStatusColor(order.status)} hover:bg-secondary/60 border px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm`}>
                          {order.status}
                       </Badge>
-                      <Badge className={`${order.paymentStatus === 'paid' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'} border px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider`}>
+                      <Badge className={`${order.paymentStatus === 'paid' ? 'bg-green-200 text-green-600 hover:bg-green-400/60 border-green-100' : 'bg-red-50 text-red-600 border-red-100'} border px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider`}>
                          {order.paymentStatus}
                       </Badge>
                     </div>

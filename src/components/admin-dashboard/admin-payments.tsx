@@ -28,7 +28,7 @@ export default async function AdminPayments() {
 
   // Redirect non-admin users
   if (user?.role !== "admin") {
-    redirect("/dashboard");
+    redirect("/unauthorized");
   }
 
   const paymentsData = await getAdminPayments();

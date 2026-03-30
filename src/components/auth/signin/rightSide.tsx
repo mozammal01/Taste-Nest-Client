@@ -86,7 +86,7 @@ export default function SigninRightSide() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-lg text-gray-200 max-w-sm leading-relaxed mb-8"
         >
-          Sign in to access your favorite dishes, track your orders, and enjoy personalized dining experiences.
+          Sign in to track your orders, manage reservations, and enjoy personalized dining experiences.
         </motion.p>
 
         {/* Stats */}

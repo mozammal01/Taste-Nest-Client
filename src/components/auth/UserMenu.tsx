@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Heart, CreditCard, HelpCircle } from "lucide-react";
+import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Trophy, Gift, CreditCard, HelpCircle } from "lucide-react";
 
 export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) {
   const { data: session, isPending: isSessionPending } = useSession();
@@ -87,7 +87,7 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
     { label: "Dashboard", href: "/user", icon: LayoutDashboard },
     { label: "My Orders", href: "/user/orders", icon: ShoppingBag },
     { label: "My Reservations", href: "/user/reservations", icon: Calendar },
-    { label: "My Rewards", href: "/user/rewards", icon: Heart },
+    { label: "My Rewards", href: "/user/rewards", icon: Trophy },
     { label: "Payment History", href: "/user/payments", icon: CreditCard },
     { label: "Settings", href: "/profile", icon: Settings },
   ];

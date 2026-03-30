@@ -219,23 +219,23 @@ export default function Reservation({ user }: ReservationSectionProps) {
                 <p className="text-slate-500 font-medium mt-1">Please fill in details below</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <form onSubmit={handleSubmit} noValidate className="space-y-10">
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
                   {/* Phone Input */}
                   <div className="group relative">
                     <label className={cn(
-                      "absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest transition-all", 
-                      errors.phone ? 'text-red-500' : focusedField === 'phone' ? 'text-slate-900 border-b-primary' : 'text-slate-700'
+                      "absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] transition-all z-10", 
+                      errors.phone ? 'text-red-500' : focusedField === 'phone' ? 'text-primary' : 'text-slate-500'
                     )}>
                       Phone Number
                     </label>
                     <div className={cn(
-                      "flex items-center gap-3 border-b py-3 transition-all duration-300 rounded-lg px-2", 
+                      "flex items-center gap-4 border-2 h-16 transition-all duration-500 rounded-2xl px-5 relative overflow-hidden", 
                       errors.phone 
-                        ? 'border-red-500 bg-red-50/50' 
-                        : 'border-slate-200 group-focus-within:border-primary group-focus-within:bg-slate-50/30'
+                        ? 'border-red-200 bg-red-50/30' 
+                        : 'border-slate-100 group-hover:border-slate-200 group-focus-within:border-primary group-focus-within:bg-white group-focus-within:shadow-xl group-focus-within:shadow-primary/5'
                     )}>
-                      <Phone className={cn("w-4 h-4 transition-colors", errors.phone ? 'text-red-500' : 'text-slate-300 group-focus-within:text-primary')} />
+                      <Phone className={cn("w-5 h-5 transition-colors duration-500", errors.phone ? 'text-red-400' : 'text-slate-300 group-focus-within:text-primary')} strokeWidth={1.5} />
                       <input
                         name="phone"
                         type="tel"
@@ -244,18 +244,23 @@ export default function Reservation({ user }: ReservationSectionProps) {
                         onFocus={() => setFocusedField('phone')}
                         onBlur={() => setFocusedField(null)}
                         placeholder="+880 1XXX-XXXXXX"
-                        className="w-full bg-transparent outline-hidden font-bold text-base text-slate-900 placeholder:text-slate-300"
+                        className="w-full bg-transparent outline-none font-bold text-base text-slate-900 placeholder:text-slate-300 placeholder:font-medium"
                       />
+                      {/* Animated focus indicator at the bottom */}
+                      <div className={cn(
+                        "absolute bottom-0 left-0 h-1 bg-primary transition-all duration-700",
+                        focusedField === 'phone' ? 'w-full' : 'w-0'
+                      )} />
                     </div>
                     <AnimatePresence mode="wait">
                       {errors.phone && (
                         <motion.div 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          className="flex items-center gap-1.5 mt-2 text-[10px] font-bold text-red-600 overflow-hidden px-2"
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          className="flex items-center gap-1.5 mt-2 ml-4 text-[11px] font-bold text-red-500"
                         >
-                          <AlertCircle size={12} className="shrink-0" />
+                          <AlertCircle size={14} className="shrink-0" />
                           {errors.phone}
                         </motion.div>
                       )}
@@ -265,18 +270,18 @@ export default function Reservation({ user }: ReservationSectionProps) {
                   {/* Date Input */}
                   <div className="group relative">
                     <label className={cn(
-                      "absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest transition-all", 
-                      errors.date ? 'text-red-500' : focusedField === 'date' ? 'text-slate-900' : 'text-slate-700'
+                      "absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] transition-all z-10", 
+                      errors.date ? 'text-red-500' : focusedField === 'date' ? 'text-primary' : 'text-slate-500'
                     )}>
                       Select Date
                     </label>
                     <div className={cn(
-                      "flex items-center gap-3 border-b py-3 transition-all duration-300 rounded-lg px-2", 
+                      "flex items-center gap-4 border-2 h-16 transition-all duration-500 rounded-2xl px-5 relative overflow-hidden", 
                       errors.date 
-                        ? 'border-red-500 bg-red-50/50' 
-                        : 'border-slate-200 group-focus-within:border-primary group-focus-within:bg-slate-50/30'
+                        ? 'border-red-200 bg-red-50/30' 
+                        : 'border-slate-100 group-hover:border-slate-200 group-focus-within:border-primary group-focus-within:bg-white group-focus-within:shadow-xl group-focus-within:shadow-primary/5'
                     )}>
-                      <Calendar className={cn("w-4 h-4 transition-colors", errors.date ? 'text-red-500' : 'text-slate-300 group-focus-within:text-primary')} />
+                      <Calendar className={cn("w-5 h-5 transition-colors duration-500", errors.date ? 'text-red-400' : 'text-slate-300 group-focus-within:text-primary')} strokeWidth={1.5} />
                       <input
                         name="date"
                         type="date"
@@ -284,18 +289,22 @@ export default function Reservation({ user }: ReservationSectionProps) {
                         onChange={handleChange}
                         onFocus={() => setFocusedField('date')}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-transparent outline-hidden font-bold text-base text-slate-900"
+                        className="w-full bg-transparent outline-none font-bold text-base text-slate-900 cursor-pointer appearance-none"
                       />
+                      <div className={cn(
+                        "absolute bottom-0 left-0 h-1 bg-primary transition-all duration-700",
+                        focusedField === 'date' ? 'w-full' : 'w-0'
+                      )} />
                     </div>
                     <AnimatePresence mode="wait">
                       {errors.date && (
                         <motion.div 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          className="flex items-center gap-1.5 mt-2 text-[10px] font-bold text-red-600 overflow-hidden px-2"
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          className="flex items-center gap-1.5 mt-2 ml-4 text-[11px] font-bold text-red-500"
                         >
-                          <AlertCircle size={12} className="shrink-0" />
+                          <AlertCircle size={14} className="shrink-0" />
                           {errors.date}
                         </motion.div>
                       )}
@@ -305,18 +314,18 @@ export default function Reservation({ user }: ReservationSectionProps) {
                   {/* Time Input */}
                   <div className="group relative">
                     <label className={cn(
-                      "absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest transition-all", 
-                      errors.time ? 'text-red-500' : focusedField === 'time' ? 'text-slate-900' : 'text-slate-700'
+                      "absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] transition-all z-10", 
+                      errors.time ? 'text-red-500' : focusedField === 'time' ? 'text-primary' : 'text-slate-500'
                     )}>
                       Preferred Time
                     </label>
                     <div className={cn(
-                      "flex items-center gap-3 border-b py-3 transition-all duration-300 rounded-lg px-2", 
+                      "flex items-center gap-4 border-2 h-16 transition-all duration-500 rounded-2xl px-5 relative overflow-hidden", 
                       errors.time 
-                        ? 'border-red-500 bg-red-50/50' 
-                        : 'border-slate-200 group-focus-within:border-primary group-focus-within:bg-slate-50/30'
+                        ? 'border-red-200 bg-red-50/30' 
+                        : 'border-slate-100 group-hover:border-slate-200 group-focus-within:border-primary group-focus-within:bg-white group-focus-within:shadow-xl group-focus-within:shadow-primary/5'
                     )}>
-                      <Clock className={cn("w-4 h-4 transition-colors", errors.time ? 'text-red-500' : 'text-slate-300 group-focus-within:text-primary')} />
+                      <Clock className={cn("w-5 h-5 transition-colors duration-500", errors.time ? 'text-red-400' : 'text-slate-300 group-focus-within:text-primary')} strokeWidth={1.5} />
                       <input
                         name="time"
                         type="time"
@@ -324,18 +333,22 @@ export default function Reservation({ user }: ReservationSectionProps) {
                         onChange={handleChange}
                         onFocus={() => setFocusedField('time')}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-transparent outline-hidden font-bold text-base text-slate-900"
+                        className="w-full bg-transparent outline-none font-bold text-base text-slate-900 cursor-pointer"
                       />
+                      <div className={cn(
+                        "absolute bottom-0 left-0 h-1 bg-primary transition-all duration-700",
+                        focusedField === 'time' ? 'w-full' : 'w-0'
+                      )} />
                     </div>
                     <AnimatePresence mode="wait">
                       {errors.time && (
                         <motion.div 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          className="flex items-center gap-1.5 mt-2 text-[10px] font-bold text-red-600 overflow-hidden px-2"
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          className="flex items-center gap-1.5 mt-2 ml-4 text-[11px] font-bold text-red-500"
                         >
-                          <AlertCircle size={12} className="shrink-0" />
+                          <AlertCircle size={14} className="shrink-0" />
                           {errors.time}
                         </motion.div>
                       )}
@@ -345,18 +358,18 @@ export default function Reservation({ user }: ReservationSectionProps) {
                   {/* Guests Input */}
                   <div className="group relative">
                     <label className={cn(
-                      "absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest transition-all", 
-                      errors.guests ? 'text-red-500' : focusedField === 'guests' ? 'text-slate-900' : 'text-slate-700'
+                      "absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] transition-all z-10", 
+                      errors.guests ? 'text-red-500' : focusedField === 'guests' ? 'text-primary' : 'text-slate-500'
                     )}>
                       Total Guests
                     </label>
                     <div className={cn(
-                      "flex items-center gap-3 border-b py-3 transition-all duration-300 rounded-lg px-2", 
+                      "flex items-center gap-4 border-2 h-16 transition-all duration-500 rounded-2xl px-5 relative overflow-hidden", 
                       errors.guests 
-                        ? 'border-red-500 bg-red-50/50' 
-                        : 'border-slate-200 group-focus-within:border-primary group-focus-within:bg-slate-50/30'
+                        ? 'border-red-200 bg-red-50/30' 
+                        : 'border-slate-100 group-hover:border-slate-200 group-focus-within:border-primary group-focus-within:bg-white group-focus-within:shadow-xl group-focus-within:shadow-primary/5'
                     )}>
-                      <Users className={cn("w-4 h-4 transition-colors", errors.guests ? 'text-red-500' : 'text-slate-300 group-focus-within:text-primary')} />
+                      <Users className={cn("w-5 h-5 transition-colors duration-500", errors.guests ? 'text-red-400' : 'text-slate-300 group-focus-within:text-primary')} strokeWidth={1.5} />
                       <input
                         name="guests"
                         type="number"
@@ -366,18 +379,22 @@ export default function Reservation({ user }: ReservationSectionProps) {
                         onChange={handleChange}
                         onFocus={() => setFocusedField('guests')}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-transparent outline-hidden font-bold text-base text-slate-900"
+                        className="w-full bg-transparent outline-none font-bold text-base text-slate-900"
                       />
+                      <div className={cn(
+                        "absolute bottom-0 left-0 h-1 bg-primary transition-all duration-700",
+                        focusedField === 'guests' ? 'w-full' : 'w-0'
+                      )} />
                     </div>
                     <AnimatePresence mode="wait">
                       {errors.guests && (
                         <motion.div 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          className="flex items-center gap-1.5 mt-2 text-[10px] font-bold text-red-600 overflow-hidden px-2"
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          className="flex items-center gap-1.5 mt-2 ml-4 text-[11px] font-bold text-red-500"
                         >
-                          <AlertCircle size={12} className="shrink-0" />
+                          <AlertCircle size={14} className="shrink-0" />
                           {errors.guests}
                         </motion.div>
                       )}
@@ -385,42 +402,59 @@ export default function Reservation({ user }: ReservationSectionProps) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
                   {/* Occasion Selector */}
                   <div className="group relative">
                     <label className={cn(
-                      "absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest transition-all", 
-                      focusedField === 'occasion' ? 'text-slate-900' : 'text-slate-700'
+                      "absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] transition-all z-10", 
+                      focusedField === 'occasion' ? 'text-primary' : 'text-slate-500'
                     )}>
                       Special Occasion
                     </label>
-                    <div className="flex items-center gap-3 border-b border-slate-200 py-3 group-focus-within:border-primary transition-colors">
-                      <PartyPopper className="w-4 h-4 text-slate-300 group-focus-within:text-primary transition-colors" />
+                    <div className={cn(
+                      "flex items-center gap-4 border-2 h-16 transition-all duration-500 rounded-2xl px-5 relative overflow-hidden", 
+                      focusedField === 'occasion' 
+                        ? 'border-primary bg-white shadow-xl shadow-primary/5' 
+                        : 'border-slate-100 bg-slate-50/30 group-hover:border-slate-200'
+                    )}>
+                      <PartyPopper className={cn("w-5 h-5 transition-colors duration-500", focusedField === 'occasion' ? 'text-primary' : 'text-slate-300')} strokeWidth={1.5} />
                       <select
                         name="occasion"
                         value={formData.occasion}
                         onChange={handleChange}
                         onFocus={() => setFocusedField('occasion')}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-transparent outline-hidden font-bold text-base text-slate-900 appearance-none cursor-pointer"
+                        className="w-full bg-transparent outline-none font-bold text-base text-slate-900 appearance-none cursor-pointer"
                       >
                         <option value="">None</option>
-                        <option value="birthday">Birthday</option>
-                        <option value="anniversary">Anniversary</option>
+                        <option value="birthday">Birthday Celebration</option>
+                        <option value="anniversary">Anniversary Dinner</option>
                         <option value="business">Business Meeting</option>
-                        <option value="date">Romantic Date</option>
-                        <option value="other">Other Celebration</option>
+                        <option value="date">Romantic Rendezvous</option>
+                        <option value="other">Other Milestone</option>
                       </select>
+                      <div className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2">
+                        <ChevronRight className="w-4 h-4 text-slate-300 rotate-90" />
+                      </div>
+                      <div className={cn(
+                        "absolute bottom-0 left-0 h-1 bg-primary transition-all duration-700",
+                        focusedField === 'occasion' ? 'w-full' : 'w-0'
+                      )} />
                     </div>
                   </div>
 
                   {/* Reserved For (Auto-fill email/name) */}
                   <div className="group relative">
-                    <label className="absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest text-slate-700">Reserved For</label>
-                    <div className="flex items-center gap-3 border-b border-slate-200 py-3">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
-                      <span className="font-bold text-sm text-slate-900 truncate">
-                        {user ? user.name || user.email : "Guest Session"}
+                    <label className="absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 z-10">
+                      Reserved For
+                    </label>
+                    <div className="flex items-center gap-4 border-2 border-slate-100 bg-slate-50/20 h-16 rounded-2xl px-5 transition-all group-hover:bg-slate-50/40">
+                      <div className="relative">
+                        <div className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
+                        <div className="absolute inset-0 h-2.5 w-2.5 rounded-full bg-primary/40 animate-ping" />
+                      </div>
+                      <span className="font-black text-sm text-slate-900 tracking-tight">
+                        {user ? (user.name || user.email) : "Guest Session"}
                       </span>
                     </div>
                   </div>
@@ -429,23 +463,32 @@ export default function Reservation({ user }: ReservationSectionProps) {
                 {/* Message Input */}
                 <div className="group relative">
                   <label className={cn(
-                    "absolute left-0 -top-6 text-xs font-bold uppercase tracking-widest transition-all", 
-                    errors.message ? 'text-red-500' : focusedField === 'message' ? 'text-slate-900' : 'text-slate-700'
+                    "absolute left-4 -top-3 px-2 bg-white text-[10px] font-black uppercase tracking-[0.2em] transition-all z-10", 
+                    errors.message ? 'text-red-500' : focusedField === 'message' ? 'text-primary' : 'text-slate-500'
                   )}>
-                    Special Notes
+                    Culinary Preferences & Notes
                   </label>
-                  <div className={cn("flex items-start gap-3 border-b py-3 transition-colors", errors.message ? 'border-primary' : 'border-slate-200 group-focus-within:border-primary')}>
-                    <MessageSquare className={cn("w-4 h-4 transition-colors mt-1", errors.message ? 'text-primary' : 'text-slate-300 group-focus-within:text-primary')} />
+                  <div className={cn(
+                    "flex items-start gap-4 border-2 transition-all duration-500 rounded-2xl p-5 relative overflow-hidden", 
+                    errors.message 
+                      ? 'border-red-200 bg-red-50/30' 
+                      : 'border-slate-100 bg-slate-50/30 group-hover:border-slate-200 group-focus-within:border-primary group-focus-within:bg-white group-focus-within:shadow-xl group-focus-within:shadow-primary/5'
+                  )}>
+                    <MessageSquare className={cn("w-5 h-5 transition-colors duration-500 mt-1", errors.message ? 'text-red-400' : 'text-slate-300 group-focus-within:text-primary')} strokeWidth={1.5} />
                     <textarea
                       name="message"
-                      rows={2}
+                      rows={3}
                       value={formData.message}
                       onChange={handleChange}
                       onFocus={() => setFocusedField('message')}
                       onBlur={() => setFocusedField(null)}
-                      placeholder="Dietary requirements or allergies..."
-                      className="w-full bg-transparent outline-hidden font-bold text-base text-slate-900 placeholder:text-slate-300 resize-none"
+                      placeholder="Share any allergies, dietary requirements, or special seating requests..."
+                      className="w-full bg-transparent outline-none font-bold text-base text-slate-900 placeholder:text-slate-300 placeholder:font-medium resize-none leading-relaxed"
                     ></textarea>
+                    <div className={cn(
+                      "absolute bottom-0 left-0 h-1 bg-primary transition-all duration-700",
+                      focusedField === 'message' ? 'w-full' : 'w-0'
+                    )} />
                   </div>
                   <AnimatePresence>
                     {errors.message && (
@@ -453,9 +496,9 @@ export default function Reservation({ user }: ReservationSectionProps) {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex items-center gap-1.5 mt-2 text-[10px] font-bold text-primary overflow-hidden"
+                        className="flex items-center gap-1.5 mt-2 ml-4 text-[11px] font-bold text-red-500 overflow-hidden"
                       >
-                        <AlertCircle size={12} className="shrink-0" />
+                        <AlertCircle size={14} className="shrink-0" />
                         {errors.message}
                       </motion.div>
                     )}
@@ -465,17 +508,21 @@ export default function Reservation({ user }: ReservationSectionProps) {
                 <button 
                   type="submit" 
                   disabled={isSubmitting} 
-                  className="w-full py-6 bg-slate-950 text-white hover:bg-primary transition-all duration-300 rounded-2xl flex items-center justify-center gap-3 group active:scale-95 shadow-xl shadow-black/5"
+                  className="w-full py-8 bg-slate-950 text-white hover:bg-primary transition-all duration-500 rounded-[24px] flex items-center justify-center gap-4 group active:scale-[0.98] shadow-2xl shadow-black/20 hover:shadow-primary/30 relative overflow-hidden"
                 >
+                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   {isSubmitting ? (
-                    <span className="flex items-center gap-2">
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-                      <span className="font-black text-sm uppercase tracking-widest">Processing...</span>
+                    <span className="flex items-center gap-3">
+                      <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                      <span className="font-black text-sm uppercase tracking-[0.3em]">Reserving Excellence...</span>
                     </span>
                   ) : (
                     <>
-                      <span className="font-black text-lg uppercase tracking-widest">Confirm Reservation</span>
-                      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      <span className="font-black text-lg uppercase tracking-[0.3em]">Confirm Reservation</span>
+                      <div className="flex items-center">
+                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        <ChevronRight className="w-5 h-5 -ml-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />
+                      </div>
                     </>
                   )}
                 </button>

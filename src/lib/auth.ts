@@ -14,7 +14,6 @@ export interface CurrentUser {
   _count?: {
     orders: number;
     reservations: number;
-    favorites: number;
     rewards: number;
   };
   rewards?: any[];
@@ -85,11 +84,11 @@ export async function requireAuth(options?: { callbackUrl?: string; message?: st
 }
 
 /**
- * Redirects to /dashboard if the user is not an admin.
+ * Redirects to /unauthorized if the user is not an admin.
  */
 export async function requireAdmin(options?: { redirectTo?: string }) {
   const user = await requireAuth();
   if (user.role === "admin") return user;
-  redirect(options?.redirectTo ?? "/dashboard");
+  redirect(options?.redirectTo ?? "/unauthorized");
 }
 

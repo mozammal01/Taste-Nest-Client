@@ -36,7 +36,7 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
 
   // Redirect non-admin users
   if (user?.role !== "admin") {
-    redirect("/dashboard");
+    redirect("/unauthorized");
   }
 
   const sp = (await searchParams) || {};
