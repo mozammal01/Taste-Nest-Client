@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface UploadResult {
@@ -10,9 +12,20 @@ export interface UploadResult {
 
 export async function uploadMenuImage(formData: FormData): Promise<UploadResult> {
   try {
+    const cookieStore = await cookies();
+    const sessionCookie = 
+      cookieStore.get("__Secure-better-auth.session_token") ||
+      cookieStore.get("better-auth.session_token") || 
+      cookieStore.get("better_auth_session_token");
+
+    const headers: Record<string, string> = {};
+    if (sessionCookie) {
+      headers["Cookie"] = `${sessionCookie.name}=${sessionCookie.value}`;
+    }
+
     const res = await fetch(`${API_URL}/upload/image`, {
       method: "POST",
-      credentials: "include",
+      headers,
       body: formData,
     });
 
