@@ -63,10 +63,12 @@ export default async function PaymentHistoryPage() {
             <p className="text-gray-500 mt-2 font-medium">Manage and track all your transactions with TasteNest.</p>
           </div>
           <div className="flex items-center gap-3">
-             <Button variant="outline" className="h-12 border-2 border-gray-100 rounded-xl font-bold bg-white hover:bg-gray-50 transition-all leading-none focus:ring-primary/20">
-               <Download className="w-4 h-4 mr-2" />
-               Download All
-             </Button>
+          <Link href="/under-construction">
+            <Button variant="outline" className="h-12 border-2 border-gray-100 rounded-xl font-bold bg-white hover:bg-gray-50 transition-all leading-none focus:ring-primary/20">
+              <Download className="w-4 h-4 mr-2" />
+              Download All
+            </Button>
+          </Link>
           </div>
         </div>
 
@@ -127,9 +129,11 @@ export default async function PaymentHistoryPage() {
                                 <Button variant="ghost" className="w-10 h-10 p-0 rounded-xl text-gray-400 hover:text-primary hover:bg-primary/5 shadow-none transition-all duration-300">
                                     <FileText className="w-5 h-5" />
                                 </Button>
-                                <Button variant="ghost" className="w-10 h-10 p-0 rounded-xl text-gray-400 hover:text-blue-500 hover:bg-blue-50 shadow-none transition-all duration-300">
-                                    <Download className="w-5 h-5" />
-                                </Button>
+                                <Link href="/under-construction">
+                                    <Button variant="ghost" className="w-10 h-10 p-0 rounded-xl text-gray-400 hover:text-blue-500 hover:bg-blue-50 shadow-none transition-all duration-300">
+                                        <Download className="w-5 h-5" />
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </CardContent>

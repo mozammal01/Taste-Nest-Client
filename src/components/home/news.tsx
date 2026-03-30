@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
 import { Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function News() {
   const ref = useRef(null);
@@ -34,17 +35,14 @@ export default function News() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Article 1 */}
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <Link 
+            href="/under-construction"
             className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 group"
           >
             <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl">
               <Image className="object-cover transition-transform duration-700 group-hover:scale-110" src={news1Img} alt="Truffle Alchemy" fill />
             </div>
-            <div className="w-full md:w-1/2 space-y-6">
+            <div className="w-full md:w-1/2 space-y-6 text-left">
               <span className="inline-block bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full">
                 April 12, 2026
               </span>
@@ -56,20 +54,17 @@ export default function News() {
                 <p className="text-sm font-bold text-slate-700 underline decoration-primary/30 underline-offset-4">Chef Julian Ames</p>
               </div>
             </div>
-          </motion.div>
+          </Link>
 
           {/* Article 2 */}
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+          <Link 
+            href="/under-construction"
             className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 group"
           >
             <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl">
               <Image className="object-cover transition-transform duration-700 group-hover:scale-110" src={news2Img} alt="Sustainable Sourcing" fill />
             </div>
-            <div className="w-full md:w-1/2 space-y-6">
+            <div className="w-full md:w-1/2 space-y-6 text-left">
               <span className="inline-block bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full">
                 April 15, 2026
               </span>
@@ -81,7 +76,7 @@ export default function News() {
                 <p className="text-sm font-bold text-slate-700 underline decoration-primary/30 underline-offset-4">Chef Sophia Chen</p>
               </div>
             </div>
-          </motion.div>
+          </Link>
         </div>
       </div>
 
@@ -103,9 +98,11 @@ export default function News() {
               <h4 className="text-3xl md:text-5xl font-black text-white tracking-tighter">Follow @TasteNestOfficial</h4>
               <p className="text-white/60 font-medium tracking-wide">Join our community of 50k+ culinary enthusiasts</p>
             </div>
-            <AnimatedButton variant="ripple" className="rounded-full px-12">
-              Follow Us
-            </AnimatedButton>
+            <Link href="/under-construction">
+              <AnimatedButton variant="ripple" className="rounded-full px-12">
+                Follow Us
+              </AnimatedButton>
+            </Link>
           </div>
         </div>
       </div>

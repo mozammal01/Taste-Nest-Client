@@ -148,14 +148,13 @@ export default function SigninLeftSide() {
 
             <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Google</span>
           </button>
-          <button
-            type="button"
-            onClick={() => handleSocialSignIn("github")}
+          <Link
+            href="/under-construction"
             className="flex-1 flex items-center justify-center gap-2 py-3 px-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:border-primary/50 hover:shadow-md group"
           >
             <GithubIcon />
             <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">GitHub</span>
-          </button>
+          </Link>
         </div>
 
         {/* Divider */}

@@ -107,9 +107,9 @@ export default function Footer() {
               <span className="text-primary tracking-normal">© 2026 TASTENEST</span> | CRAFTED WITH PASSION
             </p>
             <div className="flex items-center gap-8">
-              <Link href="#" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Facebook</Link>
-              <Link href="#" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Instagram</Link>
-              <Link href="#" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Twitter</Link>
+              <Link href="/under-construction" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Facebook</Link>
+              <Link href="/under-construction" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Instagram</Link>
+              <Link href="/under-construction" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Twitter</Link>
             </div>
           </div>
         </div>
