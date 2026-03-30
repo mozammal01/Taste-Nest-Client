@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const { data: session, isPending: isSessionPending } = useSession();
-  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +48,7 @@ export default function ProfilePage() {
       } else {
         toast.error(result.message, { id: toastId });
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred", { id: toastId });
     } finally {
       setIsUploading(false);
@@ -76,7 +75,7 @@ export default function ProfilePage() {
       } else {
         toast.error(result.message, { id: toastId });
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred", { id: toastId });
     }
   };

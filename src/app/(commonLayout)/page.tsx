@@ -9,7 +9,7 @@ import Categories from "@/components/home/categories";
 import { getCurrentUser } from "@/lib/auth";
 
 import { Suspense } from "react";
-import { CardSkeleton, Loading, HeroSkeleton, SectionSkeleton } from "@/components/ui/loading";
+import { Loading, HeroSkeleton, SectionSkeleton } from "@/components/ui/loading";
 
 export default async function Home() {
   const user = await getCurrentUser();

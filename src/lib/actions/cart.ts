@@ -32,7 +32,6 @@ export async function getCartItemCount(): Promise<number> {
 }
 
 export interface CartItemInput {
-  userId: string;
   menuItemId: number;
   quantity: number;
 }

@@ -70,7 +70,6 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
     setIsOrderingNow(true);
     try {
       const result = await createCartItem({
-        userId: user.id,
         menuItemId: item.id,
         quantity: 1,
       });
@@ -103,7 +102,6 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
     setIsAddingToCart(true);
     try {
       const result = await createCartItem({
-        userId: user.id,
         menuItemId: id,
         quantity: 1,
       });

@@ -39,7 +39,7 @@ export default function UnderConstruction() {
             </h1>
             
             <p className="max-w-xl mx-auto text-slate-500 text-lg md:text-xl font-medium leading-relaxed">
-                We're seasoning this special feature to perfection. Our culinary team is working tirelessly to bring you an unparalleled dining experience. 
+                We&apos;re seasoning this special feature to perfection. Our culinary team is working tirelessly to bring you an unparalleled dining experience. 
             </p>
         </div>
 
