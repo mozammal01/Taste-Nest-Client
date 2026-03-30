@@ -127,7 +127,7 @@ export default function PopularMenu() {
                     initial={{ opacity: 0, scale: 0.8, y: -25 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="hidden md:block absolute top-[182px] left-1/2 -translate-x-1/2"
+                    className="hidden md:block absolute top-[178px] left-1/2 -translate-x-1/2"
                   >
                     <Image src={mask} alt="mask" width={168} height={40} className="w-[170px]" />
                   </motion.div>
