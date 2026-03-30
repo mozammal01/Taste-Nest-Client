@@ -52,12 +52,12 @@ export async function updateMyProfile(formData: FormData) {
   }
 }
 
-export async function deleteUser(userId: string) {
+export async function deleteUser(userId: string, force: boolean = false) {
   const cookieStore = await cookies();
   const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
   try {
-    const res = await fetch(`${API_URL}/user/${userId}`, {
+    const res = await fetch(`${API_URL}/user/${userId}?force=${force}`, {
       method: "DELETE",
       headers: {
         Cookie: allCookies,
@@ -69,6 +69,11 @@ export async function deleteUser(userId: string) {
       revalidatePath("/admin/users");
       return { success: true };
     }
+    
+    if (data.message === "USER_HAS_ORDERS") {
+      return { success: false, hasOrders: true, message: "This user already has some orders. Do you still want to delete?" };
+    }
+    
     return { success: false, message: data.message || "Failed to delete user" };
   } catch (error) {
     console.error("[delete-user] Error:", error);
