@@ -67,11 +67,11 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               {[
-                { name: "Prime Steaks", href: "/menu" },
-                { name: "Signature Burgers", href: "/menu" },
-                { name: "Live BBQ", href: "/menu" },
+                { name: "Prime Steaks", href: "/menu?category=steak" },
+                { name: "Signature Burgers", href: "/menu?category=burger" },
+                { name: "Gourmet Coffee", href: "/menu?category=coffee" },
                 { name: "Craft Cocktails", href: "/under-construction" },
-                { name: "Artisan Desserts", href: "/under-construction" }
+                { name: "Artisan Desserts", href: "/menu?category=dessert" }
               ].map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="group flex items-center gap-3 font-bold text-slate-600 hover:text-primary transition-all">

@@ -190,7 +190,7 @@ export default async function AdminDashboard() {
               </div>
             </Link>
             <Link
-              href="/admin"
+              href="/under-construction"
               className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-primary/5 transition-all duration-200 group border border-gray-100 hover:border-primary/30"
             >
               <span className="text-3xl group-hover:scale-110 transition-transform">📊</span>
