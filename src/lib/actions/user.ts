@@ -51,3 +51,53 @@ export async function updateMyProfile(formData: FormData) {
     return { success: false, message: errorMessage };
   }
 }
+
+export async function deleteUser(userId: string) {
+  const cookieStore = await cookies();
+  const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+
+  try {
+    const res = await fetch(`${API_URL}/user/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Cookie: allCookies,
+      },
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      revalidatePath("/admin/users");
+      return { success: true };
+    }
+    return { success: false, message: data.message || "Failed to delete user" };
+  } catch (error) {
+    console.error("[delete-user] Error:", error);
+    return { success: false, message: "Something went wrong" };
+  }
+}
+
+export async function updateUserRole(userId: string, role: string) {
+  const cookieStore = await cookies();
+  const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+
+  try {
+    const res = await fetch(`${API_URL}/user/${userId}`, {
+      method: "PATCH",
+      headers: {
+        Cookie: allCookies,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ role }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      revalidatePath("/admin/users");
+      return { success: true };
+    }
+    return { success: false, message: data.message || "Failed to update role" };
+  } catch (error) {
+    console.error("[update-role] Error:", error);
+    return { success: false, message: "Something went wrong" };
+  }
+}

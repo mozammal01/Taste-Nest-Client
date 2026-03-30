@@ -5,6 +5,7 @@ import { Edit2, Trash2, Loader2, Check, X, ShieldAlert, AlertCircle } from "luci
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { deleteUser, updateUserRole } from "@/lib/actions/user";
 
 type UserActionsProps = {
   userId: string;
@@ -22,24 +23,13 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
 
   const handleDelete = async () => {
     startTransition(async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`, {
-          method: "DELETE",
-          credentials: "include", // Essential for client-side authentication via cookies
-        });
-
-        const result = await res.json();
-
-        if (result.success) {
-          toast.success(`User "${userName}" deleted successfully`);
-          setShowDeleteModal(false);
-          router.refresh();
-        } else {
-          toast.error(result.message || "Failed to delete user");
-        }
-      } catch (error) {
-        toast.error("Something went wrong");
-        console.error(error);
+      const result = await deleteUser(userId);
+      if (result.success) {
+        toast.success(`User "${userName}" deleted successfully`);
+        setShowDeleteModal(false);
+        router.refresh();
+      } else {
+        toast.error(result.message || "Failed to delete user");
       }
     });
   };
@@ -49,30 +39,15 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
       setIsEditing(false);
       return;
     }
-
+ 
     startTransition(async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`, {
-          method: "PATCH",
-          credentials: "include", // Essential for client-side authentication via cookies
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ role: newRole }),
-        });
-
-        const result = await res.json();
-
-        if (result.success) {
-          toast.success(`Role for "${userName}" updated to ${newRole}`);
-          setIsEditing(false);
-          router.refresh();
-        } else {
-          toast.error(result.message || "Failed to update role");
-        }
-      } catch (error) {
-        toast.error("Something went wrong");
-        console.error(error);
+      const result = await updateUserRole(userId, newRole);
+      if (result.success) {
+        toast.success(`Role for "${userName}" updated to ${newRole}`);
+        setIsEditing(false);
+        router.refresh();
+      } else {
+        toast.error(result.message || "Failed to update role");
       }
     });
   };
