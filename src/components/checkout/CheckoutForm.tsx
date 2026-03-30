@@ -45,7 +45,6 @@ interface CheckoutFormProps {
 }
 
 export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [orderId, setOrderId] = useState<number | null>(null);
@@ -93,10 +92,13 @@ export default function CheckoutForm({ items, userId }: CheckoutFormProps) {
   }, [paymentMethod, clientSecret, totalAmount]);
 
   useEffect(() => {
-    if (paymentMethod === "card") {
-      handleFetchClientSecret();
-    }
-  }, [paymentMethod, handleFetchClientSecret]);
+    const initPayment = async () => {
+      if (paymentMethod === "card" && !clientSecret) {
+        await handleFetchClientSecret();
+      }
+    };
+    initPayment();
+  }, [paymentMethod, clientSecret, handleFetchClientSecret]);
 
   const handleOrderSubmission = async (transactionId?: string) => {
     const orderItems = items.map(item => ({
