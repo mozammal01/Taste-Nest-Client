@@ -86,9 +86,14 @@ export default function SigninLeftSide() {
   // Handle Social Sign In
   const handleSocialSignIn = async (provider: "google" | "github") => {
     try {
+      const callbackParam = searchParams.get("callbackUrl") || "/";
+      const finalCallbackURL = callbackParam.startsWith("http") 
+        ? callbackParam 
+        : `${window.location.origin}${callbackParam.startsWith("/") ? "" : "/"}${callbackParam}`;
+
       await signIn.social({
         provider,
-        callbackURL: window.location.origin,
+        callbackURL: finalCallbackURL,
       });
     } catch (err) {
       console.error(`${provider} sign in error:`, err);

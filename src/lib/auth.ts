@@ -35,15 +35,19 @@ const SESSION_COOKIE_NAME = "better-auth.session_token";
  * Response shape (recommended): { success: boolean, data?: user }
  */
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const allCookiesObj = await cookies();
+  const token = allCookiesObj.get(SESSION_COOKIE_NAME)?.value || 
+                allCookiesObj.get("better_auth_session_token")?.value ||
+                allCookiesObj.get("__Secure-better-auth.session_token")?.value;
+                
   if (!token) return null;
 
   if (!API_URL) {
+    console.error("[auth] API_URL is not defined in environment variables");
     return null;
   }
 
-  const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+  const allCookies = allCookiesObj.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
   try {
     // Calling my custom backend profile endpoint to get rich data (_count, rewards, etc.)
@@ -61,10 +65,11 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     }
 
     const response = await res.json();
-    const user = response?.data;
+    // Support both { data: user } and direct user object responses
+    const user = response?.data || response?.user || (response?.id ? response : null);
     
     if (!user?.id || !user?.email) {
-        console.warn("[auth] No user data found in profile response", response);
+        console.warn("[auth] No valid user data found in profile response", response);
         return null;
     }
 
