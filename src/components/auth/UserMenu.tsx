@@ -188,8 +188,8 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
                 {menuItems.map((item, index) => (
                   <motion.div
                     key={item.label}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
                     <Link

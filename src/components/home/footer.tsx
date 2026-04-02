@@ -1,3 +1,4 @@
+"use client";
 import footerLeftImg from "@/../public/footer/footer-left.png";
 import footerRightImg from "@/../public/footer/footer-right.png";
 import Image from "next/image";
@@ -6,8 +7,16 @@ import leftArrow from "@/../public/icons/leftArrow.png";
 import { Input } from "../ui/input";
 import { AnimatedButton } from "../ui/animated-button";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  
+  // Hide footer on signin and signup pages
+  if (pathname === "/signin" || pathname === "/signup") {
+    return null;
+  }
+
   return (
     <footer id="contact" className="bg-slate-50 relative overflow-hidden py-16 md:py-24">
       {/* Background Decorations - Hidden on small screens */}

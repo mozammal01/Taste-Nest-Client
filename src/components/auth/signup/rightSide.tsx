@@ -159,9 +159,9 @@ export default function SignupRightSide() {
           {!isVerifying ? (
             <motion.div
               key="signup-form"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
             >
               {/* Logo */}
               <Link href="/" className="flex justify-center mb-8">
@@ -348,9 +348,9 @@ export default function SignupRightSide() {
             /* OTP Verification UI */
             <motion.div
               key="verification-form"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               className="space-y-8"
             >
                 <div className="text-center space-y-4">

@@ -28,8 +28,8 @@ export default function Banner() {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
           <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -100 }}
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -100 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-white w-full lg:w-3/5 space-y-8 text-center lg:text-left"
           >

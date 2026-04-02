@@ -531,11 +531,11 @@ export default function Reservation({ user }: ReservationSectionProps) {
                   {isSubmitting ? (
                     <span className="flex items-center gap-3">
                       <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-                      <span className="font-black text-sm uppercase tracking-[0.3em]">Reserving Excellence...</span>
+                      <span className="font-black text-[10px] md:text-xs uppercase tracking-[0.2em]">Reserving Excellence...</span>
                     </span>
                   ) : (
                     <>
-                      <span className="font-black text-lg uppercase tracking-[0.3em]">Confirm Reservation</span>
+                      <span className="font-black text-sm md:text-base uppercase tracking-[0.2em]">Confirm Reservation</span>
                       <div className="flex items-center">
                         <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         <ChevronRight className="w-5 h-5 -ml-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />

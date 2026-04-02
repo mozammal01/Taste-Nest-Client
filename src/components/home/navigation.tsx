@@ -38,10 +38,10 @@ export default function Navigation() {
     let isMounted = true;
 
     const fetchCartCount = async () => {
-        const count = await getCartItemCount();
-        if (isMounted) {
-          setCartItemCount(count);
-        }
+      const count = await getCartItemCount();
+      if (isMounted) {
+        setCartItemCount(count);
+      }
     };
 
     fetchCartCount();
@@ -122,11 +122,22 @@ export default function Navigation() {
         // If not on home page, navigate to home first then scroll
         router.push(`/#${item.href}`);
       } else {
-        // If on home page, just scroll to section
-        const element = document.getElementById(item.href);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        // If on home page, scroll to section with a small delay for mobile menu to close
+        setTimeout(() => {
+          const element = document.getElementById(item.href);
+          if (element) {
+            const offset = 80; // Offset for the fixed header
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
+          }
+        }, 100);
       }
     } else {
       setActiveSection(item.id);
@@ -158,7 +169,7 @@ export default function Navigation() {
         animate={{ y: 0 }}
         className={cn(
           "w-full bg-primary text-white text-sm py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled ? "opacity-0 -translate-y-full" : "opacity-100"
+          isScrolled ? "opacity-0 -translate-y-full" : "opacity-100",
         )}
       >
         <div className="max-w-[1500px] mx-auto px-4 flex justify-between items-center">
@@ -183,16 +194,18 @@ export default function Navigation() {
       <motion.nav
         ref={ref}
         initial={{ y: -100 }}
-        animate={{ 
+        animate={{
           y: 0,
           top: isScrolled ? 0 : 32,
           backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.8)",
           backdropFilter: isScrolled ? "blur(12px)" : "blur(4px)",
-          boxShadow: isScrolled ? "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+          boxShadow: isScrolled
+            ? "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+            : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         }}
-        transition={{ 
-          duration: 0.5, 
-          ease: [0.4, 0, 0.2, 1] 
+        transition={{
+          duration: 0.5,
+          ease: [0.4, 0, 0.2, 1],
         }}
         className="w-full fixed left-0 right-0 z-50"
       >
@@ -215,11 +228,16 @@ export default function Navigation() {
             {/* Desktop Navigation Items */}
             <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md rounded-full p-1.5 border border-slate-200/50 shadow-sm">
               {navItems.map((item) => (
-                <Link key={item.id} href={getHref(item)} onClick={(e) => handleNavClick(item, e)} scroll={!item.isSection}>
+                <Link
+                  key={item.id}
+                  href={getHref(item)}
+                  onClick={(e) => handleNavClick(item, e)}
+                  scroll={!item.isSection}
+                >
                   <motion.div
                     className={cn(
                       "relative px-6 py-2.5 rounded-full text-[14px] font-black uppercase tracking-widest transition-all duration-300 overflow-hidden",
-                      isActive(item) ? "text-white" : "text-slate-600 hover:text-primary"
+                      isActive(item) ? "text-white" : "text-slate-600 hover:text-primary",
                     )}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -292,13 +310,20 @@ export default function Navigation() {
             {/* Mobile Right Actions */}
             <div className="flex items-center gap-2">
               {/* Search */}
-              <motion.button whileTap={{ scale: 0.9 }} onClick={() => setIsSearchOpen(true)} className="p-2 rounded-full hover:bg-gray-100">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 rounded-full hover:bg-gray-100"
+              >
                 <Search className="w-5 h-5 text-gray-600" />
               </motion.button>
 
               {/* Cart */}
               <Link href="/cart">
-                <motion.div whileTap={{ scale: 0.9 }} className="relative p-2 rounded-full hover:bg-gray-100">
+                <motion.div
+                  whileTap={{ scale: 0.9 }}
+                  className="relative p-2 rounded-full hover:bg-gray-100"
+                >
                   <ShoppingCart className="w-5 h-5 text-gray-600" />
                   {cartItemCount > 0 && (
                     <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
@@ -359,8 +384,8 @@ export default function Navigation() {
                   {navItems.map((item, index) => (
                     <motion.div
                       key={item.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
                       <Link
@@ -371,14 +396,16 @@ export default function Navigation() {
                           "flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-300 group",
                           isActive(item)
                             ? "bg-linear-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/20"
-                            : "text-gray-700 hover:bg-gray-100 hover:pl-6"
+                            : "text-gray-700 hover:bg-gray-100 hover:pl-6",
                         )}
                       >
                         <span className="text-base font-medium">{item.label}</span>
                         <ChevronRight
                           className={cn(
                             "w-4 h-4 transition-all duration-300",
-                            isActive(item) ? "text-white translate-x-1" : "text-gray-400 group-hover:text-primary group-hover:translate-x-1"
+                            isActive(item)
+                              ? "text-white translate-x-1"
+                              : "text-gray-400 group-hover:text-primary group-hover:translate-x-1",
                           )}
                         />
                       </Link>
@@ -458,7 +485,10 @@ export default function Navigation() {
                     autoFocus
                   />
                   {searchQuery && (
-                    <button onClick={() => setSearchQuery("")} className="p-1 hover:bg-gray-200 rounded-full">
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="p-1 hover:bg-gray-200 rounded-full"
+                    >
                       <X className="w-4 h-4 text-gray-400" />
                     </button>
                   )}
@@ -467,7 +497,9 @@ export default function Navigation() {
 
               {/* Quick Links */}
               <div className="px-4 pb-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Popular Searches</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
+                  Popular Searches
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {["Pizza", "Burger", "Pasta", "Desserts", "Drinks"].map((tag) => (
                     <Link
@@ -497,12 +529,12 @@ export default function Navigation() {
 
       {/* Spacer for fixed nav to prevent content jump */}
       <motion.div
-        animate={{ 
-          height: isScrolled ? 76 : 108 
+        animate={{
+          height: isScrolled ? 76 : 108,
         }}
-        transition={{ 
-          duration: 0.5, 
-          ease: [0.4, 0, 0.2, 1] 
+        transition={{
+          duration: 0.5,
+          ease: [0.4, 0, 0.2, 1],
         }}
       />
     </>

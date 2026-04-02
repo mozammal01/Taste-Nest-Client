@@ -31,8 +31,8 @@ export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: -100 }}
-      animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -100 }}
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -100 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <Carousel

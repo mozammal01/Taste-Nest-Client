@@ -72,11 +72,11 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
   return (
     <>
       {/* Action Buttons */}
-      <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
+      <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all -translate-y-2 group-hover:translate-y-0">
         {isEditing ? (
           <motion.div 
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl"
           >
             <select

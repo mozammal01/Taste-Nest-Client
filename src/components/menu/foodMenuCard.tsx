@@ -1,6 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Lens } from "@/components/ui/lens";
 import Image from "next/image";
 import { AnimatedButton } from "../ui/animated-button";
@@ -141,9 +148,15 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
             <div className="w-full h-[300px] overflow-hidden rounded-t-2xl relative">
               <Image src={item.image} alt={item.name} fill className="object-cover" />
               <div className="absolute top-2 left-1 w-full h-full flex justify-start items-start gap-2">
-                {item.discount && <div className="bg-primary text-white w-fit px-2 rounded-full">{item.discount}</div>}
+                {item.discount && (
+                  <div className="bg-primary text-white w-fit px-2 rounded-full">
+                    {item.discount}
+                  </div>
+                )}
                 {item.freeDelivery && (
-                  <div className="bg-primary text-white w-fit px-2 rounded-full">{item.freeDelivery ? "Free Delivery" : ""}</div>
+                  <div className="bg-primary text-white w-fit px-2 rounded-full">
+                    {item.freeDelivery ? "Free Delivery" : ""}
+                  </div>
                 )}
               </div>
             </div>
@@ -156,10 +169,21 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
         <CardFooter className="flex justify-end items-center gap-4">
           {currentRole === "admin" ? (
             <>
-              <AnimatedButton onClick={handleDeleteItem} className="cursor-pointer" variant="ripple" size="lg" disabled={isDeleting}>
+              <AnimatedButton
+                onClick={handleDeleteItem}
+                className="cursor-pointer"
+                variant="ripple"
+                size="lg"
+                disabled={isDeleting}
+              >
                 {isDeleting ? "Deleting..." : "Delete Item"}
               </AnimatedButton>
-              <AnimatedButton onClick={() => handleEditItem(item.id)} className="cursor-pointer" variant="rippleYellow" size="lg">
+              <AnimatedButton
+                onClick={() => handleEditItem(item.id)}
+                className="cursor-pointer"
+                variant="rippleYellow"
+                size="lg"
+              >
                 Edit Item
               </AnimatedButton>
             </>

@@ -13,43 +13,48 @@ export default function SigninRightSide() {
       />
       <div className="absolute inset-0 bg-linear-to-bl from-black/60 via-black/40 to-primary/20" />
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 right-20 w-40 h-40 border-2 border-secondary/40 rounded-full" />
-      <div className="absolute bottom-24 left-20 w-24 h-24 border border-white/30 rounded-full animate-pulse" />
-      <div className="absolute top-108 right-8 w-24 h-24 border border-white/30 rounded-full animate-pulse" />
+      {/* Decorative elements with centered icons */}
+      <div className="absolute top-20 right-20 w-40 h-40 border-2 border-secondary/40 rounded-full flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.5, repeat: Infinity, repeatType: "reverse" }}
+          className="text-6xl"
+        >
+          🍕
+        </motion.div>
+      </div>
+
+      <div className="absolute bottom-24 left-20 w-32 h-32 border border-white/30 rounded-full animate-pulse flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
+          transition={{ duration: 1.2, delay: 0.7, repeat: Infinity, ease: "easeInOut" }}
+          className="text-5xl"
+        >
+          🍔
+        </motion.div>
+      </div>
+
+      <div className="absolute top-[45%] right-8 w-28 h-28 border border-white/30 rounded-full animate-pulse flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1, rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 1.4, delay: 0.9, repeat: Infinity, ease: "easeInOut" }}
+          className="text-4xl"
+        >
+          🥗
+        </motion.div>
+      </div>
       <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-secondary/30 rounded-full blur-2xl" />
       <div className="absolute bottom-20 right-40 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
 
-      {/* Floating Food Icons */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5, repeat: Infinity, repeatType: "reverse" }}
-        className="absolute top-32 right-32 text-6xl"
-      >
-        🍕
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, delay: 0.7, repeat: Infinity, repeatType: "reverse" }}
-        className="absolute bottom-32 left-24 text-5xl"
-      >
-        🍔
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1.4, delay: 0.9, repeat: Infinity, repeatType: "reverse" }}
-        className="absolute top-1/2 right-16 text-4xl"
-      >
-        🥗
-      </motion.div>
+
 
       {/* Content */}
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="relative z-10 flex flex-col justify-center items-center p-16 text-white text-center"
       >

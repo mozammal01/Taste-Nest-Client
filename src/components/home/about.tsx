@@ -68,19 +68,30 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl mx-auto gap-8 lg:gap-12 my-16 px-6">
           <motion.div
             ref={ref}
-            initial={{ opacity: 0, x: -100 }}
-            animate={isDesktop ? { opacity: isInView ? 1 : 0, x: isInView ? 0 : -100 } : undefined}
-            whileInView={!isDesktop ? { opacity: 1, x: 0 } : undefined}
+            initial={{ opacity: 0, y: -100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, y: isInView ? 0 : -100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, y: 0 } : undefined}
             viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="relative"
           >
-            <Image src={restaurantImg} alt="restaurant interior" className="md:w-[300px] md:h-[400px] lg:w-[400px] lg:h-[486px]" />
-            <Image
-              src={restaurantBorder}
-              alt="restaurant border decoration"
-              className="absolute top-2 left-2 md:w-[280px] md:h-[380px] lg:w-[370px] lg:h-[460px]"
-            />
+            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
+              <Image 
+                src={restaurantImg} 
+                alt="restaurant interior" 
+                fill
+                className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+              />
+              <div className="absolute inset-0 p-3 md:p-4 lg:p-5 pointer-events-none flex items-center justify-center">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={restaurantBorder}
+                    alt="border decoration"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
           </motion.div>
           <motion.div
             ref={ref}
@@ -89,30 +100,52 @@ export default function About() {
             whileInView={!isDesktop ? { opacity: 1, y: 0 } : undefined}
             viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="relative lg:mt-28"
           >
-            <Image src={cocktailImg} alt="cocktail drinks" className="md:w-[300px] md:h-[400px] lg:w-[400px] lg:h-[486px]" />
-            <Image
-              src={cocktailBorder}
-              alt="cocktail border decoration"
-              className="absolute top-2 left-2 md:w-[280px] md:h-[380px] lg:w-[370px] lg:h-[460px]"
-            />
+            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
+              <Image 
+                src={cocktailImg} 
+                alt="cocktail drinks" 
+                fill
+                className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+              />
+              <div className="absolute inset-0 p-3 md:p-4 lg:p-5 pointer-events-none flex items-center justify-center">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={cocktailBorder}
+                    alt="border decoration"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
           </motion.div>
           <motion.div
             ref={ref}
-            initial={{ opacity: 0, x: 100 }}
-            animate={isDesktop ? { opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 } : undefined}
-            whileInView={!isDesktop ? { opacity: 1, x: 0 } : undefined}
+            initial={{ opacity: 0, y: 100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, y: 0 } : undefined}
             viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="relative"
           >
-            <Image src={drinkImg} alt="refreshing drinks" className="md:w-[300px] md:h-[400px] lg:w-[400px] lg:h-[486px]" />
-            <Image
-              src={drinkBorder}
-              alt="drink border decoration"
-              className="absolute top-2 left-2 md:w-[280px] md:h-[380px] lg:w-[370px] lg:h-[460px]"
-            />
+            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
+              <Image 
+                src={drinkImg} 
+                alt="refreshing drinks" 
+                fill
+                className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+              />
+              <div className="absolute inset-0 p-3 md:p-4 lg:p-5 pointer-events-none flex items-center justify-center">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={drinkBorder}
+                    alt="border decoration"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

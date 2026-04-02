@@ -12,15 +12,33 @@ export default function SignupLeftSide() {
   />
   <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/50 to-primary/30" />
 
-  {/* Decorative elements */}
-  <div className="absolute top-10 left-10 w-32 h-32 border-2 border-secondary/30 rounded-full animate-pulse" />
-  <div className="absolute bottom-20 right-20 w-48 h-48 border border-white/20 rounded-full" />
+  {/* Decorative elements with centered icons */}
+  <div className="absolute top-10 left-10 w-32 h-32 border-2 border-secondary/30 rounded-full animate-pulse flex items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1, rotate: [0, 5, -5, 0] }}
+      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      className="text-5xl"
+    >
+      🍔
+    </motion.div>
+  </div>
+  <div className="absolute bottom-20 right-20 w-48 h-48 border border-white/20 rounded-full flex items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1, y: [0, -15, 0] }}
+      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+      className="text-7xl"
+    >
+      🍕
+    </motion.div>
+  </div>
   <div className="absolute top-1/3 right-10 w-20 h-20 bg-primary/20 rounded-full blur-xl" />
 
   {/* Content */}
   <motion.div
-    initial={{ opacity: 0, x: -50 }}
-    animate={{ opacity: 1, x: 0 }}
+    initial={{ opacity: 0, y: -50 }}
+    animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, delay: 0.2 }}
     className="relative z-10 flex flex-col justify-center items-start p-16 text-white"
   >

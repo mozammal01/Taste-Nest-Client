@@ -7,23 +7,20 @@ import { dishes } from "@/constants/dishes";
 import SubTitle from "../shared/subTitle";
 
 export default function Dishes() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
   return (
     <div className="container mx-auto mt-12 md:my-28 text-center" id="menu">
       <SubTitle title="Featured Dishes" />
       <motion.div
-        ref={ref}
         initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
         className="grid md:grid-cols-2 xl:grid-cols-3 justify-center items-center gap-10 md:gap-20 my-20 px-4"
       >
         {dishes.map((dish) => (
           <div
             key={dish.id}
-            className="border-4 border-secondary rounded-2xl p-6 md:p-10 w-full max-w-[400px] min-h-[450px] flex flex-col justify-between relative mx-auto"
+            className="border-4 border-secondary rounded-3xl p-6 md:p-10 w-full max-w-[400px] min-h-[380px] md:min-h-[450px] flex flex-col justify-between relative mx-auto group hover:bg-secondary/5 transition-all duration-300"
           >
             <div className="relative">
               <div className="absolute top-16 left-0">

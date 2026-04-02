@@ -17,8 +17,8 @@ export default function Menu() {
       <div className="flex flex-col md:flex-row justify-center items-center gap-20 md:gap-10 my-20 px-4">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -100 }}
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -100 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full relative"
         >
@@ -39,8 +39,8 @@ export default function Menu() {
         </motion.div>
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 }}
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full relative"
         >

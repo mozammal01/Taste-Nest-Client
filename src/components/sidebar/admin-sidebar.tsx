@@ -102,7 +102,13 @@ export default function AdminSidebar() {
       <div className="p-6 border-b border-gray-100">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
-            <Image src="/logo/logoWhite.png" alt="TasteNest" width={32} height={32} className="object-contain" />
+            <Image
+              src="/logo/logoWhite.png"
+              alt="TasteNest"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
           </div>
           <div>
             <h2 className="text-lg font-bold text-gray-900 tracking-tight">TasteNest</h2>
@@ -113,7 +119,9 @@ export default function AdminSidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Main Menu</p>
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">
+          Main Menu
+        </p>
         {navItems.map((item) => {
           const isItemActive = isActive(item.href);
           const isLoading = loadingHref === item.href && isPending;
@@ -125,15 +133,24 @@ export default function AdminSidebar() {
               disabled={isLoading}
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden",
-                isItemActive ? "bg-primary text-white shadow-md shadow-primary/25" : "text-gray-600 hover:text-primary hover:bg-primary/5",
-                isLoading && "opacity-80"
+                isItemActive
+                  ? "bg-primary text-white shadow-md shadow-primary/25"
+                  : "text-gray-600 hover:text-primary hover:bg-primary/5",
+                isLoading && "opacity-80",
               )}
             >
               {/* Active indicator glow */}
-              {isItemActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />}
+              {isItemActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
+              )}
 
               {/* Loading spinner or icon */}
-              <span className={cn("relative z-10 transition-transform duration-200", isItemActive ? "scale-110" : "group-hover:scale-110")}>
+              <span
+                className={cn(
+                  "relative z-10 transition-transform duration-200",
+                  isItemActive ? "scale-110" : "group-hover:scale-110",
+                )}
+              >
                 {isLoading ? <ButtonSpinner className="w-5 h-5" /> : item.icon}
               </span>
 
@@ -142,9 +159,18 @@ export default function AdminSidebar() {
               {/* Loading indicator dot */}
               {isLoading && (
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
-                  <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
-                  <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
+                  <span
+                    className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  ></span>
+                  <span
+                    className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  ></span>
+                  <span
+                    className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  ></span>
                 </span>
               )}
 
@@ -162,7 +188,9 @@ export default function AdminSidebar() {
 
       {/* Secondary Actions */}
       <div className="p-4 space-y-1">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Other</p>
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">
+          Other
+        </p>
         <Link
           href="/"
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
@@ -173,7 +201,12 @@ export default function AdminSidebar() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           <span className="font-medium">Back to Website</span>
         </Link>
@@ -193,7 +226,12 @@ export default function AdminSidebar() {
               strokeWidth={2}
               d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
             />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
           <span className="font-medium">Settings</span>
         </Link>

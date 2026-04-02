@@ -223,9 +223,9 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
                   <AnimatePresence mode="wait">
                     {errors.address && (
                       <motion.div 
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
                         className="flex items-center gap-1.5 mt-2 text-xs font-bold text-red-600 overflow-hidden"
                       >
                         <AlertCircle size={14} className="shrink-0" />
@@ -265,9 +265,9 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
                   <AnimatePresence mode="wait">
                     {errors.phone && (
                       <motion.div 
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
                         className="flex items-center gap-1.5 mt-2 text-xs font-bold text-red-600 overflow-hidden"
                       >
                         <AlertCircle size={14} className="shrink-0" />
