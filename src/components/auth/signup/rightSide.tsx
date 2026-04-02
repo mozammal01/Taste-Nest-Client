@@ -121,9 +121,20 @@ export default function SignupRightSide() {
         setError(result.error.message || "Invalid verification code");
         toast.error(result.error.message || "Invalid verification code");
       } else {
-        toast.success("Email verified successfully! Welcome aboard.");
-        router.push("/");
-        router.refresh();
+        // Automatic login after verification
+        const loginResult = await signIn.email({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (loginResult?.error) {
+          toast.error("Verification successful but auto-login failed. Please login manually.");
+          router.push("/signin");
+        } else {
+          toast.success("Email verified successfully! Welcome aboard.");
+          router.push("/");
+          router.refresh();
+        }
       }
     } catch {
       setError("Verification failed. Please try again.");
