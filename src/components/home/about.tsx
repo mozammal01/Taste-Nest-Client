@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import authorImg from "@/../public/about/author.png";
@@ -11,8 +11,18 @@ import drinkImg from "@/../public/about/drinkImg.png";
 import drinkBorder from "@/../public/about/drinkBorder.png";
 
 export default function About() {
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
   return (
     <div className="container mx-auto my-30" id="about">
       <div className="flex flex-col gap-10">
@@ -20,7 +30,9 @@ export default function About() {
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, y: 0 } : undefined}
+            viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="flex flex-col gap-4 lg:w-[50%] space-y-4"
           >
@@ -30,7 +42,9 @@ export default function About() {
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, y: 0 } : undefined}
+            viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
             className="lg:w-[60%] lg:pl-40 mt-5 lg:mt-0"
           >
@@ -55,7 +69,9 @@ export default function About() {
           <motion.div
             ref={ref}
             initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, x: isInView ? 0 : -100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, x: 0 } : undefined}
+            viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="relative"
           >
@@ -69,7 +85,9 @@ export default function About() {
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, y: 0 } : undefined}
+            viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="relative lg:mt-28"
           >
@@ -83,7 +101,9 @@ export default function About() {
           <motion.div
             ref={ref}
             initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 }}
+            animate={isDesktop ? { opacity: isInView ? 1 : 0, x: isInView ? 0 : 100 } : undefined}
+            whileInView={!isDesktop ? { opacity: 1, x: 0 } : undefined}
+            viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="relative"
           >
