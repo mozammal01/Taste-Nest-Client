@@ -546,7 +546,7 @@ export default function Navigation() {
                       Popular Collections
                     </p>
                     <div className="flex flex-wrap gap-3">
-                      {["Pizza", "Gourmet Burgers", "Pasta", "Artisanal Desserts", "Signature Drinks", "Steak", "Seafood"].map((tag) => (
+                      {["Cappuccino", "Double Beef Burger", "Espresso", "Juicy Steaks", "Caramel Pudding", "Vanilla Ice Cream", "Grilled Ribeye Steak"].map((tag) => (
                         <button
                           key={tag}
                           onClick={() => setSearchQuery(tag)}
