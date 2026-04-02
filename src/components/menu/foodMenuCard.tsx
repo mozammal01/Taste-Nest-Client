@@ -141,8 +141,9 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="h-full"
     >
-      <Card>
+      <Card className="h-full flex flex-col min-h-[500px]">
         <CardHeader>
           <Lens zoomFactor={2} lensSize={150} isStatic={false} ariaLabel="Zoom Area">
             <div className="w-full h-[300px] overflow-hidden rounded-t-2xl relative">
@@ -162,11 +163,13 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
             </div>
           </Lens>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-1 space-y-2">
           <CardTitle className="text-2xl">{item.name}</CardTitle>
-          <CardDescription>{item.content}</CardDescription>
+          <div className="min-h-[3rem]">
+            <CardDescription className="line-clamp-2">{item.content}</CardDescription>
+          </div>
         </CardContent>
-        <CardFooter className="flex justify-end items-center gap-4">
+        <CardFooter className="flex justify-end items-center gap-4 mt-auto">
           {currentRole === "admin" ? (
             <>
               <AnimatedButton
