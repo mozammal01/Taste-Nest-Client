@@ -12,12 +12,19 @@ import { z } from "zod";
 import backgroundImg from "@/../public/menu&dishes/reservation-bg.png";
 
 const reservationSchema = z.object({
-  guests: z.number().min(1, "At least 1 guest required").max(20, "Maximum 20 guests per booking"),
-  date: z.string().min(1, "Arrival date is required"),
+  guests: z.number().min(1, "Please specify at least 1 guest").max(20, "For bookings larger than 20, please call us directly"),
+  date: z.string()
+    .min(1, "Arrival date is required")
+    .refine((val) => {
+      const date = new Date(val);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return !isNaN(date.getTime()) && date >= today;
+    }, { message: "Please select a valid date (today or in the future)" }),
   time: z.string().min(1, "Preferred time is required"),
-  phone: z.string().regex(/^\+?[0-9\s-]{10,15}$/, "Invalid phone number format"),
+  phone: z.string().regex(/^\+?[0-9\s-]{10,15}$/, "Please enter a valid phone number (10-15 digits)"),
   occasion: z.string().optional(),
-  message: z.string().max(500, "Message must be under 500 characters").optional(),
+  message: z.string().max(500, "Notes must be under 500 characters").optional(),
 });
 
 interface ReservationSectionProps {
@@ -89,11 +96,17 @@ export default function Reservation({ user }: ReservationSectionProps) {
     const validationResult = reservationSchema.safeParse(formData);
     if (!validationResult.success) {
       const fieldErrors: Record<string, string> = {};
-      validationResult.error.issues.forEach((issue) => {
-        if (issue.path[0]) fieldErrors[issue.path[0] as string] = issue.message;
+      let firstErrorMessage = "";
+      validationResult.error.issues.forEach((issue, index) => {
+        if (issue.path[0]) {
+          fieldErrors[issue.path[0] as string] = issue.message;
+          if (index === 0) firstErrorMessage = issue.message;
+        }
       });
       setErrors(fieldErrors);
-      toast.error("Please correct the errors in the form.");
+      toast.error(firstErrorMessage || "Please correct the errors in the form.", {
+        description: "Review highlighted fields for details.",
+      });
       return;
     }
 
