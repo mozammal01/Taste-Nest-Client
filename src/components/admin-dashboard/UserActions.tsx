@@ -23,6 +23,12 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
   const [newRole, setNewRole] = useState(currentRole);
 
   const handleDelete = async () => {
+    if (currentRole === "admin") {
+      toast.error("Administrators cannot be deleted for security reasons.");
+      setShowDeleteModal(false);
+      return;
+    }
+
     startTransition(async () => {
       const result = await deleteUser(userId, false);
       if (result.success) {
@@ -39,6 +45,12 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
   };
 
   const handleForceDelete = async () => {
+    if (currentRole === "admin") {
+      toast.error("Critical Security Error: Admin accounts cannot be forcefully deleted.");
+      setShowForceDeleteModal(false);
+      return;
+    }
+
     startTransition(async () => {
       const result = await deleteUser(userId, true);
       if (result.success) {
