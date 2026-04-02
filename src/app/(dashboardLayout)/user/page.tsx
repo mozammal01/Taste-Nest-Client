@@ -12,49 +12,49 @@ export default async function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.name || "Guest"}! 👋</h1>
-            <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your TasteNest account.</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">Welcome back, {user?.name || "Guest"}! 👋</h1>
+            <p className="text-gray-600 mt-2 text-sm md:text-base">Here&apos;s what&apos;s happening with your TasteNest account.</p>
           </div>
-          <span className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium capitalize">{user?.role || "user"}</span>
+          <span className="self-start sm:self-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs md:text-sm font-medium capitalize">{user?.role || "user"}</span>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                 <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{user?._count?.orders || 0}</p>
-                <p className="text-sm text-gray-500">Total Orders</p>
+              <div className="min-w-0">
+                <p className="text-2xl font-bold text-gray-900 truncate">{user?._count?.orders || 0}</p>
+                <p className="text-sm text-gray-500 truncate">Total Orders</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{user?._count?.reservations || 0}</p>
-                <p className="text-sm text-gray-500">Total Reservations</p>
+              <div className="min-w-0">
+                <p className="text-2xl font-bold text-gray-900 truncate">{user?._count?.reservations || 0}</p>
+                <p className="text-sm text-gray-500 truncate">Total Reservations</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center shrink-0">
                 <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -64,71 +64,80 @@ export default async function UserDashboard() {
                   />
                 </svg>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
+              <div className="min-w-0">
+                <p className="text-2xl font-bold text-gray-900 truncate">
                   {(user?.rewards || []).reduce((acc: number, r: RewardRecord) => r.type === 'earn' ? acc + r.points : acc - r.points, 0)}
                 </p>
-                <p className="text-sm text-gray-500">Loyalty Points</p>
+                <p className="text-sm text-gray-500 truncate">Loyalty Points</p>
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-8">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-5 flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-primary rounded-full"></span>
+            Quick Actions
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link
               href="/menu"
-              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all group"
             >
-              <span className="text-2xl">🍽️</span>
-              <span className="text-sm font-medium text-gray-700">Browse Menu</span>
+              <span className="text-2xl group-hover:scale-110 transition-transform">🍽️</span>
+              <span className="text-xs md:text-sm font-medium text-gray-700 text-center">Browse Menu</span>
             </Link>
             <Link
               href="/#reservation"
-              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all group"
             >
-              <span className="text-2xl">📅</span>
-              <span className="text-sm font-medium text-gray-700">Make Reservation</span>
+              <span className="text-2xl group-hover:scale-110 transition-transform">📅</span>
+              <span className="text-xs md:text-sm font-medium text-gray-700 text-center">Reservations</span>
             </Link>
             <Link
-              href="/orders"
-              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              href="/user/orders"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all group"
             >
-              <span className="text-2xl">📦</span>
-              <span className="text-sm font-medium text-gray-700">Track Orders</span>
+              <span className="text-2xl group-hover:scale-110 transition-transform">📦</span>
+              <span className="text-xs md:text-sm font-medium text-gray-700 text-center">Track Orders</span>
             </Link>
             <Link
               href="/profile"
-              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all group"
             >
-              <span className="text-2xl">👤</span>
-              <span className="text-sm font-medium text-gray-700">Edit Profile</span>
+              <span className="text-2xl group-hover:scale-110 transition-transform">👤</span>
+              <span className="text-xs md:text-sm font-medium text-gray-700 text-center">Edit Profile</span>
             </Link>
           </div>
         </div>
 
-        {/* User Info Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Account Information</h2>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-gray-500 w-24">Name:</span>
-              <span className="font-medium text-gray-900">{user?.name || "Not set"}</span>
+        {/* Account Information */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-5 flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-primary rounded-full"></span>
+            Account Information
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="p-4 bg-gray-50 rounded-xl space-y-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Full Name</span>
+                <span className="text-sm font-medium text-gray-900">{user?.name || "Not set"}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Email Address</span>
+                <span className="text-sm font-medium text-gray-900 truncate">{user?.email}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-gray-500 w-24">Email:</span>
-              <span className="font-medium text-gray-900">{user?.email}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-gray-500 w-24">Role:</span>
-              <span className="font-medium text-gray-900 capitalize">{user?.role || "user"}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-gray-500 w-24">Member ID:</span>
-              <span className="font-medium text-gray-900">{user?.id?.slice(0, 8)}...</span>
+            <div className="p-4 bg-gray-50 rounded-xl space-y-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Current Role</span>
+                <span className="text-sm font-medium text-gray-900 capitalize">{user?.role || "user"}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Member ID</span>
+                <span className="text-sm font-medium text-gray-900 font-mono tracking-tighter">{user?.id}</span>
+              </div>
             </div>
           </div>
         </div>

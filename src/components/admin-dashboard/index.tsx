@@ -44,30 +44,30 @@ export default async function AdminDashboard() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-500 mt-1">Welcome back, {user?.name}! Manage your restaurant here.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-gray-500 mt-1 text-sm md:text-base">Welcome back, {user?.name}! Manage your restaurant here.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="px-4 py-2 bg-primary/10 text-primary rounded-xl text-sm font-semibold border border-primary/20">
+        <div className="flex items-center gap-3 sm:self-start">
+          <span className="px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs md:text-sm font-semibold border border-primary/20">
             {user?.role?.toUpperCase()}
           </span>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all group">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+        <div className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all group">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm">Total Users</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats?.users?.toLocaleString() || "0"}</p>
+              <p className="text-gray-500 text-xs md:text-sm">Total Users</p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{stats?.users?.toLocaleString() || "0"}</p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -77,7 +77,7 @@ export default async function AdminDashboard() {
               </svg>
             </div>
           </div>
-          <p className="text-green-600 text-sm mt-3 flex items-center gap-1">
+          <p className="text-green-600 text-xs md:text-sm mt-3 flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
             </svg>
@@ -85,19 +85,19 @@ export default async function AdminDashboard() {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-green-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-green-200 transition-all group">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm">Total Orders</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats?.orders?.toLocaleString() || "0"}</p>
+              <p className="text-gray-500 text-xs md:text-sm">Total Orders</p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{stats?.orders?.toLocaleString() || "0"}</p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
             </div>
           </div>
-          <p className="text-green-600 text-sm mt-3 flex items-center gap-1">
+          <p className="text-green-600 text-xs md:text-sm mt-3 flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
             </svg>
@@ -105,14 +105,14 @@ export default async function AdminDashboard() {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-yellow-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-yellow-200 transition-all group">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm">Revenue</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{formatCurrency(stats?.totalRevenue || 0)}</p>
+              <p className="text-gray-500 text-xs md:text-sm">Revenue</p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{formatCurrency(stats?.totalRevenue || 0)}</p>
             </div>
-            <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -122,7 +122,7 @@ export default async function AdminDashboard() {
               </svg>
             </div>
           </div>
-          <p className="text-green-600 text-sm mt-3 flex items-center gap-1">
+          <p className="text-green-600 text-xs md:text-sm mt-3 flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
             </svg>
@@ -130,14 +130,14 @@ export default async function AdminDashboard() {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all group">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm">Menu Items</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats?.menuItems || "0"}</p>
+              <p className="text-gray-500 text-xs md:text-sm">Menu Items</p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{stats?.menuItems || "0"}</p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -147,72 +147,72 @@ export default async function AdminDashboard() {
               </svg>
             </div>
           </div>
-          <p className="text-gray-500 text-sm mt-3">5 new this week</p>
+          <p className="text-gray-500 text-xs md:text-sm mt-3">5 new this week</p>
         </div>
       </div>
 
       {/* Quick Actions & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900 mb-5 flex items-center gap-2">
+        <div className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-5 flex items-center gap-2">
             <span className="w-1.5 h-6 bg-primary rounded-full"></span>
             Quick Actions
           </h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link
               href="/admin/items"
               className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-primary/5 transition-all duration-200 group border border-gray-100 hover:border-primary/30"
             >
-              <span className="text-3xl group-hover:scale-110 transition-transform">🍔</span>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform">🍔</span>
               <div>
-                <p className="text-gray-900 font-medium">Add Menu Item</p>
-                <p className="text-gray-500 text-sm">Create new dish</p>
+                <p className="text-gray-900 font-medium text-sm md:text-base">Add Menu Item</p>
+                <p className="text-gray-500 text-xs md:text-sm">Create new dish</p>
               </div>
             </Link>
             <Link
               href="/admin/users"
               className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-primary/5 transition-all duration-200 group border border-gray-100 hover:border-primary/30"
             >
-              <span className="text-3xl group-hover:scale-110 transition-transform">👥</span>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform">👥</span>
               <div>
-                <p className="text-gray-900 font-medium">Manage Users</p>
-                <p className="text-gray-500 text-sm">View all users</p>
+                <p className="text-gray-900 font-medium text-sm md:text-base">Manage Users</p>
+                <p className="text-gray-500 text-xs md:text-sm">View all users</p>
               </div>
             </Link>
             <Link
               href="/admin/payments"
               className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-primary/5 transition-all duration-200 group border border-gray-100 hover:border-primary/30"
             >
-              <span className="text-3xl group-hover:scale-110 transition-transform">💳</span>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform">💳</span>
               <div>
-                <p className="text-gray-900 font-medium">View Payments</p>
-                <p className="text-gray-500 text-sm">Transaction history</p>
+                <p className="text-gray-900 font-medium text-sm md:text-base">View Payments</p>
+                <p className="text-gray-500 text-xs md:text-sm">Transaction history</p>
               </div>
             </Link>
             <Link
               href="/under-construction"
               className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-primary/5 transition-all duration-200 group border border-gray-100 hover:border-primary/30"
             >
-              <span className="text-3xl group-hover:scale-110 transition-transform">📊</span>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform">📊</span>
               <div>
-                <p className="text-gray-900 font-medium">Analytics</p>
-                <p className="text-gray-500 text-sm">View reports</p>
+                <p className="text-gray-900 font-medium text-sm md:text-base">Analytics</p>
+                <p className="text-gray-500 text-xs md:text-sm">View reports</p>
               </div>
             </Link>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 flex items-center gap-2">
               <span className="w-1.5 h-6 bg-primary rounded-full"></span>
               Recent Activity
             </h2>
             <button className="text-sm text-primary font-medium hover:underline">View All</button>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+            <div className="flex items-start sm:items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -220,11 +220,11 @@ export default async function AdminDashboard() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-gray-900 text-sm">New order <span className="font-semibold text-primary">#ORD-9082</span> received from <span className="font-medium">Sarah Johnson</span></p>
-                <p className="text-gray-500 text-xs">2 minutes ago</p>
+                <p className="text-gray-500 text-xs mt-0.5">2 minutes ago</p>
               </div>
-              <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-lg font-medium">New</span>
+              <span className="hidden sm:inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-lg font-medium">New</span>
             </div>
-            <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+            <div className="flex items-start sm:items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -237,10 +237,10 @@ export default async function AdminDashboard() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-gray-900 text-sm"><span className="font-medium">Ahmed Khan</span> registered as a new customer</p>
-                <p className="text-gray-500 text-xs">15 minutes ago</p>
+                <p className="text-gray-500 text-xs mt-0.5">15 minutes ago</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+            <div className="flex items-start sm:items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
               <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -253,10 +253,10 @@ export default async function AdminDashboard() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-gray-900 text-sm">Revenue milestone reached: <span className="font-semibold text-gray-900">$2,400.00</span> today</p>
-                <p className="text-gray-500 text-xs">1 hour ago</p>
+                <p className="text-gray-500 text-xs mt-0.5">1 hour ago</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+            <div className="flex items-start sm:items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
               <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -269,10 +269,10 @@ export default async function AdminDashboard() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-gray-900 text-sm"><span className="font-medium">Signature Wagyu Burger</span> price updated by Chef</p>
-                <p className="text-gray-500 text-xs">3 hours ago</p>
+                <p className="text-gray-500 text-xs mt-0.5">3 hours ago</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+            <div className="flex items-start sm:items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -285,7 +285,7 @@ export default async function AdminDashboard() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-gray-900 text-sm">Table for <span className="font-medium">David Miller</span> reserved at 8:00 PM</p>
-                <p className="text-gray-500 text-xs">4 hours ago</p>
+                <p className="text-gray-500 text-xs mt-0.5">4 hours ago</p>
               </div>
             </div>
           </div>
