@@ -21,6 +21,8 @@ import { toast } from "sonner";
 import { ShoppingCart, Check, AlertCircle } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
+import { DeleteConfirmationModal } from "../ui/delete-confirmation-modal";
+
 interface FoodMenuCardProps {
   item: MenuItem;
   userRole?: string;
@@ -34,29 +36,38 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const router = useRouter();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isOrderingNow, setIsOrderingNow] = useState(false);
 
-  const handleDeleteItem = async () => {
-    if (!confirm(`Are you sure you want to delete "${item.name}"?`)) {
-      return;
-    }
-
+  const confirmDelete = async () => {
     setIsDeleting(true);
     try {
       const result = await deleteMenuItem(item.id);
       if (result.success) {
-        toast.success("Item deleted successfully");
+        toast.success("Item deleted successfully", {
+          description: `"${item.name}" has been removed.`,
+          icon: <Check className="w-5 h-5" />,
+        });
         router.refresh();
       } else {
-        toast.error(result.message);
+        toast.error(result.message || "Failed to delete item", {
+          icon: <AlertCircle className="w-5 h-5" />,
+        });
       }
     } catch {
-      toast.error("Failed to delete item. Please try again.");
+      toast.error("An unexpected error occurred. Please try again.", {
+        icon: <AlertCircle className="w-5 h-5" />,
+      });
     } finally {
       setIsDeleting(false);
+      setShowDeleteModal(false);
     }
+  };
+
+  const handleDeleteItem = () => {
+    setShowDeleteModal(true);
   };
 
   const handleEditItem = (id: number) => {
@@ -231,6 +242,16 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
           )}
         </CardFooter>
       </Card>
+
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDelete}
+        title="Delete Menu Item?"
+        description="Are you absolutely sure you want to remove this item from the menu? This action cannot be undone."
+        itemName={item.name}
+        isLoading={isDeleting}
+      />
     </motion.div>
   );
 }

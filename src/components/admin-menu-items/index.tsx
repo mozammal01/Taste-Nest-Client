@@ -115,7 +115,7 @@ export default async function AdminMenuItems() {
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {menuItems.map((item) => (
           <FoodMenuCard key={item.id} item={item} userRole={user?.role} />
         ))}
