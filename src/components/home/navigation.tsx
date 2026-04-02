@@ -10,7 +10,9 @@ import { usePathname, useRouter } from "next/navigation";
 import UserMenu from "../auth/UserMenu";
 import { getCartItemCount } from "@/lib/actions/cart";
 import { useSession } from "@/lib/auth-client";
-import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock } from "lucide-react";
+import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock, Loader2, UtensilsCrossed } from "lucide-react";
+import type { MenuItem } from "@/types/menuItems";
+import { getMenuItems } from "@/lib/actions/menu";
 
 export default function Navigation() {
   const ref = useRef(null);
@@ -19,6 +21,10 @@ export default function Navigation() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [allMenuItems, setAllMenuItems] = useState<MenuItem[]>([]);
+  const [filteredResults, setFilteredResults] = useState<MenuItem[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
@@ -26,9 +32,57 @@ export default function Navigation() {
 
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useMotionValueEvent(scrollY, "change", (latest: number) => {
     setIsScrolled(latest > 50);
   });
+
+  // Fetch all menu items when search is opened
+  useEffect(() => {
+    if (isSearchOpen && allMenuItems.length === 0) {
+      const fetchItems = async () => {
+        setIsSearching(true);
+        try {
+          const items = await getMenuItems();
+          setAllMenuItems(items);
+        } catch (error) {
+          console.error("Failed to fetch search items:", error);
+        } finally {
+          setIsSearching(false);
+        }
+      };
+      fetchItems();
+    }
+  }, [isSearchOpen, allMenuItems.length]);
+
+  // Handle Search Filtering with Debounce
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.trim() === "") {
+        setFilteredResults([]);
+        return;
+      }
+
+      const query = searchQuery.toLowerCase();
+      const filtered = allMenuItems.filter(
+        (item) =>
+          item.name.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query) ||
+          item.content.toLowerCase().includes(query)
+      );
+      setFilteredResults(filtered.slice(0, 6)); // Show top 6 results
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, allMenuItems]);
+
+  // Handle Esc to close search
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsSearchOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -112,8 +166,15 @@ export default function Navigation() {
     };
   }, [pathname]);
 
+  interface NavItem {
+    id: string;
+    label: string;
+    href: string;
+    isSection: boolean;
+  }
+
   // Handle smooth scroll to sections
-  const handleNavClick = (item: (typeof navItems)[0], e: React.MouseEvent) => {
+  const handleNavClick = (item: NavItem, e: React.MouseEvent) => {
     if (item.isSection) {
       e.preventDefault();
       setActiveSection(item.id);
@@ -146,7 +207,7 @@ export default function Navigation() {
     setIsMobileMenuOpen(false);
   };
 
-  const isActive = (item: (typeof navItems)[0]) => {
+  const isActive = (item: NavItem) => {
     // If on /menu page, activate the "menu" nav item
     if (pathname === "/menu" && item.id === "menu") return true;
     if (item.href === "/") return pathname === "/" && activeSection === "home";
@@ -154,11 +215,17 @@ export default function Navigation() {
     return pathname.startsWith(item.href);
   };
 
-  const getHref = (item: (typeof navItems)[0]) => {
+  const getHref = (item: NavItem) => {
     if (item.isSection) {
       return pathname === "/" ? `#${item.href}` : `/#${item.href}`;
     }
     return item.href;
+  };
+
+  const handleResultClick = (itemName: string) => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    router.push(`/menu?search=${itemName.toLowerCase()}`);
   };
 
   return (
@@ -207,7 +274,7 @@ export default function Navigation() {
           duration: 0.5,
           ease: [0.4, 0, 0.2, 1],
         }}
-        className="w-full fixed left-0 right-0 z-50"
+        className="w-full fixed left-0 right-0 z-[60]"
       >
         <div className="max-w-[1500px] mx-auto px-4">
           {/* Desktop Navigation */}
@@ -422,33 +489,6 @@ export default function Navigation() {
                 >
                   <UserMenu onLinkClick={() => setIsMobileMenuOpen(false)} />
                 </motion.div>
-
-                {/* Mobile Contact Info */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="mt-6 pt-4 border-t border-gray-100 space-y-3"
-                >
-                  <div className="flex items-center gap-3 text-gray-600">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Phone className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400">Call us</p>
-                      <p className="font-medium">+1 234 567 890</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-600">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Clock className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400">Opening hours</p>
-                      <p className="font-medium">9:00 AM - 11:00 PM</p>
-                    </div>
-                  </div>
-                </motion.div>
               </div>
             </motion.div>
           )}
@@ -462,65 +502,131 @@ export default function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-60"
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] flex items-start justify-center pt-20 md:pt-32 px-4"
             onClick={() => setIsSearchOpen(false)}
           >
             <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              transition={{ type: "spring", bounce: 0.25 }}
-              className="bg-white w-full max-w-2xl mx-auto mt-20 rounded-2xl shadow-2xl overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white w-full max-w-3xl rounded-[32px] shadow-[0_32px_128px_-12px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4">
-                <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                  <Search className="w-5 h-5 text-gray-400" />
+              {/* Search Input Area */}
+              <div className="p-8 border-b border-slate-50">
+                <div className="flex items-center gap-6 bg-slate-50 rounded-2xl px-6 py-5 group focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-500">
+                  <Search className={cn("w-6 h-6 transition-colors duration-500", searchQuery ? "text-primary" : "text-slate-400")} />
                   <input
                     type="text"
-                    placeholder="Search for dishes, categories..."
+                    placeholder="Search for dishes, flavors, ingredients..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 bg-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                    className="flex-1 bg-transparent outline-none text-xl font-bold text-slate-900 placeholder:text-slate-300 placeholder:font-medium"
                     autoFocus
                   />
-                  {searchQuery && (
+                  {isSearching ? (
+                    <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                  ) : searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="p-1 hover:bg-gray-200 rounded-full"
+                      className="p-1.5 hover:bg-slate-200 rounded-full transition-colors"
                     >
-                      <X className="w-4 h-4 text-gray-400" />
+                      <X className="w-4 h-4 text-slate-400" />
                     </button>
                   )}
                 </div>
               </div>
 
-              {/* Quick Links */}
-              <div className="px-4 pb-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
-                  Popular Searches
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {["Pizza", "Burger", "Pasta", "Desserts", "Drinks"].map((tag) => (
-                    <Link
-                      key={tag}
-                      href={`/menu?search=${tag.toLowerCase()}`}
-                      onClick={() => setIsSearchOpen(false)}
-                      className="px-3 py-1.5 bg-gray-100 hover:bg-primary hover:text-white rounded-full text-sm text-gray-600 transition-colors"
-                    >
-                      {tag}
-                    </Link>
-                  ))}
-                </div>
+              {/* Results Area */}
+              <div className="max-h-[60vh] overflow-y-auto no-scrollbar">
+                {searchQuery.trim() === "" ? (
+                  <div className="p-8">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">
+                      Popular Collections
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {["Pizza", "Gourmet Burgers", "Pasta", "Artisanal Desserts", "Signature Drinks", "Steak", "Seafood"].map((tag) => (
+                        <button
+                          key={tag}
+                          onClick={() => setSearchQuery(tag)}
+                          className="px-5 py-2.5 bg-slate-50 hover:bg-primary hover:text-white rounded-full text-sm font-bold text-slate-600 transition-all duration-300 active:scale-95"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : filteredResults.length > 0 ? (
+                  <div className="p-4 grid grid-cols-1 gap-2">
+                    {filteredResults.map((item, idx) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                      >
+                        <button
+                          onClick={() => handleResultClick(item.name)}
+                          className="w-full flex items-center gap-5 p-4 hover:bg-slate-50 transition-all rounded-2xl group"
+                        >
+                          <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-slate-100">
+                             <Image 
+                              src={item.image} 
+                              alt={item.name} 
+                              fill 
+                              className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                            />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <h4 className="font-black text-slate-900 group-hover:text-primary transition-colors">{item.name}</h4>
+                            <p className="text-xs text-slate-500 font-medium line-clamp-1">{item.content}</p>
+                            <span className="mt-1 text-[10px] font-black uppercase tracking-widest text-primary/60 bg-primary/5 px-2 py-0.5 rounded-md inline-block">
+                              {item.category}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                             <p className="font-black text-slate-900">${item.price}</p>
+                             <ChevronRight className="w-4 h-4 ml-auto text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                          </div>
+                        </button>
+                      </motion.div>
+                    ))}
+                    <div className="p-4 mt-2 border-t border-slate-50 flex justify-center">
+                      <button 
+                        onClick={() => handleResultClick(searchQuery)}
+                        className="text-primary font-black text-xs uppercase tracking-[0.2em] hover:underline"
+                      >
+                        View All Results for &quot;{searchQuery}&quot;
+                      </button>
+                    </div>
+                  </div>
+                ) : !isSearching && (
+                  <div className="p-20 text-center flex flex-col items-center">
+                    <div className="w-20 h-20 bg-slate-50 rounded-[32px] flex items-center justify-center mb-6">
+                      <UtensilsCrossed className="w-10 h-10 text-slate-200" />
+                    </div>
+                    <h3 className="text-xl font-black text-slate-900 mb-2">No flavors found</h3>
+                    <p className="text-slate-400 font-medium max-w-xs mx-auto">
+                      We couldn&apos;t find anything matching &quot;{searchQuery}&quot;. Try generic terms like &quot;Pizza&quot; or &quot;Drink&quot;.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Keyboard Shortcut Hint */}
-              <div className="px-4 py-3 bg-gray-50 flex items-center justify-between text-sm text-gray-400">
-                <span>Press ESC to close</span>
-                <div className="flex items-center gap-1">
-                  <kbd className="px-2 py-1 bg-white rounded border text-xs">↵</kbd>
-                  <span>to search</span>
+              <div className="px-8 py-5 bg-slate-50 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-2">
+                    <kbd className="px-2 py-1 bg-white rounded-md border border-slate-200 text-[10px]">ESC</kbd>
+                    Close
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <kbd className="px-2 py-1 bg-white rounded-md border border-slate-200 text-[10px]">↵</kbd>
+                    Search
+                  </span>
                 </div>
+                <span>TasteNest Explorer</span>
               </div>
             </motion.div>
           </motion.div>
@@ -530,7 +636,7 @@ export default function Navigation() {
       {/* Spacer for fixed nav to prevent content jump */}
       <motion.div
         animate={{
-          height: isScrolled ? 76 : 108,
+          height: isScrolled ? 76 : 110,
         }}
         transition={{
           duration: 0.5,
