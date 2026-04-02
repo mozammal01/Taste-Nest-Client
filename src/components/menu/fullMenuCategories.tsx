@@ -28,7 +28,7 @@ export default function FullMenuCategories() {
 
   // DERIVE initial active from URL
   const activeFromUrl = params.get("category") ?? "all";
-  
+
   // Optimistic state for immediate feedback
   const [optimisticActive, setOptimisticActive] = useState(activeFromUrl);
 
@@ -42,10 +42,10 @@ export default function FullMenuCategories() {
 
     // 1. Update UI immediately
     setOptimisticActive(categoryId);
-    
+
     // 2. Show skeletons/loading in FoodMenu
-    startLoading(); 
-    
+    startLoading();
+
     // 3. Navigate to update URL
     router.push(`/menu?category=${categoryId}`, { scroll: false });
   };
@@ -54,18 +54,18 @@ export default function FullMenuCategories() {
   const active = optimisticActive;
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={{
         visible: {
           transition: {
-            staggerChildren: 0.1
-          }
-        }
+            staggerChildren: 0.1,
+          },
+        },
       }}
-      className="flex flex-col md:flex-row gap-4"
+      className="flex flex-wrap gap-4 md:gap-6 justify-center mx-auto"
     >
       {categories.map((cat) => {
         const isActive = active === cat.id;
@@ -73,18 +73,19 @@ export default function FullMenuCategories() {
         return (
           <motion.div
             variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 }
+              hidden: { opacity: 0, scale: 0.9 },
+              visible: { opacity: 1, scale: 1 },
             }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="relative"
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="relative shrink-0"
             key={cat.id}
           >
+            {/* Desktop/Laptop view */}
             <motion.div
               onClick={() => handleCategoryChange(cat.id)}
               className={cn(
                 "hidden md:flex flex-col justify-center items-center gap-2 border shadow-sm rounded-xl cursor-pointer p-8 relative overflow-hidden",
-                "w-[190px] h-[190px]"
+                "w-[190px] h-[190px]",
               )}
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
@@ -109,57 +110,50 @@ export default function FullMenuCategories() {
                 }}
                 transition={{ duration: 0.2 }}
               >
-                <cat.icon className={cn("size-[70px] transition-colors duration-300", isActive ? "text-white" : "text-primary")} />
+                <cat.icon
+                  className={cn(
+                    "size-[70px] transition-colors duration-300",
+                    isActive ? "text-white" : "text-primary",
+                  )}
+                />
               </motion.div>
               <motion.span
                 className={cn(
-                  "font-extrabold relative z-10 transition-colors duration-300",
-                  isActive ? "text-white" : "text-black"
+                  "font-black text-center relative z-10 transition-colors px-2",
+                  isActive ? "text-white" : "text-slate-900",
                 )}
-                animate={{
-                  y: isActive ? -2 : 0,
-                }}
-                transition={{ duration: 0.2 }}
               >
                 {cat.label}
               </motion.span>
             </motion.div>
-            
+
+            {/* Mobile view - Matching Home Page Design */}
+            <motion.div
+              onClick={() => handleCategoryChange(cat.id)}
+              className={cn(
+                "md:hidden flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all min-w-[120px]",
+                isActive
+                  ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
+                  : "bg-white border-slate-100 text-slate-600",
+              )}
+              whileTap={{ scale: 0.95 }}
+            >
+              <cat.icon
+                className={cn("size-6", isActive ? "text-white" : "text-primary")}
+              />
+              <span className="font-black whitespace-nowrap">{cat.label}</span>
+            </motion.div>
+
             {isActive && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8, y: -25 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: -25 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="hidden md:block absolute top-[168px] left-3"
+                className="hidden md:block absolute top-[178px] left-1/2 -translate-x-1/2"
               >
-                <div className="relative">
-                  <Image src={mask} alt={cat.label} width={168} height={40} />
-                </div>
+                <Image src={mask} alt="mask" width={168} height={40} className="w-[170px]" />
               </motion.div>
             )}
-            
-            <motion.span
-              onClick={() => handleCategoryChange(cat.id)}
-              className={cn(
-                "font-extrabold cursor-pointer flex items-center gap-2 md:hidden relative py-2",
-                isActive ? "text-primary" : "text-black hover:text-primary/70"
-              )}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.1 }}
-            >
-              {cat.label}
-              {isActive && (
-                <motion.div
-                  layoutId="mobileActiveUnderline"
-                  className="absolute -bottom-1 left-0 right-0 h-0.8 bg-primary rounded-full"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  exit={{ scaleX: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                />
-              )}
-            </motion.span>
           </motion.div>
         );
       })}
