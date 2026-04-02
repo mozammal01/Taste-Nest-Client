@@ -19,14 +19,14 @@ export default async function AdminMenuItems() {
   const freeDeliveryCount = menuItems.filter((item) => item.freeDelivery).length;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Menu Items</h1>
-          <p className="text-gray-500 mt-1">Manage your restaurant menu</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Menu Items</h1>
+          <p className="text-gray-500 mt-1 text-sm md:text-base">Manage your restaurant menu</p>
         </div>
-        <Button variant="glow" asChild className="p-5">
+        <Button variant="glow" asChild className="p-5 w-full sm:w-auto">
           <Link href="/admin/items/add-item">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -42,12 +42,12 @@ export default async function AdminMenuItems() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500 text-sm">Total Items</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{menuItems.length}</p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{menuItems.length}</p>
             </div>
             <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
               <svg
@@ -66,11 +66,11 @@ export default async function AdminMenuItems() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500 text-sm">Free Delivery</p>
-              <p className="text-3xl font-bold text-green-600 mt-1">{freeDeliveryCount}</p>
+              <p className="text-2xl md:text-3xl font-bold text-green-600 mt-1">{freeDeliveryCount}</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
               <svg
@@ -89,11 +89,11 @@ export default async function AdminMenuItems() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow col-span-1 sm:col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500 text-sm">Categories</p>
-              <p className="text-3xl font-bold text-blue-600 mt-1">{categories.length}</p>
+              <p className="text-2xl md:text-3xl font-bold text-blue-600 mt-1">{categories.length}</p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
               <svg
@@ -115,7 +115,7 @@ export default async function AdminMenuItems() {
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {menuItems.map((item) => (
           <FoodMenuCard key={item.id} item={item} userRole={user?.role} />
         ))}

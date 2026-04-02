@@ -166,34 +166,34 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
           <CardTitle className="text-2xl">{item.name}</CardTitle>
           <CardDescription>{item.content}</CardDescription>
         </CardContent>
-        <CardFooter className="flex justify-end items-center gap-4">
+        <CardFooter className="p-6 pt-0 mt-auto">
           {currentRole === "admin" ? (
-            <>
+            <div className="flex flex-col w-full gap-2">
               <AnimatedButton
                 onClick={handleDeleteItem}
-                className="cursor-pointer"
+                className="cursor-pointer w-full"
                 variant="ripple"
-                size="lg"
+                size="default"
                 disabled={isDeleting}
               >
                 {isDeleting ? "Deleting..." : "Delete Item"}
               </AnimatedButton>
               <AnimatedButton
                 onClick={() => handleEditItem(item.id)}
-                className="cursor-pointer"
+                className="cursor-pointer w-full"
                 variant="rippleYellow"
-                size="lg"
+                size="default"
               >
                 Edit Item
               </AnimatedButton>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="flex flex-col sm:flex-row w-full gap-2 sm:gap-4 justify-end items-center">
               <AnimatedButton
                 onClick={handleOrderNow}
-                className="cursor-pointer"
+                className="cursor-pointer flex-1 w-full"
                 variant="ripple"
-                size="lg"
+                size="default"
                 disabled={isOrderingNow || isAddingToCart}
               >
                 {isOrderingNow ? (
@@ -207,9 +207,9 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
               </AnimatedButton>
               <AnimatedButton
                 onClick={() => handleAddToCart(item.id)}
-                className="cursor-pointer"
+                className="cursor-pointer flex-1 w-full"
                 variant="rippleYellow"
-                size="lg"
+                size="default"
                 disabled={isAddingToCart || isOrderingNow}
               >
                 {isAddingToCart ? (
@@ -220,11 +220,11 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
                 ) : (
                   <span className="flex items-center gap-2">
                     <ShoppingCart className="w-4 h-4" />
-                    Add to Cart
+                    Add
                   </span>
                 )}
               </AnimatedButton>
-            </>
+            </div>
           )}
         </CardFooter>
       </Card>
