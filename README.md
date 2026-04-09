@@ -8,8 +8,8 @@ TasteNest is a feature-rich, production-ready, and professional restaurant web a
 
 ## 🔑 Admin Credentials
 To access the Super Admin Dashboard and manage the restaurant, log in using the following credentials:
-- **Email:** `mozammalhaq01@gmail.com`
-- **Password:** *(Use the password you created during registration)*
+- **Email:** `admin@tastenest.com`
+- **Password:** `12345678`
 
 > **Note**: This account is structurally assigned as the `super_admin`. It grants full system authority, meaning you can manage other admin roles, view revenue charts, and utilize cascade delete functions safely.
 
