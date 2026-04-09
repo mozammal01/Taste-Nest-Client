@@ -17,7 +17,7 @@ import GithubIcon from "@/components/icons/GithubIcon";
 import { z } from "zod";
 import { registerSchema } from "@/zod/auth.schema";
 import { toast } from "sonner";
-import { Mail, ShieldCheck, Loader2, ArrowRight, X } from "lucide-react";
+import { Mail, ShieldCheck, Loader2, ArrowRight, X, User, Phone, CheckCircle2 } from "lucide-react";
 
 export default function SignupRightSide() {
   const ref = useRef(null);
@@ -181,10 +181,10 @@ export default function SignupRightSide() {
 
               {/* Header */}
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2 font-outfit">Create Account</h2>
-                <p className="text-gray-600 font-medium italic opacity-70">
+                <h2 className="text-4xl font-black text-gray-900 mb-2 font-outfit tracking-tight">Join TasteNest</h2>
+                <p className="text-gray-500 font-medium italic opacity-80">
                   Already have an account?{" "}
-                  <Link href="/signin" className="text-primary font-bold hover:underline">
+                  <Link href="/signin" className="text-primary font-black hover:underline ml-1">
                     Sign In
                   </Link>
                 </p>
@@ -222,10 +222,13 @@ export default function SignupRightSide() {
               </div>
 
               {/* Divider */}
-              <div className="relative mb-6 flex items-center gap-4">
-                <div className="flex-1 border-t border-slate-100" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Secure Registration</span>
-                <div className="flex-1 border-t border-slate-100" />
+              <div className="relative mb-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-100" />
+                </div>
+                <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  <span className="px-4 bg-linear-to-br from-gray-50 to-white">Secure Registration</span>
+                </div>
               </div>
 
               {/* Form */}
@@ -237,9 +240,7 @@ export default function SignupRightSide() {
                   </Label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                       <svg className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
+                       <User className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
                     </div>
                     <Input
                       id="fullName"
@@ -248,7 +249,7 @@ export default function SignupRightSide() {
                       placeholder="e.g. Mozammal Haq"
                       value={formData.fullName}
                       onChange={handleChange}
-                      className="pl-11 h-12 bg-white rounded-xl border-slate-200 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-medium"
+                      className="pl-11 h-12 bg-white rounded-2xl border-slate-200 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-medium transition-all shadow-sm"
                       required
                     />
                   </div>
@@ -270,7 +271,7 @@ export default function SignupRightSide() {
                       placeholder="hello@example.com"
                       value={formData.email}
                       onChange={handleChange}
-                      className="pl-11 h-12 bg-white rounded-xl border-slate-200 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-medium"
+                      className="pl-11 h-12 bg-white rounded-2xl border-slate-200 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-medium transition-all shadow-sm"
                       required
                     />
                   </div>
@@ -283,9 +284,7 @@ export default function SignupRightSide() {
                   </Label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                       <svg className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
+                       <Phone className="h-4.5 w-4.5 text-slate-400 group-focus-within:text-primary transition-colors" />
                     </div>
                     <Input
                       id="phone"
@@ -294,7 +293,7 @@ export default function SignupRightSide() {
                       placeholder="+880"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="pl-11 h-12 bg-white rounded-xl border-slate-200 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-medium"
+                      className="pl-11 h-12 bg-white rounded-2xl border-slate-200 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-medium transition-all shadow-sm"
                     />
                   </div>
                 </div>
@@ -349,7 +348,7 @@ export default function SignupRightSide() {
                 </div>
 
                 {/* Submit Button */}
-                <AnimatedButton type="submit" variant="ripple" size="lg" className="w-full h-14 text-base font-black uppercase tracking-[0.1em] shadow-xl shadow-primary/25" disabled={isLoading}>
+                <AnimatedButton type="submit" variant="ripple" size="lg" className="w-full h-14 rounded-2xl text-base font-black uppercase tracking-[0.1em] bg-primary text-white shadow-xl shadow-primary/25" disabled={isLoading}>
                   {isLoading ? <Loader2 className="animate-spin mr-2" /> : null}
                   {isLoading ? "Validating Account..." : "Create Account"}
                 </AnimatedButton>

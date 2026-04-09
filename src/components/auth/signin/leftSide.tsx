@@ -17,6 +17,7 @@ import { z } from "zod";
 import { loginSchema } from "@/zod/auth.schema";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { User, ShieldCheck, Mail, Lock, Eye, EyeOff, Sparkles } from "lucide-react";
 
 export default function SigninLeftSide() {
   const ref = useRef(null);
@@ -101,6 +102,36 @@ export default function SigninLeftSide() {
     }
   };
 
+  const handleDemoLogin = async (role: "user" | "admin") => {
+    setIsLoading(true);
+    const credentials = {
+      user: { email: "user@tastenest.com", password: "Password123!" },
+      admin: { email: "admin@tastenest.com", password: "Password123!" }
+    };
+
+    const demoData = credentials[role];
+    setFormData(demoData);
+
+    try {
+      const result = await signIn.email({
+        email: demoData.email,
+        password: demoData.password,
+      });
+
+      if (result?.error) {
+        toast.error(result.error.message || "Demo login failed");
+      } else {
+        toast.success(`Logged in as Demo ${role === "admin" ? "Admin" : "User"}`);
+        router.push(searchParams.get("callbackUrl") || (role === "admin" ? "/admin" : "/"));
+        router.refresh();
+      }
+    } catch {
+      toast.error("An error occurred during demo login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-linear-to-br from-white to-gray-50">
       <motion.div
@@ -175,15 +206,8 @@ export default function SigninLeftSide() {
               Email Address
             </Label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                <Mail className="h-5 w-5 text-gray-400" />
               </div>
               <Input
                 id="email"
@@ -192,7 +216,7 @@ export default function SigninLeftSide() {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
-                className="pl-10 h-12 border-gray-300 focus:border-primary focus:ring-primary/20"
+                className="pl-12 h-14 rounded-2xl border-gray-200 bg-white dark:bg-slate-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium"
                 required
               />
             </div>
@@ -209,15 +233,8 @@ export default function SigninLeftSide() {
               </Link>
             </div>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                <Lock className="h-5 w-5 text-gray-400" />
               </div>
               <Input
                 id="password"
@@ -226,44 +243,15 @@ export default function SigninLeftSide() {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
-                className="pl-10 pr-10 h-12 border-gray-300 focus:border-primary focus:ring-primary/20"
+                className="pl-12 pr-12 h-14 rounded-2xl border-gray-200 bg-white dark:bg-slate-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center z-10"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center z-10 text-gray-400 hover:text-primary transition-colors"
               >
-                {showPassword ? (
-                  <svg
-                    className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                )}
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
             </div>
           </div>
@@ -284,10 +272,49 @@ export default function SigninLeftSide() {
           </div>
 
           {/* Submit Button */}
-          <AnimatedButton type="submit" variant="ripple" size="lg" className="w-full h-12 text-base font-semibold" disabled={isLoading}>
+          <AnimatedButton type="submit" variant="ripple" size="lg" className="w-full h-14 rounded-2xl text-lg font-black bg-primary text-white shadow-xl shadow-primary/30" disabled={isLoading}>
             {isLoading ? "Signing In..." : "Sign In"}
           </AnimatedButton>
         </form>
+
+        {/* Demo Accounts */}
+        <div className="mt-8 space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="h-px flex-1 bg-gray-200" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Quick Access</span>
+            <div className="h-px flex-1 bg-gray-200" />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => handleDemoLogin("user")}
+              disabled={isLoading}
+              className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-primary/50 hover:shadow-xl transition-all duration-300"
+            >
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:bg-primary/10 transition-colors">
+                <User className="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" />
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-black text-slate-900 leading-tight">Demo User</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Fast Login</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => handleDemoLogin("admin")}
+              disabled={isLoading}
+              className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-primary/50 hover:shadow-xl transition-all duration-300"
+            >
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:bg-amber-100 transition-colors">
+                <ShieldCheck className="w-5 h-5 text-slate-400 group-hover:text-amber-600 transition-colors" />
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-black text-slate-900 leading-tight">Demo Admin</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Dashboard View</p>
+              </div>
+            </button>
+          </div>
+        </div>
 
         {/* Secure Notice */}
         <div className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-500">
