@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { dishes } from "@/constants/dishes";
 import SubTitle from "../shared/subTitle";
 

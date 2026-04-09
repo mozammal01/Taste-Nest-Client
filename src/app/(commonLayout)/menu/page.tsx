@@ -6,10 +6,11 @@ import { Suspense } from "react";
 import { MenuLoadingSkeleton } from "@/components/menu/foodMenu";
 
 export default async function MenuPage(props: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; search?: string }>;
 }) {
   const searchParams = await props.searchParams;
   const category = searchParams.category || "all";
+  const search = searchParams.search;
 
   return (
     <div className="container mx-auto py-10">
@@ -23,11 +24,12 @@ export default async function MenuPage(props: {
         </div>
 
         <div>
-          <Suspense key={category} fallback={<MenuLoadingSkeleton />}>
-            <Menu category={category} />
+          <Suspense key={`${category}-${search || ""}`} fallback={<MenuLoadingSkeleton />}>
+            <Menu category={category} search={search} />
           </Suspense>
         </div>
       </MenuWrapper>
     </div>
   );
 }
+

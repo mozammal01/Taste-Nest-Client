@@ -12,8 +12,7 @@ import SteakIcon from "../icons/SteakIcon";
 import CoffeeIcon from "../icons/CoffeeIcon";
 import BurgerIcon from "../icons/BurgerIcon";
 import mask from "@/../public/categories/mask.png";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
 import Link from "next/link";
 

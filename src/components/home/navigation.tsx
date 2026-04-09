@@ -522,9 +522,15 @@ export default function Navigation() {
                     placeholder="Search for dishes, flavors, ingredients..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && searchQuery.trim()) {
+                        handleResultClick(searchQuery);
+                      }
+                    }}
                     className="flex-1 bg-transparent outline-none text-xl font-bold text-slate-900 placeholder:text-slate-300 placeholder:font-medium"
                     autoFocus
                   />
+
                   {isSearching ? (
                     <Loader2 className="w-5 h-5 text-primary animate-spin" />
                   ) : searchQuery && (

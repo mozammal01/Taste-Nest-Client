@@ -2,7 +2,7 @@ import FoodMenu from "./foodMenu";
 import { getMenuItems, getMenuItemsByCategory } from "@/lib/actions/menu";
 import { getCurrentUser } from "@/lib/auth";
 
-export default async function Menu({ category }: { category?: string }) {
+export default async function Menu({ category, search }: { category?: string; search?: string }) {
   // Normalize category for backend/matching
   const normalizedCategory = category?.toLowerCase().trim();
   
@@ -14,5 +14,6 @@ export default async function Menu({ category }: { category?: string }) {
 
   const [menuItems, user] = await Promise.all([fetchMenuItems, getCurrentUser()]);
 
-  return <FoodMenu items={menuItems} user={user} />;
+  return <FoodMenu items={menuItems} user={user} search={search} />;
 }
+

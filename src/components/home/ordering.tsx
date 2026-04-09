@@ -1,17 +1,13 @@
 "use client";
 import Image from "next/image";
-import orderingImg from "@/../public/icons/ordering-symbol.png";
 import appleIcon from "@/../public/icons/apple.png";
 import playIcon from "@/../public/icons/play.png";
 import backgroundImg from "@/../public/ordering/bg.png";
 import phoneImg from "@/../public/ordering/mobile.png";
-import bikeImg from "@/../public/ordering/bike.png";
-import leafImg from "@/../public/ordering/leaf.png";
 import pizzaImg from "@/../public/ordering/pizza.png";
 import saladImg from "@/../public/ordering/salad.png";
 import { AnimatedButton } from "../ui/animated-button";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 

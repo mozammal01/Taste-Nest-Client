@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, Users, MessageSquare, ChevronRight, CheckCircle2, Star, Utensils, Sparkles, Phone, PartyPopper, AlertCircle } from "lucide-react";
 import { createReservation } from "@/lib/actions/reservation";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import { z } from "zod";

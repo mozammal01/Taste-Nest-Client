@@ -27,7 +27,9 @@ export default function FullMenuCategories() {
   const { startLoading } = useMenu();
 
   // DERIVE initial active from URL
-  const activeFromUrl = params.get("category") ?? "all";
+  const searchParam = params.get("search");
+  const activeFromUrl = searchParam ? null : (params.get("category") ?? "all");
+
 
   // Optimistic state for immediate feedback
   const [optimisticActive, setOptimisticActive] = useState(activeFromUrl);

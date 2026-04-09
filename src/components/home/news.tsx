@@ -5,21 +5,16 @@ import news2Img from "@/../public/news/resturent.png";
 import authorImg from "@/../public/about/author.png";
 import endSectionImg from "@/../public/news/end-section.png";
 import instaIcon from "@/../public/icons/instaIcon.png";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
-import { Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function News() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   return (
     <>
       <div id="news" className="container mx-auto my-32 px-6">
         <div className="text-center mb-16">
           <motion.div
-            ref={ref}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

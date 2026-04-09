@@ -62,7 +62,9 @@ export default function Banner() {
                 <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all">
                   <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-current border-b-[6px] border-b-transparent ml-1" />
                 </div>
+                <Link href='under-construction'>
                 <span className="font-bold opacity-80 group-hover:opacity-100 transition-opacity">Watch Story</span>
+                </Link>
               </div>
             </div>
           </motion.div>

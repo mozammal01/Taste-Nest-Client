@@ -3,8 +3,7 @@ import nicholas from "@/../public/experts/expert1.png";
 import jamesJohnson from "@/../public/experts/expert2.png";
 import marcos from "@/../public/experts/expert3.png";
 import signatureImg from "@/../public/experts/signature.png";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import SubTitle from "../shared/subTitle";
 import ExpertsCircle from "../experts-circle/experts-circle";
 
