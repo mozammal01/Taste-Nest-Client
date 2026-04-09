@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface AnimatedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface AnimatedButtonProps extends HTMLMotionProps<"button"> {
   variant?: "primary" | "outline" | "ghost" | "ripple";
   size?: "sm" | "md" | "lg" | "xl";
   isLoading?: boolean;
@@ -31,18 +31,18 @@ export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButton
 
     return (
       <motion.button
-        ref={ref as any}
+        ref={ref}
         whileHover={{ y: -2 }}
         whileTap={{ scale: 0.98 }}
         className={cn(baseStyles, variants[variant], sizes[size], className)}
-        {...(props as any)}
+        {...props}
       >
         <div className="absolute inset-0 bg-white/20 translate-x-[-101%] group-hover:translate-x-[0%] transition-transform duration-500 rounded-inherit" />
         <span className="relative flex items-center gap-2">
           {isLoading ? (
             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : null}
-          {children}
+          {children as React.ReactNode}
         </span>
       </motion.button>
     );

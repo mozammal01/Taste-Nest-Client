@@ -23,13 +23,15 @@ export default function SearchFilterBar() {
   const [isFocused, setIsFocused] = useState(false);
   const currentSort = searchParams.get("sort") || "default";
 
-  // Sync search value with URL (only if changed to avoid cascading renders)
+  // Sync search value with URL
   useEffect(() => {
     const searchFromUrl = searchParams.get("search") || "";
-    if (searchFromUrl !== searchValue) {
-      setSearchValue(searchFromUrl);
-    }
-  }, [searchParams, searchValue]);
+    // Only update state if it differs from the URL to avoid cycles
+    setSearchValue((current) => {
+      if (searchFromUrl !== current) return searchFromUrl;
+      return current;
+    });
+  }, [searchParams]);
 
   const updateParams = (updates: Record<string, string | null>) => {
     startLoading();

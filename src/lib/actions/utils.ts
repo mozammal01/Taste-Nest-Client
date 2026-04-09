@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-const SESSION_COOKIE_NAME = "better-auth.session_token";
+// Deleted unused SESSION_COOKIE_NAME
 
 export async function getAuthHeaders(): Promise<HeadersInit> {
   const cookieStore = await cookies();
