@@ -265,10 +265,12 @@ export default function Navigation() {
         animate={{
           y: 0,
           top: isScrolled ? 0 : 32,
-          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.8)",
-          backdropFilter: isScrolled ? "blur(12px)" : "blur(4px)",
+          backgroundColor: isScrolled 
+            ? "var(--nav-bg-scrolled, rgba(255, 255, 255, 0.95))" 
+            : "var(--nav-bg-initial, rgba(255, 255, 255, 0.4))",
+          backdropFilter: isScrolled ? "blur(20px)" : "blur(8px)",
           boxShadow: isScrolled
-            ? "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+            ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
             : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         }}
         transition={{

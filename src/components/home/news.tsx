@@ -32,7 +32,7 @@ export default function News() {
           {/* Article 1 */}
           <Link 
             href="/under-construction"
-            className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 group"
+            className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-[32px] border border-slate-100 shadow-xl shadow-slate-100/50 group"
           >
             <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl">
               <Image className="object-cover transition-transform duration-700 group-hover:scale-110" src={news1Img} alt="Truffle Alchemy" fill />
@@ -54,7 +54,7 @@ export default function News() {
           {/* Article 2 */}
           <Link 
             href="/under-construction"
-            className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 group"
+            className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-[32px] border border-slate-100 shadow-xl shadow-slate-100/50 group"
           >
             <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl">
               <Image className="object-cover transition-transform duration-700 group-hover:scale-110" src={news2Img} alt="Sustainable Sourcing" fill />

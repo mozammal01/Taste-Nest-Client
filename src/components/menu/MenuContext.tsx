@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from "react";
 
 interface MenuContextType {
   isLoading: boolean;
@@ -21,7 +21,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  return <MenuContext.Provider value={{ isLoading, startLoading, stopLoading }}>{children}</MenuContext.Provider>;
+  const value = useMemo(() => ({ 
+    isLoading, 
+    startLoading, 
+    stopLoading 
+  }), [isLoading, startLoading, stopLoading]);
+
+  return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 }
 
 export function useMenu() {

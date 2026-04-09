@@ -154,10 +154,10 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
       transition={{ duration: 0.5, ease: "easeInOut" }}
       className="h-full"
     >
-      <Card className="h-full flex flex-col min-h-[500px]">
+      <Card className="h-full flex flex-col min-h-[500px] rounded-[32px] border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden hover:shadow-2xl transition-all duration-500">
         <CardHeader className="p-0 overflow-hidden relative group">
           <Lens zoomFactor={2} lensSize={150} isStatic={false} ariaLabel="Zoom Area">
-            <div className="w-full h-[300px] overflow-hidden rounded-t-2xl relative">
+            <div className="w-full h-[300px] overflow-hidden rounded-t-[32px] relative">
               <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               
               {/* Overlay Tags */}
@@ -176,7 +176,7 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
 
               {/* Price Tag */}
               <div className="absolute bottom-4 right-4 z-20">
-                <div className="bg-white dark:bg-slate-900 px-4 py-2 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800">
+                <div className="bg-white dark:bg-slate-900 px-4 py-2 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800">
                   <span className="text-2xl font-black text-primary italic leading-none">
                     ${item.price}
                   </span>

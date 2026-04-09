@@ -7,6 +7,8 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
 
+import Image from "next/image";
+
 export default function Banner() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -16,12 +18,18 @@ export default function Banner() {
       initial={{ opacity: 0 }}
       animate={{ opacity: isInView ? 1 : 0 }}
       transition={{ duration: 1 }}
-      style={{ 
-        backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url(${bannerImage.src})`,
-        backgroundAttachment: 'fixed'
-      }}
-      className="bg-cover bg-center min-h-[70vh] flex items-center relative overflow-hidden"
+      className="relative min-h-[70vh] flex items-center overflow-hidden"
     >
+      <Image 
+        src={bannerImage} 
+        alt="TasteNest Hero" 
+        fill 
+        priority 
+        className="object-cover object-center -z-10"
+        placeholder="blur"
+      />
+      <div className="absolute inset-0 bg-black/60 -z-10" />
+
       {/* Decorative Blur */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/20 blur-[120px] rounded-full -mr-20 -mt-20 anim-pulse" />
 

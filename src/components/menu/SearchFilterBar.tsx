@@ -23,15 +23,8 @@ export default function SearchFilterBar() {
   const [isFocused, setIsFocused] = useState(false);
   const currentSort = searchParams.get("sort") || "default";
 
-  // Sync search value with URL
-  useEffect(() => {
-    const searchFromUrl = searchParams.get("search") || "";
-    // Only update state if it differs from the URL to avoid cycles
-    setSearchValue((current) => {
-      if (searchFromUrl !== current) return searchFromUrl;
-      return current;
-    });
-  }, [searchParams]);
+  // Use a unique key on the input to ensure it resets when the URL search param changes externally
+  const searchFromUrl = searchParams.get("search") || "";
 
   const updateParams = (updates: Record<string, string | null>) => {
     startLoading();
@@ -77,8 +70,9 @@ export default function SearchFilterBar() {
             )} />
           </div>
           <input
+            key={searchFromUrl}
             type="text"
-            value={searchValue}
+            defaultValue={searchFromUrl}
             onChange={(e) => setSearchValue(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
