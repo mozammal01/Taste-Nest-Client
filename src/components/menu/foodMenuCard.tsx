@@ -18,7 +18,7 @@ import type { MenuItem } from "@/types/menuItems";
 import { deleteMenuItem } from "@/lib/actions/menu";
 import { createCartItem } from "@/lib/actions/cart";
 import { toast } from "sonner";
-import { ShoppingCart, Check, AlertCircle } from "lucide-react";
+import { ShoppingCart, Check, AlertCircle, Eye, Star } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
 import { DeleteConfirmationModal } from "../ui/delete-confirmation-modal";
@@ -155,87 +155,123 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
       className="h-full"
     >
       <Card className="h-full flex flex-col min-h-[500px]">
-        <CardHeader>
+        <CardHeader className="p-0 overflow-hidden relative group">
           <Lens zoomFactor={2} lensSize={150} isStatic={false} ariaLabel="Zoom Area">
             <div className="w-full h-[300px] overflow-hidden rounded-t-2xl relative">
-              <Image src={item.image} alt={item.name} fill className="object-cover" />
-              <div className="absolute top-2 left-1 w-full h-full flex justify-start items-start gap-2">
+              <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              
+              {/* Overlay Tags */}
+              <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
                 {item.discount && (
-                  <div className="bg-primary text-white w-fit px-2 rounded-full">
-                    {item.discount}
+                  <div className="bg-primary text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
+                    {item.discount} OFF
                   </div>
                 )}
                 {item.freeDelivery && (
-                  <div className="bg-primary text-white w-fit px-2 rounded-full">
-                    {item.freeDelivery ? "Free Delivery" : ""}
+                  <div className="bg-green-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
+                    FREE DELIVERY
                   </div>
                 )}
               </div>
+
+              {/* Price Tag */}
+              <div className="absolute bottom-4 right-4 z-20">
+                <div className="bg-white dark:bg-slate-900 px-4 py-2 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800">
+                  <span className="text-2xl font-black text-primary italic leading-none">
+                    ${item.price}
+                  </span>
+                </div>
+              </div>
+
+              {/* Gradient Overlay */}
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/60 to-transparent pointer-events-none" />
             </div>
           </Lens>
         </CardHeader>
-        <CardContent className="flex-1 space-y-2">
-          <CardTitle className="text-2xl">{item.name}</CardTitle>
+        <CardContent className="flex-1 space-y-3 pt-6">
+          <div className="flex justify-between items-start">
+            <div className="space-y-1">
+              <div className="text-xs font-black text-primary uppercase tracking-widest bg-primary/5 w-fit px-2 py-0.5 rounded-md">
+                {item.category}
+              </div>
+              <CardTitle className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+                {item.name}
+              </CardTitle>
+            </div>
+            <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg">
+              <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+              <span className="text-sm font-black text-yellow-700 dark:text-yellow-500">4.9</span>
+            </div>
+          </div>
           <div className="min-h-[3rem]">
-            <CardDescription className="line-clamp-2">{item.content}</CardDescription>
+            <CardDescription className="line-clamp-2 text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+              {item.content}
+            </CardDescription>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end items-center gap-4 mt-auto">
+        <CardFooter className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-3 p-6 pt-0 mt-auto">
           {currentRole === "admin" ? (
             <>
               <AnimatedButton
                 onClick={handleDeleteItem}
-                className="cursor-pointer"
+                className="flex-1 h-12 rounded-xl font-bold"
                 variant="ripple"
                 size="lg"
                 disabled={isDeleting}
               >
-                {isDeleting ? "Deleting..." : "Delete Item"}
+                {isDeleting ? "Deleting..." : "Delete"}
               </AnimatedButton>
               <AnimatedButton
                 onClick={() => handleEditItem(item.id)}
-                className="cursor-pointer"
+                className="flex-1 h-12 rounded-xl font-bold"
                 variant="rippleYellow"
                 size="lg"
               >
-                Edit Item
+                Edit
               </AnimatedButton>
             </>
           ) : (
             <>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <AnimatedButton
+                  onClick={() => router.push(`/menu/${item.id}`)}
+                  className="w-12 h-12 p-0 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary border border-slate-200 dark:border-slate-700"
+                  variant="ripple"
+                  size="icon"
+                  aria-label="View Details"
+                >
+                  <Eye className="w-5 h-5" />
+                </AnimatedButton>
+                
+                <AnimatedButton
+                  onClick={() => handleAddToCart(item.id)}
+                  className="flex-1 min-w-[120px] h-12 rounded-xl font-bold"
+                  variant="rippleYellow"
+                  size="lg"
+                  disabled={isAddingToCart || isOrderingNow}
+                >
+                  {isAddingToCart ? (
+                    <span className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <ShoppingCart className="w-4 h-4" />
+                      Cart
+                    </span>
+                  )}
+                </AnimatedButton>
+              </div>
+
               <AnimatedButton
                 onClick={handleOrderNow}
-                className="cursor-pointer"
+                className="flex-1 sm:flex-none sm:min-w-[140px] h-12 rounded-xl font-black bg-primary text-white shadow-lg shadow-primary/30"
                 variant="ripple"
                 size="lg"
                 disabled={isOrderingNow || isAddingToCart}
               >
                 {isOrderingNow ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Processing...
-                  </span>
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
                   "Order Now"
-                )}
-              </AnimatedButton>
-              <AnimatedButton
-                onClick={() => handleAddToCart(item.id)}
-                className="cursor-pointer"
-                variant="rippleYellow"
-                size="lg"
-                disabled={isAddingToCart || isOrderingNow}
-              >
-                {isAddingToCart ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Adding...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <ShoppingCart className="w-4 h-4" />
-                    Add to Cart
-                  </span>
                 )}
               </AnimatedButton>
             </>
