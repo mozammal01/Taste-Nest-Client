@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Trophy, CreditCard } from "lucide-react";
+import { LogOut, Settings, ShoppingBag, Calendar, ChevronDown, LayoutDashboard, Trophy, CreditCard, ShieldCheck, BarChart3, Users as UsersIcon } from "lucide-react";
 
 export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) {
   const { data: session, isPending: isSessionPending } = useSession();
@@ -101,7 +101,19 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
     { label: "My Profile", href: "/profile", icon: Settings },
   ];
 
-  const menuItems = userRole === "admin" ? adminMenuItems : userMenuItems;
+  const superAdminMenuItems = [
+    { label: "Super Admin Panel", href: "/admin", icon: ShieldCheck },
+    { label: "User Management", href: "/admin/users", icon: UsersIcon },
+    { label: "Financial Audits", href: "/admin/payments", icon: CreditCard },
+    { label: "System Analytics", href: "/admin", icon: BarChart3 },
+    { label: "Elite Settings", href: "/profile", icon: Settings },
+  ];
+
+  const menuItems = userRole === "super_admin" 
+    ? superAdminMenuItems 
+    : userRole === "admin" 
+      ? adminMenuItems 
+      : userMenuItems;
 
   // Authenticated - show user menu
   return (
@@ -125,6 +137,10 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
             <div className="w-full h-full rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold text-lg shadow-inner">
               {session.user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
+          )}
+          {/* Role badge for Super Admin */}
+          {userRole === "super_admin" && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-[8px] font-black flex items-center justify-center rounded-full text-white border border-white z-20">S</span>
           )}
           {/* Online indicator */}
           <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full z-10" />

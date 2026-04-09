@@ -27,6 +27,8 @@ export default function Navigation() {
   const [allMenuItems, setAllMenuItems] = useState<MenuItem[]>([]);
   const [filteredResults, setFilteredResults] = useState<MenuItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const [showAiHint, setShowAiHint] = useState(false);
   
   const pathname = usePathname();
   const router = useRouter();
@@ -68,10 +70,25 @@ export default function Navigation() {
     const timer = setTimeout(() => {
       if (searchQuery.trim() === "") {
         setFilteredResults([]);
+        setAiSuggestions([]);
+        setShowAiHint(false);
         return;
       }
 
       const query = searchQuery.toLowerCase();
+      
+      // AI Logic: Smart Suggestions
+      const suggestions = allMenuItems
+        .filter(item => 
+          item.name.toLowerCase().startsWith(query) || 
+          item.category.toLowerCase().includes(query)
+        )
+        .map(item => item.name)
+        .slice(0, 3);
+      
+      setAiSuggestions(suggestions);
+      setShowAiHint(suggestions.length > 0 && suggestions[0].toLowerCase() !== query);
+
       const filtered = allMenuItems.filter(
         (item) =>
           item.name.toLowerCase().includes(query) ||
@@ -544,9 +561,17 @@ export default function Navigation() {
                         handleResultClick(searchQuery);
                       }
                     }}
-                    className="flex-1 bg-transparent outline-none text-xl font-bold text-slate-900 dark:text-white placeholder:text-slate-300 dark:placeholder:text-slate-600 placeholder:font-medium"
+                    className="flex-1 bg-transparent outline-none text-xl font-bold text-slate-900 dark:text-white placeholder:text-slate-300 dark:placeholder:text-slate-600 placeholder:font-medium relative z-10"
                     autoFocus
                   />
+                  
+                  {/* AI Type-ahead Hint */}
+                  {showAiHint && searchQuery && aiSuggestions[0] && (
+                    <div className="absolute left-[88px] top-[26px] text-xl font-bold text-slate-200 dark:text-slate-700 pointer-events-none select-none">
+                      <span className="opacity-0">{searchQuery}</span>
+                      <span>{aiSuggestions[0].slice(searchQuery.length)}</span>
+                    </div>
+                  )}
 
                   {isSearching ? (
                     <Loader2 className="w-5 h-5 text-primary animate-spin" />
@@ -559,6 +584,32 @@ export default function Navigation() {
                     </button>
                   )}
                 </div>
+                
+                {/* AI Suggestion Pills */}
+                <AnimatePresence>
+                  {aiSuggestions.length > 0 && searchQuery && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="mt-4 flex items-center gap-3"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-primary animate-pulse" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">AI Suggestions:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {aiSuggestions.map((suggestion) => (
+                           <button
+                            key={suggestion}
+                            onClick={() => setSearchQuery(suggestion)}
+                            className="text-[11px] font-bold text-primary hover:underline"
+                           >
+                            {suggestion}
+                           </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Results Area */}

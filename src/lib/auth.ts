@@ -3,7 +3,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export type UserRole = "admin" | "user" | (string & {});
+export type UserRole = "super_admin" | "admin" | "user" | (string & {});
 
 export interface RewardRecord {
   type: 'earn' | 'redeem';
@@ -98,7 +98,7 @@ export async function requireAuth(options?: { callbackUrl?: string; message?: st
  */
 export async function requireAdmin(options?: { redirectTo?: string }) {
   const user = await requireAuth();
-  if (user.role === "admin") return user;
+  if (user.role === "admin" || user.role === "super_admin") return user;
   redirect(options?.redirectTo ?? "/unauthorized");
 }
 

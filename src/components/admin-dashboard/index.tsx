@@ -18,6 +18,7 @@ import {
   Calendar,
   ChevronRight
 } from "lucide-react";
+import { DashboardCharts } from "./DashboardCharts";
 
 async function getAdminStats() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -163,6 +164,14 @@ export default async function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Analytics Charts */}
+      {(stats?.revenueTrend || stats?.orderDistribution) && (
+        <DashboardCharts 
+          revenueTrend={stats.revenueTrend || []} 
+          orderDistribution={stats.orderDistribution || []} 
+        />
+      )}
 
       {/* Quick Actions & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
