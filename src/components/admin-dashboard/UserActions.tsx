@@ -11,10 +11,11 @@ type UserActionsProps = {
   userId: string;
   userName: string;
   currentRole: string;
+  currentUserRole: string;
   token?: string;
 };
 
-export default function UserActions({ userId, userName, currentRole }: Omit<UserActionsProps, "token">) {
+export default function UserActions({ userId, userName, currentRole, currentUserRole }: Omit<UserActionsProps, "token">) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
@@ -22,8 +23,10 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
   const [showForceDeleteModal, setShowForceDeleteModal] = useState(false);
   const [newRole, setNewRole] = useState(currentRole);
 
+  const canModify = currentUserRole === "super_admin" || (currentRole !== "admin" && currentRole !== "super_admin");
+
   const handleDelete = async () => {
-    if (currentRole === "admin") {
+    if (!canModify) {
       toast.error("Administrators cannot be deleted for security reasons.");
       setShowDeleteModal(false);
       return;
@@ -45,7 +48,7 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
   };
 
   const handleForceDelete = async () => {
-    if (currentRole === "admin") {
+    if (!canModify) {
       toast.error("Critical Security Error: Admin accounts cannot be forcefully deleted.");
       setShowForceDeleteModal(false);
       return;
@@ -99,6 +102,7 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
             >
               <option value="user">Member</option>
               <option value="admin">Admin</option>
+              {currentUserRole === 'super_admin' && <option value="super_admin">Super Admin</option>}
             </select>
             <button
               onClick={handleUpdateRole}
@@ -115,6 +119,11 @@ export default function UserActions({ userId, userName, currentRole }: Omit<User
               <X size={14} strokeWidth={3} />
             </button>
           </motion.div>
+        ) : !canModify ? (
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-slate-100 rounded-xl bg-slate-50 text-slate-400" title="Protected Account - Only Super Admin can modify">
+            <ShieldAlert size={14} />
+            <span className="text-[10px] font-black uppercase tracking-widest leading-none">Locked</span>
+          </div>
         ) : (
           <>
             <button

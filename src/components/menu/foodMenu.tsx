@@ -15,6 +15,8 @@ interface FoodMenuProps {
   items: MenuItem[];
   user: CurrentUser | null;
   search?: string;
+  minPrice?: string;
+  maxPrice?: string;
 }
 
 
@@ -56,7 +58,7 @@ export function MenuLoadingSkeleton() {
   );
 }
 
-export default function FoodMenu({ items, user, search }: FoodMenuProps) {
+export default function FoodMenu({ items, user, search, minPrice, maxPrice }: FoodMenuProps) {
   const params = useSearchParams();
   const router = useRouter();
   const category = params.get("category");
@@ -79,6 +81,20 @@ export default function FoodMenu({ items, user, search }: FoodMenuProps) {
         item.content.toLowerCase().includes(lowerSearch)
       );
     }
+    
+    if (minPrice) {
+      const min = parseFloat(minPrice);
+      if (!isNaN(min)) {
+        filtered = filtered.filter((item) => item.price >= min);
+      }
+    }
+
+    if (maxPrice) {
+      const max = parseFloat(maxPrice);
+      if (!isNaN(max)) {
+        filtered = filtered.filter((item) => item.price <= max);
+      }
+    }
 
     const sort = params.get("sort");
     const sorted = [...filtered];
@@ -92,11 +108,13 @@ export default function FoodMenu({ items, user, search }: FoodMenuProps) {
     }
 
     return sorted;
-  }, [items, search, params]);
+  }, [items, search, minPrice, maxPrice, params]);
 
   const clearSearch = () => {
     const newParams = new URLSearchParams(params.toString());
     newParams.delete("search");
+    newParams.delete("minPrice");
+    newParams.delete("maxPrice");
     router.push(`/menu?${newParams.toString()}`);
   };
 
@@ -109,7 +127,7 @@ export default function FoodMenu({ items, user, search }: FoodMenuProps) {
   return (
     <div className="space-y-8 my-12">
       <AnimatePresence mode="wait">
-        {search && (
+        {(search || minPrice || maxPrice) && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -123,7 +141,9 @@ export default function FoodMenu({ items, user, search }: FoodMenuProps) {
               <div>
                 <p className="text-xs font-black uppercase tracking-widest text-primary/60">Search Results</p>
                 <p className="text-lg font-bold text-slate-900">
-                  Showing matches for &quot;<span className="text-primary">{search}</span>&quot;
+                  {search && <span>Showing matches for &quot;<span className="text-primary">{search}</span>&quot;</span>}
+                  {minPrice && <span> (Min: ${minPrice})</span>}
+                  {maxPrice && <span> (Max: ${maxPrice})</span>}
                 </p>
               </div>
             </div>
@@ -157,7 +177,7 @@ export default function FoodMenu({ items, user, search }: FoodMenuProps) {
         </div>
       ) : (
         <motion.div
-          key={`${category || "all"}-${search || ""}`}
+          key={`${category || "all"}-${search || ""}-${minPrice || ""}-${maxPrice || ""}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}

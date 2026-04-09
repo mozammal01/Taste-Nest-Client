@@ -13,12 +13,14 @@ export const metadata: Metadata = {
 };
 
 export default async function MenuPage(props: {
-  searchParams: Promise<{ category?: string; search?: string; sort?: string }>;
+  searchParams: Promise<{ category?: string; search?: string; sort?: string; minPrice?: string; maxPrice?: string }>;
 }) {
   const searchParams = await props.searchParams;
   const category = searchParams.category || "all";
   const search = searchParams.search;
   const sort = searchParams.sort;
+  const minPrice = searchParams.minPrice;
+  const maxPrice = searchParams.maxPrice;
 
   return (
     <div className="container mx-auto py-10">
@@ -37,8 +39,8 @@ export default async function MenuPage(props: {
           <SearchFilterBar />
 
           <div>
-            <Suspense key={`${category}-${search || ""}-${sort || ""}`} fallback={<MenuLoadingSkeleton />}>
-              <Menu category={category} search={search} />
+            <Suspense key={`${category}-${search || ""}-${sort || ""}-${minPrice || ""}-${maxPrice || ""}`} fallback={<MenuLoadingSkeleton />}>
+              <Menu category={category} search={search} minPrice={minPrice} maxPrice={maxPrice} />
             </Suspense>
           </div>
         </div>

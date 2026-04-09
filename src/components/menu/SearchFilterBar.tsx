@@ -20,6 +20,8 @@ export default function SearchFilterBar() {
   const { startLoading } = useMenu();
   
   const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
+  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
   const [isFocused, setIsFocused] = useState(false);
   const currentSort = searchParams.get("sort") || "default";
 
@@ -41,7 +43,11 @@ export default function SearchFilterBar() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    updateParams({ search: searchValue || null });
+    updateParams({ 
+      search: searchValue || null,
+      minPrice: minPrice || null,
+      maxPrice: maxPrice || null
+    });
   };
 
   const handleSortChange = (sortId: string) => {
@@ -126,6 +132,32 @@ export default function SearchFilterBar() {
               })}
             </div>
           </div>
+          
+          {/* Price Range Filter */}
+          <form 
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1.5 rounded-2xl shrink-0"
+          >
+            <div className="px-2 lg:px-3 text-slate-400 font-bold text-xs uppercase tracking-widest hidden lg:block">Price</div>
+            <input 
+              type="number" 
+              placeholder="Min" 
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              className="w-16 h-8 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2 text-sm font-medium focus:outline-none focus:ring-2 ring-primary/20"
+            />
+            <span className="text-slate-300">-</span>
+            <input 
+              type="number" 
+              placeholder="Max" 
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              className="w-16 h-8 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2 text-sm font-medium focus:outline-none focus:ring-2 ring-primary/20"
+            />
+            <button type="submit" className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold shadow-sm hover:shadow-md transition-all active:scale-95 ml-1 whitespace-nowrap">
+              Apply
+            </button>
+          </form>
         </div>
       </div>
 

@@ -35,7 +35,7 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
   const user = await getCurrentUser();
 
   // Redirect non-admin users
-  if (user?.role !== "admin") {
+  if (user?.role !== "admin" && user?.role !== "super_admin") {
     redirect("/unauthorized");
   }
 
@@ -177,6 +177,7 @@ export default async function AdminUsers({ searchParams }: { searchParams?: Prom
                       userId={u.id} 
                       userName={u.name || "Anonymous User"} 
                       currentRole={u.role || "user"} 
+                      currentUserRole={user?.role || "admin"}
                     />
                   </td>
                 </tr>

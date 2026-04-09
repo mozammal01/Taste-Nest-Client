@@ -124,9 +124,10 @@ export function DashboardCharts({ revenueTrend, orderDistribution }: DashboardCh
                 paddingAngle={8}
                 dataKey="value"
                 animationDuration={1500}
+                cornerRadius={8}
               >
                 {displayDist.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} cornerRadius={8} />
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip 
