@@ -9,7 +9,7 @@ interface UpdateMenuItemProps {
 
 export default function UpdateMenuItem({ item }: UpdateMenuItemProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 via-white to-gray-100">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />

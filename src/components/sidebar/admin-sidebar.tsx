@@ -97,11 +97,11 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="w-72 min-h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm">
+    <aside className="w-72 min-h-screen bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col shadow-sm">
       {/* Logo Section */}
-      <div className="p-6 border-b border-gray-100">
+      <div className="p-6 border-b border-gray-100 dark:border-slate-800">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
+          <div className="relative w-12 h-12 rounded-xl bg-linear-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
             <Image
               src="/logo/logoWhite.png"
               alt="TasteNest"
@@ -111,7 +111,7 @@ export default function AdminSidebar() {
             />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900 tracking-tight">TasteNest</h2>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 tracking-tight">TasteNest</h2>
             <span className="text-xs text-primary font-medium">Admin Panel</span>
           </div>
         </Link>
@@ -119,7 +119,7 @@ export default function AdminSidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">
+        <p className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider px-3 mb-3">
           Main Menu
         </p>
         {navItems.map((item) => {
@@ -135,13 +135,13 @@ export default function AdminSidebar() {
                 "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden",
                 isItemActive
                   ? "bg-primary text-white shadow-md shadow-primary/25"
-                  : "text-gray-600 hover:text-primary hover:bg-primary/5",
+                  : "text-gray-600 dark:text-slate-400 hover:text-primary hover:bg-primary/5",
                 isLoading && "opacity-80",
               )}
             >
               {/* Active indicator glow */}
               {isItemActive && (
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-r from-primary/20 to-transparent" />
               )}
 
               {/* Loading spinner or icon */}
@@ -184,16 +184,16 @@ export default function AdminSidebar() {
       </nav>
 
       {/* Divider */}
-      <div className="mx-4 h-px bg-gray-200" />
+      <div className="mx-4 h-px bg-gray-200 dark:bg-slate-800" />
 
       {/* Secondary Actions */}
       <div className="p-4 space-y-1">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">
+        <p className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider px-3 mb-3">
           Other
         </p>
         <Link
           href="/"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-slate-400 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
         >
           <svg
             className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1"
@@ -212,7 +212,7 @@ export default function AdminSidebar() {
         </Link>
         <Link
           href="/profile"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-slate-400 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
         >
           <svg
             className="w-5 h-5 transition-transform duration-200 group-hover:scale-110"
@@ -238,15 +238,15 @@ export default function AdminSidebar() {
       </div>
 
       {/* Footer - User info */}
-      <div className="p-4 border-t border-gray-100">
-        <div className="px-4 py-3 rounded-xl bg-gradient-to-r from-primary/5 to-secondary/5 border border-gray-100">
+      <div className="p-4 border-t border-gray-100 dark:border-slate-800">
+        <div className="px-4 py-3 rounded-xl bg-linear-to-r from-primary/5 to-secondary/5 border border-gray-100 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-primary/70 flex items-center justify-center shadow-md">
               <span className="text-white font-bold text-sm">A</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
-              <p className="text-xs text-gray-500 truncate">administrator</p>
+              <p className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">Admin User</p>
+              <p className="text-xs text-gray-500 dark:text-slate-500 truncate">administrator</p>
             </div>
           </div>
         </div>

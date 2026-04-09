@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function SignupLeftSide() {
   return  <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-  {/* Background with gradient overlay */}
+  {/* Background with linear overlay */}
   <div
     className="absolute inset-0 bg-cover bg-center"
     style={{

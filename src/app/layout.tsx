@@ -3,6 +3,7 @@ import { Roboto, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/providers/SessionProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const roboto = Roboto({
   variable: "--font-roboto-sans",
@@ -15,8 +16,8 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Taste Nest",
-  description: "Taste Nest is a platform for tasting and sharing recipes",
+  title: "Taste Nest | Artisan Flavors & Atmospheric Sessions",
+  description: "Experience the pinnacle of culinary artistry at TasteNest, where every ingredient tells a story.",
 };
 
 export default function RootLayout({
@@ -25,12 +26,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.variable} ${robotoMono.variable} antialiased`}>
-        <SessionProvider>
-          {children}
-          <ToastProvider />
-        </SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProvider>
+            {children}
+            <ToastProvider />
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

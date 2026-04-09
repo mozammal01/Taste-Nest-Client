@@ -13,6 +13,7 @@ import { useSession } from "@/lib/auth-client";
 import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock, Loader2, UtensilsCrossed } from "lucide-react";
 import type { MenuItem } from "@/types/menuItems";
 import { getMenuItems } from "@/lib/actions/menu";
+import { ThemeToggle } from "../shared/ThemeToggle";
 
 export default function Navigation() {
   const ref = useRef(null);
@@ -359,6 +360,9 @@ export default function Navigation() {
                 </motion.div>
               </Link>
 
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Divider */}
               <div className="w-px h-8 bg-gray-200" />
 
@@ -384,6 +388,9 @@ export default function Navigation() {
               >
                 <Search className="w-5 h-5 text-gray-600" />
               </motion.button>
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
 
               {/* Cart */}
               <Link href="/cart">

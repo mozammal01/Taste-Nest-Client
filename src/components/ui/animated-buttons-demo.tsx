@@ -146,7 +146,7 @@ export default function AnimatedButtonsDemo() {
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-primary pb-2">Restaurant Use Cases</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4 p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-lg">
+          <div className="space-y-4 p-6 bg-linear-to-br from-red-50 to-red-100 rounded-lg">
             <h3 className="font-semibold text-gray-700">Call-to-Action Buttons</h3>
             <div className="space-y-3">
               <AnimatedButton variant="bounce" size="lg" className="w-full">
@@ -161,7 +161,7 @@ export default function AnimatedButtonsDemo() {
             </div>
           </div>
 
-          <div className="space-y-4 p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg">
+          <div className="space-y-4 p-6 bg-linear-to-br from-yellow-50 to-yellow-100 rounded-lg">
             <h3 className="font-semibold text-gray-700">Menu & Special Offers</h3>
             <div className="space-y-3">
               <AnimatedButton variant="gradientShift" size="lg" className="w-full">

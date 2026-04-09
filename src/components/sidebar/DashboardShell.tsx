@@ -20,9 +20,9 @@ export default function DashboardShell({ children, user }: DashboardShellProps) 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 relative">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-slate-950 relative text-slate-900 dark:text-slate-100">
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between z-40 px-6 sm:px-8">
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between z-40 px-6 sm:px-8">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center p-2 shadow-lg shadow-primary/20">
             <Image

@@ -1,8 +1,8 @@
 export default function CartLoading() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
+    <main className="min-h-screen bg-linear-to-b from-gray-50 to-white pt-20">
       {/* Hero Section Skeleton */}
-      <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-secondary/10 py-12">
+      <div className="bg-linear-to-r from-primary/5 via-primary/10 to-secondary/10 py-12">
         <div className="container mx-auto px-4">
           <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse" />
           <div className="h-5 w-72 bg-gray-200 rounded-lg animate-pulse mt-2" />

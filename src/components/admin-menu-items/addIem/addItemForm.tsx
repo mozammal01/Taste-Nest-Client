@@ -144,7 +144,7 @@ export default function AddItemForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information Card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-primary/5 to-transparent px-6 py-4 border-b border-gray-100">
+            <div className="bg-linear-to-r from-primary/5 to-transparent px-6 py-4 border-b border-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <span className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +244,7 @@ export default function AddItemForm() {
 
           {/* Media Card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-50 to-transparent px-6 py-4 border-b border-gray-100">
+            <div className="bg-linear-to-r from-blue-50 to-transparent px-6 py-4 border-b border-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,7 +312,7 @@ export default function AddItemForm() {
 
           {/* Pricing & Promotions Card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-green-50 to-transparent px-6 py-4 border-b border-gray-100">
+            <div className="bg-linear-to-r from-green-50 to-transparent px-6 py-4 border-b border-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <span className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -346,7 +346,7 @@ export default function AddItemForm() {
               </div>
 
               {/* Free Delivery Toggle */}
-              <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100">
+              <div className="flex items-center justify-between p-4 rounded-xl bg-linear-to-r from-green-50 to-emerald-50 border border-green-100">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
                     <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -429,7 +429,7 @@ export default function AddItemForm() {
       <div className="xl:col-span-1">
         <div className="sticky top-8">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-secondary/20 to-transparent px-6 py-4 border-b border-gray-100">
+            <div className="bg-linear-to-r from-secondary/20 to-transparent px-6 py-4 border-b border-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <span className="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,7 +450,7 @@ export default function AddItemForm() {
               {/* Preview Card */}
               <div className="group bg-white rounded-2xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
                 {/* Image */}
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                <div className="relative aspect-[4/3] bg-linear-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {formData.image && !imageError ? (
                     <Image
                       src={formData.image}
