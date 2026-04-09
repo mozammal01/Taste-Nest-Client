@@ -64,7 +64,7 @@ export async function deleteUser(userId: string, force: boolean = false) {
     }
     
     return { success: false, message: data.message || "Failed to delete user" };
-  } catch (error) {
+  } catch {
     return { success: false, message: "Something went wrong" };
   }
 }
@@ -89,7 +89,7 @@ export async function updateUserRole(userId: string, role: string) {
       return { success: true };
     }
     return { success: false, message: data.message || "Failed to update role" };
-  } catch (error) {
+  } catch {
     return { success: false, message: "Something went wrong" };
   }
 }

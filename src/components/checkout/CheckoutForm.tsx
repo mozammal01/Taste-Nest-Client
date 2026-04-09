@@ -18,7 +18,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/shared/AnimatedButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -148,32 +148,46 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
   if (isSuccess) {
     return (
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex flex-col items-center justify-center py-12 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center justify-center py-20 text-center space-y-10"
       >
-        <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6">
-          <CheckCircle2 className="w-12 h-12 text-green-600" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight">Order Confirmed!</h2>
-        <p className="text-gray-600 mb-2 max-w-md font-medium">
-          Thank you for your order! Your delicious food is being prepared and will be at your doorstep soon.
-        </p>
-        <div className="bg-gray-50 px-4 py-2 rounded-full mb-8 border border-gray-100">
-            <p className="text-primary font-bold uppercase tracking-widest text-xs">Order Reference: #{orderId}</p>
+        <div className="relative">
+          <div className="absolute inset-0 bg-green-500/20 blur-3xl rounded-full transform scale-150 animate-pulse" />
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", damping: 12, stiffness: 200 }}
+            className="relative w-32 h-32 bg-green-500 rounded-[40px] flex items-center justify-center shadow-2xl shadow-green-500/40"
+          >
+            <CheckCircle2 className="w-16 h-16 text-white" />
+          </motion.div>
         </div>
 
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Link href="/orders">
-            <Button className="bg-primary hover:bg-primary/90 px-6 py-3 h-14 rounded-xl font-bold transition-all hover:shadow-xl hover:shadow-primary/25 active:scale-95">
-              Track My Order
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+        <div className="space-y-4 max-w-lg">
+          <h2 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter italic">
+            Chef says: <span className="text-primary underline decoration-green-500 underline-offset-8">Order Confirmed!</span>
+          </h2>
+          <p className="text-slate-500 font-medium text-lg leading-relaxed">
+            Your culinary masterpiece is being prepared. Our courier is already warming up their engine.
+          </p>
+        </div>
+
+        <div className="bg-slate-50 dark:bg-slate-800 px-6 py-3 rounded-full border border-slate-100 dark:border-slate-700">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Reference: #ORD-{orderId}</p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-6 pt-4">
+          <Link href="/user/orders">
+            <AnimatedButton variant="primary" size="xl" className="font-black uppercase tracking-widest px-12">
+              Track Journey
+              <ArrowRight className="w-5 h-5" />
+            </AnimatedButton>
           </Link>
           <Link href="/">
-            <Button variant="outline" className="px-6 py-3 h-14 rounded-xl font-bold border-2 border-gray-50 hover:bg-gray-50 transition-all active:scale-95">
+            <AnimatedButton variant="ghost" size="xl" className="font-black uppercase tracking-widest px-12">
               Return Home
-            </Button>
+            </AnimatedButton>
           </Link>
         </div>
       </motion.div>
@@ -181,303 +195,303 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-      {/* Delivery Information */}
-      <div className="lg:col-span-7 space-y-8">
-        <section className="space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-4 h-4 text-primary" />
-                </div>
-                <h2 className="text-lg font-bold text-gray-900 tracking-tight">Delivery Details</h2>
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      {/* Left Column: Details */}
+      <div className="lg:col-span-7 space-y-12">
+        {/* Step 1: Destination */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+              <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+              Destination
+            </h2>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Step 01 / 02</span>
+          </div>
+          
+          <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-8 group hover:border-primary/20 transition-all duration-500">
+            <div className="space-y-3">
+              <Label 
+                htmlFor="address" 
+                className={cn(
+                  "text-[10px] font-black uppercase tracking-[0.2em] transition-colors",
+                  errors.address ? "text-red-500" : "text-slate-400"
+                )}
+              >
+                Delivery Address
+              </Label>
+              <div className="relative">
+                <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-primary transition-colors" />
+                <Input
+                  id="address"
+                  name="address"
+                  placeholder="Street name, building number, area..."
+                  value={formData.address}
+                  onChange={handleChange}
+                  className={cn(
+                    "pl-14 h-16 transition-all rounded-2xl font-bold text-slate-700 dark:text-white border-2",
+                    errors.address 
+                      ? "border-red-500 bg-red-50/10" 
+                      : "border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 focus:border-primary/30 focus:bg-white dark:focus:bg-slate-800"
+                  )}
+                />
+              </div>
+              <AnimatePresence mode="wait">
+                {errors.address && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex items-center gap-2 mt-2 text-[10px] font-black uppercase text-red-500 tracking-wider"
+                  >
+                    <AlertCircle size={14} />
+                    {errors.address}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-            
-            <Card className="border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden ring-1 ring-black/2">
-              <CardContent className="p-8 space-y-6">
-                <div className="space-y-3">
-                  <Label 
-                    htmlFor="address" 
-                    className={cn(
-                      "text-xs font-bold uppercase tracking-widest transition-colors",
-                      errors.address ? "text-red-500" : "text-slate-700"
-                    )}
-                  >
-                    Delivery Address
-                  </Label>
-                  <div className="relative group">
-                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
-                    <Input
-                      id="address"
-                      name="address"
-                      placeholder="Street name, building number, area..."
-                      value={formData.address}
-                      onChange={handleChange}
-                      className={cn(
-                        "pl-12 h-14 transition-all rounded-xl font-medium border-2",
-                        errors.address 
-                          ? "border-red-500 bg-red-50/50" 
-                          : "border-gray-100 bg-gray-50/30 focus:border-primary/20 focus:bg-white"
-                      )}
-                    />
-                  </div>
-                  <AnimatePresence mode="wait">
-                    {errors.address && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="flex items-center gap-1.5 mt-2 text-xs font-bold text-red-600 overflow-hidden"
-                      >
-                        <AlertCircle size={14} className="shrink-0" />
-                        {errors.address}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
 
-                <div className="space-y-3">
-                  <Label 
-                    htmlFor="phone" 
-                    className={cn(
-                      "text-xs font-bold uppercase tracking-widest transition-colors",
-                      errors.phone ? "text-red-500" : "text-slate-700"
-                    )}
+            <div className="space-y-3">
+              <Label 
+                htmlFor="phone" 
+                className={cn(
+                  "text-[10px] font-black uppercase tracking-[0.2em] transition-colors",
+                  errors.phone ? "text-red-500" : "text-slate-400"
+                )}
+              >
+                Contact Signal
+              </Label>
+              <div className="relative">
+                <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-primary transition-colors" />
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="Your mobile for the courier"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={cn(
+                    "pl-14 h-16 transition-all rounded-2xl font-bold text-slate-700 dark:text-white border-2",
+                    errors.phone 
+                      ? "border-red-500 bg-red-50/10" 
+                      : "border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 focus:border-primary/30 focus:bg-white dark:focus:bg-slate-800"
+                  )}
+                />
+              </div>
+              <AnimatePresence mode="wait">
+                {errors.phone && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex items-center gap-2 mt-2 text-[10px] font-black uppercase text-red-500 tracking-wider"
                   >
-                    Phone Number
-                  </Label>
-                  <div className="relative group">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      placeholder="Your contact number for the courier"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className={cn(
-                        "pl-12 h-14 transition-all rounded-xl font-medium border-2",
-                        errors.phone 
-                          ? "border-red-500 bg-red-50/50" 
-                          : "border-gray-100 bg-gray-50/30 focus:border-primary/20 focus:bg-white"
-                      )}
-                    />
-                  </div>
-                  <AnimatePresence mode="wait">
-                    {errors.phone && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="flex items-center gap-1.5 mt-2 text-xs font-bold text-red-600 overflow-hidden"
-                      >
-                        <AlertCircle size={14} className="shrink-0" />
-                        {errors.phone}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </CardContent>
-            </Card>
+                    <AlertCircle size={14} />
+                    {errors.phone}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </section>
 
-        {/* Payment Method Selection */}
-        <section className="space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <CreditCard className="w-4 h-4 text-primary" />
-                </div>
-                <h2 className="text-lg font-bold text-gray-900 tracking-tight">Payment Method</h2>
+        {/* Step 2: Transaction */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+              <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+              Transaction
+            </h2>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Step 02 / 02</span>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
+            <div 
+              onClick={() => setPaymentMethod("cod")}
+              className={cn(
+                "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
+                paymentMethod === "cod" 
+                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/5" 
+                  : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
+              )}
+            >
+              <div className={cn(
+                "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110",
+                paymentMethod === "cod" ? "bg-white dark:bg-slate-800 text-primary shadow-lg shadow-primary/10" : "bg-slate-50 dark:bg-slate-800 text-slate-400"
+              )}>
+                <Truck className="w-7 h-7" />
+              </div>
+              <div className="flex-1">
+                <p className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-sm">Hand-to-Hand</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Cash on Delivery</p>
+              </div>
+              <div className={cn(
+                "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                paymentMethod === "cod" ? "border-primary bg-primary" : "border-slate-200 dark:border-slate-700"
+              )}>
+                {paymentMethod === "cod" && <CheckCircle2 className="w-3 h-3 text-white" />}
+              </div>
             </div>
 
-            <Card className="border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden ring-1 ring-black/2">
-              <CardContent className="p-6 space-y-3">
-                <div 
-                  onClick={() => setPaymentMethod("cod")}
-                  className={`group flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                    paymentMethod === "cod" 
-                      ? "border-primary bg-primary/5 shadow-md shadow-primary/5" 
-                      : "border-gray-50 bg-white hover:border-gray-100 hover:shadow-sm"
-                  }`}
-                >
-                  <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all ${
-                    paymentMethod === "cod" ? "bg-white text-primary shadow-sm" : "bg-gray-50 text-gray-400"}`}>
-                    <Truck className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-gray-900 leading-tight">Cash on Delivery</p>
-                    <p className="text-xs text-gray-500">Pay at your door</p>
-                  </div>
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                    paymentMethod === "cod" ? "border-primary bg-primary" : "border-gray-200"}`}>
-                    <AnimatePresence mode="wait">
-                        {paymentMethod === "cod" && (
-                            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
-                                <CheckCircle2 className="w-3 h-3 text-white" />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                  </div>
+            <div 
+              onClick={() => setPaymentMethod("card")}
+              className={cn(
+                "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
+                paymentMethod === "card" 
+                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/5" 
+                  : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
+              )}
+            >
+              <div className={cn(
+                "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110",
+                paymentMethod === "card" ? "bg-white dark:bg-slate-800 text-primary shadow-lg shadow-primary/10" : "bg-slate-50 dark:bg-slate-800 text-slate-400"
+              )}>
+                <CreditCardIcon className="w-7 h-7" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <p className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-sm">Digital Vault</p>
+                  <span className="text-[8px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Swift</span>
                 </div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Stripe Integrated</p>
+              </div>
+              <div className={cn(
+                "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                paymentMethod === "card" ? "border-primary bg-primary" : "border-slate-200 dark:border-slate-700"
+              )}>
+                {paymentMethod === "card" && <CheckCircle2 className="w-3 h-3 text-white" />}
+              </div>
+            </div>
 
-                <div 
-                  onClick={() => setPaymentMethod("card")}
-                  className={`group flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                    paymentMethod === "card" 
-                      ? "border-primary bg-primary/5 shadow-md shadow-primary/5" 
-                      : "border-gray-50 bg-white hover:border-gray-100 hover:shadow-sm"
-                  }`}
+            <AnimatePresence mode="wait">
+              {paymentMethod === "card" && clientSecret ? (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="pt-8 mt-6 border-t border-slate-100 dark:border-slate-800"
                 >
-                  <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all ${
-                    paymentMethod === "card" ? "bg-white text-primary shadow-sm" : "bg-gray-50 text-gray-400"}`}>
-                    <CreditCardIcon className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                        <p className="font-bold text-gray-900 leading-tight">Pay Online</p>
-                        <span className="text-[8px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-bold uppercase tracking-widest">Recommended</span>
-                    </div>
-                    <p className="text-xs text-gray-500 tracking-tight">Credit or Debit Card</p>
-                  </div>
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                    paymentMethod === "card" ? "border-primary bg-primary" : "border-gray-200"}`}>
-                    <AnimatePresence mode="wait">
-                        {paymentMethod === "card" && (
-                            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
-                                <CheckCircle2 className="w-3 h-3 text-white" />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                <AnimatePresence>
-                    {paymentMethod === "card" && clientSecret && (
-                      <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="pt-4 mt-2 border-t border-gray-100 overflow-hidden"
-                      >
-                        <Elements stripe={stripePromise} options={{ clientSecret }}>
-                            <StripePaymentForm 
-                                clientSecret={clientSecret} 
-                                amount={totalAmount}
-                                isProcessing={isSubmitting}
-                                setIsProcessing={setIsSubmitting}
-                                onSuccess={handleOrderSubmission}
-                                address={formData.address}
-                                phone={formData.phone}
-                            />
-                        </Elements>
-                      </motion.div>
-                    )}
-                </AnimatePresence>
-                
-                {paymentMethod === "card" && isSubmitting && !clientSecret && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-6 gap-2 bg-gray-50 rounded-xl">
-                        <Loader2 className="w-6 h-6 text-primary animate-spin" />
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Initializing Stripe...</p>
-                    </motion.div>
-                )}
-              </CardContent>
-            </Card>
+                  <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <StripePaymentForm 
+                      clientSecret={clientSecret} 
+                      amount={totalAmount}
+                      isProcessing={isSubmitting}
+                      setIsProcessing={setIsSubmitting}
+                      onSuccess={handleOrderSubmission}
+                      address={formData.address}
+                      phone={formData.phone}
+                    />
+                  </Elements>
+                </motion.div>
+              ) : paymentMethod === "card" && isSubmitting && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-12 gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-[32px]">
+                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Securing Payment Channel...</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </section>
       </div>
 
-      {/* Order Summary Sidebar */}
+      {/* Right Column: Manifest */}
       <div className="lg:col-span-5">
-        <div className="sticky top-12 space-y-6">
-            <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <ShoppingBag className="w-4 h-4 text-gray-900" />
-                </div>
-                <h2 className="text-lg font-bold text-gray-900 tracking-tight">Order Summary</h2>
+        <div className="sticky top-12 space-y-8">
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+            <div className="w-1.5 h-6 bg-slate-900 dark:bg-white rounded-full"></div>
+            Manifest
+          </h2>
+
+          <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 border border-slate-100 dark:border-slate-800 shadow-sm border-b-primary/30 border-b-4 group overflow-hidden">
+            <div className="space-y-6 mb-8 max-h-[350px] overflow-y-auto pr-3 custom-scrollbar">
+              {items.map((item) => (
+                <motion.div layout key={item.id} className="flex gap-4 group/item">
+                  <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border-2 border-slate-50 dark:border-slate-800 group-hover/item:border-primary/20 transition-all duration-500 shrink-0">
+                    <Image
+                      src={item.menuItem.image || "/placeholder.png"}
+                      alt={item.menuItem.name}
+                      fill
+                      className="object-cover group-hover/item:scale-110 transition-transform duration-700"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 flex flex-col justify-center">
+                    <h4 className="font-black text-slate-900 dark:text-white truncate tracking-tight uppercase text-xs">{item.menuItem.name}</h4>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="text-[10px] font-black text-primary bg-primary/5 dark:bg-primary/10 px-2 py-0.5 rounded-full ring-1 ring-primary/10">x{item.quantity}</span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        @ ${Number(item.menuItem.price).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col justify-center items-end">
+                    <p className="font-black text-slate-900 dark:text-white tracking-tighter text-sm">
+                      ${(Number(item.menuItem.price) * item.quantity).toFixed(2)}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
 
-            <Card className="border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden ring-1 ring-black/2">
-              <CardContent className="p-6">
-                <div className="space-y-4 mb-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-                  {items.map((item) => (
-                    <motion.div layout key={item.id} className="flex gap-4 group">
-                      <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-transparent group-hover:border-primary/10 transition-all shrink-0">
-                        <Image
-                          src={item.menuItem.image || "/placeholder.png"}
-                          alt={item.menuItem.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <h4 className="font-bold text-gray-900 truncate tracking-tight">{item.menuItem.name}</h4>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">
-                          {item.quantity} x ${Number(item.menuItem.price).toFixed(2)}
-                        </p>
-                      </div>
-                      <div className="flex flex-col justify-center items-end">
-                        <p className="font-bold text-gray-900 tracking-tight">
-                          ${(Number(item.menuItem.price) * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="space-y-3 pt-4 border-t border-gray-100">
-                  <div className="flex justify-between text-gray-400 text-[10px] font-bold uppercase tracking-widest">
-                    <span>Subtotal</span>
-                    <span className="text-gray-900 text-xs">${subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-400 text-[10px] font-bold uppercase tracking-widest">
-                    <span>Delivery Fee</span>
-                    {deliveryFee === 0 ? (
-                      <span className="text-green-600">Free</span>
-                    ) : (
-                      <span className="text-gray-900 text-xs">${deliveryFee.toFixed(2)}</span>
-                    )}
-                  </div>
-                  <div className="flex justify-between text-gray-400 text-[10px] font-bold uppercase tracking-widest">
-                    <span>Tax (10%)</span>
-                    <span className="text-gray-900 text-xs">${tax.toFixed(2)}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-2">
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Amount</span>
-                      <span className="text-2xl font-bold text-primary tracking-tighter">${totalAmount.toFixed(2)}</span>
-                  </div>
-                </div>
-
-                {paymentMethod === "cod" && (
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full mt-6 h-14 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 transition-all active:scale-95"
-                    >
-                        {isSubmitting ? (
-                            <div className="flex items-center gap-2">
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                                <span>Placing Order...</span>
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-2">
-                                <span>Place COD Order</span>
-                                <ArrowRight className="w-4 h-4" />
-                            </div>
-                        )}
-                    </Button>
+            <div className="space-y-4 pt-8 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex justify-between items-center group/line">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Net Origin</span>
+                <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between items-center group/line">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Logistics</span>
+                {deliveryFee === 0 ? (
+                  <span className="text-[9px] font-black uppercase text-green-500 bg-green-50 dark:bg-green-900/20 px-2.5 py-1 rounded-full ring-1 ring-green-500/20">Complimentary</span>
+                ) : (
+                  <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${deliveryFee.toFixed(2)}</span>
                 )}
-
-                <div className="mt-8 flex flex-col items-center gap-4">
-                    <div className="flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-50 rounded-full border border-gray-100">
-                        <Lock className="w-3 h-3 text-gray-400" />
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Encrypted Security</span>
+              </div>
+              <div className="flex justify-between items-center group/line">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Contribution (10%)</span>
+                <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${tax.toFixed(2)}</span>
+              </div>
+              
+              <div className="pt-8 border-t-2 border-dashed border-slate-100 dark:border-slate-800 mt-2">
+                <div className="flex justify-between items-end">
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Total Valuation</span>
+                    <div className="flex items-center gap-2 text-slate-400">
+                      <Lock className="w-3 h-3" />
+                      <span className="text-[9px] font-bold uppercase tracking-widest">Guaranteed Safe</span>
                     </div>
-                    <div className="flex gap-4 items-center opacity-40">
-                        <Image src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" width={30} height={20} />
-                        <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" width={30} height={20} />
-                    </div>
+                  </div>
+                  <span className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter italic border-b-4 border-primary">
+                    ${totalAmount.toFixed(2)}
+                  </span>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+
+            <AnimatePresence mode="wait">
+              {paymentMethod === "cod" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  <AnimatedButton
+                    type="submit"
+                    disabled={isSubmitting}
+                    isLoading={isSubmitting}
+                    size="xl"
+                    className="w-full mt-10 font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/20"
+                  >
+                    Authenticate Order
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </AnimatedButton>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="mt-8 pt-8 flex items-center justify-center gap-6 opacity-30 grayscale hover:grayscale-0 transition-all duration-500 border-t border-slate-50 dark:border-slate-800">
+              <Image src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" width={32} height={12} />
+              <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" width={28} height={16} />
+              <div className="h-4 w-px bg-slate-300" />
+              <span className="text-[10px] font-black uppercase tracking-widest">PCI DSS</span>
+            </div>
+          </div>
         </div>
       </div>
     </form>
