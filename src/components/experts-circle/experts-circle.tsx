@@ -21,7 +21,7 @@ export default function ExpertsCircle({ title, name, signatureImg, img }: { titl
               src={signatureImg} 
               alt="chef signature" 
               fill
-              className="object-contain opacity-60" 
+              className="object-contain opacity-60 dark:opacity-80 dark:invert transition-all duration-300" 
             />
           </div>
         </div>

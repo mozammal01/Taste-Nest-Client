@@ -65,7 +65,7 @@ export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
         {feedbacks.map((_, i) => (
           <button
             key={i}
-            className={cn("w-3 h-3 rounded-full transition-colors", selectedIndex === i ? "bg-gray-900" : "bg-gray-400")}
+            className={cn("w-3 h-3 rounded-full transition-all duration-300", selectedIndex === i ? "bg-primary scale-125 shadow-lg shadow-primary/20" : "bg-gray-300 dark:bg-slate-700")}
             onClick={() => api?.scrollTo(i)}
           />
         ))}
