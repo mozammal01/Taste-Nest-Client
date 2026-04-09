@@ -16,8 +16,22 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Taste Nest | Artisan Flavors & Atmospheric Sessions",
-  description: "Experience the pinnacle of culinary artistry at TasteNest, where every ingredient tells a story.",
+  title: {
+    default: "Taste Nest | Artisan Flavors & Atmospheric Sessions",
+    template: "%s | Taste Nest"
+  },
+  description: "Experience the pinnacle of culinary artistry at TasteNest, where every ingredient tells a story of local farms and global inspiration.",
+  openGraph: {
+    title: "Taste Nest | Fine Dining Experience",
+    description: "Artisan Flavors & Atmospheric Sessions in the heart of the city.",
+    type: "website",
+    siteName: "Taste Nest",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Taste Nest | Fine Dining",
+    description: "Experience the pinnacle of culinary artistry.",
+  }
 };
 
 export default function RootLayout({

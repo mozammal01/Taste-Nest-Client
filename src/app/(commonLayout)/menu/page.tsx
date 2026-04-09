@@ -5,6 +5,12 @@ import MenuWrapper from "@/components/menu/MenuWrapper";
 import SubTitle from "@/components/shared/subTitle";
 import { Suspense } from "react";
 import { MenuLoadingSkeleton } from "@/components/menu/foodMenu";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Gourmet Menu",
+  description: "Explore our artisan menu featuring prime steaks, signature burgers, and global delicacies crafted for true food enthusiasts.",
+};
 
 export default async function MenuPage(props: {
   searchParams: Promise<{ category?: string; search?: string; sort?: string }>;
@@ -40,4 +46,3 @@ export default async function MenuPage(props: {
     </div>
   );
 }
-
