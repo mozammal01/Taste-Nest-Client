@@ -11,7 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import UserMenu from "../auth/UserMenu";
 import { getCartItemCount } from "@/lib/actions/cart";
 import { useSession } from "@/lib/auth-client";
-import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock, Loader2, UtensilsCrossed } from "lucide-react";
+import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock, Loader2, UtensilsCrossed, Sparkles } from "lucide-react";
 import type { MenuItem } from "@/types/menuItems";
 import { getMenuItems } from "@/lib/actions/menu";
 import { ThemeToggle } from "../shared/ThemeToggle";
