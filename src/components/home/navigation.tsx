@@ -1,6 +1,7 @@
 "use client";
 
 import logo from "../../../public/logo/logo.png";
+import logoWhite from "../../../public/logo/logoWhite.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -14,6 +15,7 @@ import { ShoppingCart, Search, X, Menu, ChevronRight, Phone, MapPin, Clock, Load
 import type { MenuItem } from "@/types/menuItems";
 import { getMenuItems } from "@/lib/actions/menu";
 import { ThemeToggle } from "../shared/ThemeToggle";
+import { useTheme } from "next-themes";
 
 export default function Navigation() {
   const ref = useRef(null);
@@ -30,6 +32,12 @@ export default function Navigation() {
   const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user?.id;
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { scrollY } = useScroll();
 
@@ -286,7 +294,7 @@ export default function Navigation() {
             <Link href="/" className="shrink-0">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Image
-                  src={logo}
+                  src={mounted && resolvedTheme === "dark" ? logoWhite : logo}
                   alt="TasteNest"
                   width={isScrolled ? 80 : 100}
                   height={isScrolled ? 80 : 100}
@@ -377,7 +385,7 @@ export default function Navigation() {
           <div className="lg:hidden flex justify-between items-center py-3">
             {/* Logo */}
             <Link href="/">
-              <Image src={logo} alt="TasteNest" width={70} height={70} />
+              <Image src={mounted && resolvedTheme === "dark" ? logoWhite : logo} alt="TasteNest" width={70} height={70} />
             </Link>
 
             {/* Mobile Right Actions */}

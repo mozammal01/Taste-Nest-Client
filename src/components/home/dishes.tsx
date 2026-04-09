@@ -7,56 +7,71 @@ import SubTitle from "../shared/subTitle";
 
 export default function Dishes() {
   return (
-    <div className="container mx-auto mt-12 md:my-28 text-center" id="menu">
-      <SubTitle title="Featured Dishes" />
-      <motion.div
-        initial={{ opacity: 0, y: 100 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="grid md:grid-cols-2 xl:grid-cols-3 justify-center items-center gap-10 md:gap-20 my-20 px-4"
-      >
-        {dishes.map((dish) => (
-          <div
-            key={dish.id}
-            className="border-4 border-secondary rounded-3xl p-6 md:p-10 w-full max-w-[400px] min-h-[380px] md:min-h-[450px] flex flex-col justify-between relative mx-auto group hover:bg-secondary/5 transition-all duration-300"
-          >
-            <div className="relative">
-              <div className="absolute top-16 left-0">
-                <Image src={dish.backgroundImage} alt="dish background decoration" width={300} height={300} />
+    <section id="menu" className="py-24 md:py-32 bg-slate-50 dark:bg-slate-950 transition-colors relative overflow-hidden">
+      {/* Decorative background element */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/5 blur-[120px] rounded-full -z-10" />
+      
+      <div className="container mx-auto text-center px-6">
+        <SubTitle title="Featured Dishes" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16 my-16"
+        >
+          {dishes.map((dish) => (
+            <div
+              key={dish.id}
+              className="group relative bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 rounded-[40px] p-8 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 overflow-hidden"
+            >
+              {/* Image Container with decorative backdrop */}
+              <div className="relative aspect-square mb-8 flex items-center justify-center">
+                <div className="absolute inset-4 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-colors duration-500" />
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="relative z-10 w-full h-full"
+                >
+                  <Image src={dish.image} alt={dish.name} fill className="object-contain" />
+                </motion.div>
+                
+                {/* Sale Badge */}
+                <div className="absolute top-0 right-0 bg-primary text-white font-black text-[10px] uppercase tracking-widest px-4 py-2 rounded-2xl shadow-lg transform rotate-12 group-hover:rotate-0 transition-transform">
+                  SALE
+                </div>
               </div>
-              <div className="absolute top-0 left-0">
-                <Image src={dish.image} alt="crispy fried chicken dish" width={300} height={300} />
-              </div>
-            </div>
-            <div className="font-extrabold text-start flex justify-between items-center">
-              <div>
-                <h2 className="text-xl">{dish.name}</h2>
-                <div className="text-gray-500">
-                  <span className="text-lg me-2 relative">
-                    {dish.price} <hr className="w-16 absolute top-1/2 left-0 -translate-y-1/2" />
-                  </span>
 
-                  <span className="text-2xl">
-                    <span className="text-primary">$</span>
-                    {dish.discountPrice}
-                  </span>
+              {/* Content */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="text-left">
+                    <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                      {dish.name}
+                    </h3>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="text-sm font-bold text-slate-400 line-through">
+                        {dish.price}
+                      </span>
+                      <span className="text-2xl font-black text-primary">
+                        ${dish.discountPrice}
+                      </span>
+                    </div>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-4 bg-slate-900 dark:bg-primary rounded-2xl text-white shadow-lg transition-transform"
+                  >
+                    <Image src={dish.icon} alt="cart" width={18} height={18} className="brightness-0 invert" />
+                  </motion.button>
                 </div>
               </div>
-              <div className="bg-secondary rounded p-4">
-                <Image src={dish.icon} alt="add to cart" width={15} height={15} />
-              </div>
             </div>
-            <div className="absolute top-2 left-2">
-              <div className="relative">
-                <div className="bg-secondary rounded-full h-15 w-15 p-4 flex flex-col items-center justify-center">
-                  <span className="uppercase font-extrabold">sale</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </motion.div>
-    </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
   );
 }
