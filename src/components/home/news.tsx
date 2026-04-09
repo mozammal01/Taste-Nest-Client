@@ -21,7 +21,7 @@ export default function News() {
             className="flex flex-col items-center gap-4"
           >
             <p className="text-primary font-black text-xs uppercase tracking-[0.3em]">Latest Stories</p>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-950 tracking-tighter">
+            <h2 className="text-5xl md:text-6xl font-black text-slate-950 dark:text-white tracking-tighter">
               Culinary <span className="text-primary italic">Journal</span>
             </h2>
             <div className="h-1.5 w-24 bg-secondary rounded-full mt-2" />
@@ -32,7 +32,7 @@ export default function News() {
           {/* Article 1 */}
           <Link 
             href="/under-construction"
-            className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-[32px] border border-slate-100 shadow-xl shadow-slate-100/50 group"
+            className="flex flex-col md:flex-row gap-8 items-center bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none transition-all duration-300 group"
           >
             <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl">
               <Image className="object-cover transition-transform duration-700 group-hover:scale-110" src={news1Img} alt="Truffle Alchemy" fill />
@@ -41,12 +41,12 @@ export default function News() {
               <span className="inline-block bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full">
                 April 12, 2026
               </span>
-              <h3 className="text-2xl font-black text-slate-900 group-hover:text-primary transition-colors leading-tight">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">
                 The Alchemy of Truffles: A Seasonal Guide
               </h3>
-              <div className="flex items-center gap-4 pt-4 border-t border-slate-50">
+              <div className="flex items-center gap-4 pt-4 border-t border-slate-50 dark:border-slate-800">
                 <Image src={authorImg} alt="Chef Julian" width={40} height={40} className="rounded-full shadow-md" />
-                <p className="text-sm font-bold text-slate-700 underline decoration-primary/30 underline-offset-4">Chef Julian Ames</p>
+                <p className="text-sm font-bold text-slate-700 dark:text-slate-400 underline decoration-primary/30 underline-offset-4">Chef Julian Ames</p>
               </div>
             </div>
           </Link>
@@ -54,7 +54,7 @@ export default function News() {
           {/* Article 2 */}
           <Link 
             href="/under-construction"
-            className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-[32px] border border-slate-100 shadow-xl shadow-slate-100/50 group"
+            className="flex flex-col md:flex-row gap-8 items-center bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none transition-all duration-300 group"
           >
             <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl">
               <Image className="object-cover transition-transform duration-700 group-hover:scale-110" src={news2Img} alt="Sustainable Sourcing" fill />
@@ -66,9 +66,9 @@ export default function News() {
               <h3 className="text-2xl font-black text-slate-900 group-hover:text-primary transition-colors leading-tight">
                 Sustainable Sourcing: From Farm to Fork
               </h3>
-              <div className="flex items-center gap-4 pt-4 border-t border-slate-50">
+              <div className="flex items-center gap-4 pt-4 border-t border-slate-50 dark:border-slate-800">
                 <Image src={authorImg} alt="Chef Sophia" width={40} height={40} className="rounded-full shadow-md" />
-                <p className="text-sm font-bold text-slate-700 underline decoration-primary/30 underline-offset-4">Chef Sophia Chen</p>
+                <p className="text-sm font-bold text-slate-700 dark:text-slate-400 underline decoration-primary/30 underline-offset-4">Chef Sophia Chen</p>
               </div>
             </div>
           </Link>

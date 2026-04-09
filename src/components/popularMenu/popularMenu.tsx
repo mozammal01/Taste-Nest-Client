@@ -124,59 +124,58 @@ export default function PopularMenu() {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="relative shrink-0"
               >
-                {/* Desktop view */}
-                <motion.div
-                  onClick={() => setActive(cat.id)}
-                  className={cn(
-                    "hidden md:flex flex-col justify-center items-center gap-2 border shadow-sm rounded-xl cursor-pointer p-8 relative overflow-hidden",
-                    "w-[190px] h-[190px]",
-                  )}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                >
                   <motion.div
-                    className="absolute inset-0 bg-primary"
-                    initial={false}
-                    animate={{
-                      opacity: active === cat.id ? 1 : 0,
-                      scale: active === cat.id ? 1 : 0.8,
-                    }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-
-                  <motion.div
-                    className="relative z-10"
-                    animate={{ scale: active === cat.id ? 1.1 : 1 }}
-                  >
-                    <cat.icon
-                      className={cn(
-                        "size-[70px] transition-colors duration-300",
-                        active === cat.id ? "text-white" : "text-primary",
-                      )}
-                    />
-                  </motion.div>
-                  <motion.span
+                    onClick={() => setActive(cat.id)}
                     className={cn(
-                      "font-black text-center relative z-10 transition-colors px-2",
-                      active === cat.id ? "text-white" : "text-slate-900",
+                      "hidden md:flex flex-col justify-center items-center gap-2 border dark:border-slate-800 shadow-sm rounded-xl cursor-pointer p-8 relative overflow-hidden transition-colors duration-300",
+                      active === cat.id ? "bg-primary border-primary" : "bg-white dark:bg-slate-900",
+                      "w-[190px] h-[190px]",
                     )}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    {cat.label}
-                  </motion.span>
-                </motion.div>
+                    <motion.div
+                      className="absolute inset-0 bg-primary"
+                      initial={false}
+                      animate={{
+                        opacity: active === cat.id ? 1 : 0,
+                        scale: active === cat.id ? 1 : 0.8,
+                      }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
 
-                {/* Mobile view */}
-                <motion.div
-                  onClick={() => setActive(cat.id)}
-                  className={cn(
-                    "md:hidden flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all min-w-[120px]",
-                    active === cat.id
-                      ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
-                      : "bg-white border-slate-100 text-slate-600",
-                  )}
-                  whileTap={{ scale: 0.95 }}
-                >
+                    <motion.div
+                      className="relative z-10"
+                      animate={{ scale: active === cat.id ? 1.1 : 1 }}
+                    >
+                      <cat.icon
+                        className={cn(
+                          "size-[70px] transition-colors duration-300",
+                          active === cat.id ? "text-white" : "text-primary",
+                        )}
+                      />
+                    </motion.div>
+                    <motion.span
+                      className={cn(
+                        "font-black text-center relative z-10 transition-colors px-2",
+                        active === cat.id ? "text-white" : "text-slate-900 dark:text-slate-300",
+                      )}
+                    >
+                      {cat.label}
+                    </motion.span>
+                  </motion.div>
+
+                  <motion.div
+                    onClick={() => setActive(cat.id)}
+                    className={cn(
+                      "md:hidden flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all min-w-[120px]",
+                      active === cat.id
+                        ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
+                        : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400",
+                    )}
+                    whileTap={{ scale: 0.95 }}
+                  >
                   <cat.icon
                     className={cn("size-6", active === cat.id ? "text-white" : "text-primary")}
                   />
@@ -206,7 +205,7 @@ export default function PopularMenu() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -25, scale: 0.98 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col md:flex-row items-stretch w-[92%] md:w-full md:max-w-5xl bg-white border border-gray-100 rounded-[32px] overflow-hidden shadow-xl shadow-gray-200/50 my-10 mt-20 mx-auto"
+        className="flex flex-col md:flex-row items-stretch w-[92%] md:w-full md:max-w-5xl bg-white dark:bg-slate-950/50 backdrop-blur-md border border-gray-100 dark:border-slate-800 rounded-[32px] overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-none my-10 mt-20 mx-auto transition-all duration-500"
       >
         {/* Food Image Wrapper */}
         <motion.div
@@ -223,7 +222,7 @@ export default function PopularMenu() {
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute top-6 left-6">
-            <span className="bg-white/90 backdrop-blur-md text-primary font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-sm">
+            <span className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-primary font-black px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-sm">
               Chef&apos;s Pick
             </span>
           </div>
@@ -242,7 +241,7 @@ export default function PopularMenu() {
                 Exquisite Selection
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-8 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-8 leading-tight">
               {items[active].title}
             </h2>
           </motion.div>
@@ -266,13 +265,13 @@ export default function PopularMenu() {
                 }}
               >
                 <div className="flex justify-between items-end mb-2">
-                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-slate-100 group-hover:text-primary transition-colors duration-300">
                     {item.name}
                   </h3>
-                  <div className="grow border-b-2 border-dotted border-gray-200 mx-4 mb-2 group-hover:border-primary/30 transition-colors duration-300" />
+                  <div className="grow border-b-2 border-dotted border-gray-200 dark:border-slate-800 mx-4 mb-2 group-hover:border-primary/30 transition-colors duration-300" />
                   <span className="text-xl font-black text-primary">{item.price}</span>
                 </div>
-                <p className="text-gray-500 leading-relaxed text-sm italic pr-12">
+                <p className="text-gray-500 dark:text-slate-400 leading-relaxed text-sm italic pr-12">
                   {item.description}
                 </p>
               </motion.li>

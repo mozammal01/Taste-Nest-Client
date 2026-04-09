@@ -315,7 +315,7 @@ export default function Navigation() {
                   <motion.div
                     className={cn(
                       "relative px-6 py-2.5 rounded-full text-[14px] font-black uppercase tracking-widest transition-all duration-300 overflow-hidden",
-                      isActive(item) ? "text-white" : "text-slate-600 hover:text-primary",
+                      isActive(item) ? "text-white" : "text-slate-600 dark:text-white hover:text-primary dark:hover:text-primary",
                     )}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -460,7 +460,7 @@ export default function Navigation() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
+               className="lg:hidden bg-white dark:bg-slate-950 border-t border-gray-100 dark:border-slate-800 overflow-hidden"
             >
               <div className="max-w-[1500px] mx-auto px-4 py-4">
                 {/* Mobile Nav Items */}
@@ -527,12 +527,12 @@ export default function Navigation() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-white w-full max-w-3xl rounded-[32px] shadow-[0_32px_128px_-12px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20"
+              className="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-[32px] shadow-[0_32px_128px_-12px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Search Input Area */}
-              <div className="p-8 border-b border-slate-50">
-                <div className="flex items-center gap-6 bg-slate-50 rounded-2xl px-6 py-5 group focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-500">
+              <div className="p-8 border-b border-slate-50 dark:border-slate-800">
+                <div className="flex items-center gap-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl px-6 py-5 group focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-500">
                   <Search className={cn("w-6 h-6 transition-colors duration-500", searchQuery ? "text-primary" : "text-slate-400")} />
                   <input
                     type="text"
@@ -544,7 +544,7 @@ export default function Navigation() {
                         handleResultClick(searchQuery);
                       }
                     }}
-                    className="flex-1 bg-transparent outline-none text-xl font-bold text-slate-900 placeholder:text-slate-300 placeholder:font-medium"
+                    className="flex-1 bg-transparent outline-none text-xl font-bold text-slate-900 dark:text-white placeholder:text-slate-300 dark:placeholder:text-slate-600 placeholder:font-medium"
                     autoFocus
                   />
 
@@ -591,7 +591,7 @@ export default function Navigation() {
                       >
                         <button
                           onClick={() => handleResultClick(item.name)}
-                          className="w-full flex items-center gap-5 p-4 hover:bg-slate-50 transition-all rounded-2xl group"
+                          className="w-full flex items-center gap-5 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all rounded-2xl group"
                         >
                           <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-slate-100">
                              <Image 
@@ -602,15 +602,15 @@ export default function Navigation() {
                             />
                           </div>
                           <div className="flex-1 text-left">
-                            <h4 className="font-black text-slate-900 group-hover:text-primary transition-colors">{item.name}</h4>
-                            <p className="text-xs text-slate-500 font-medium line-clamp-1">{item.content}</p>
+                            <h4 className="font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">{item.name}</h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium line-clamp-1">{item.content}</p>
                             <span className="mt-1 text-[10px] font-black uppercase tracking-widest text-primary/60 bg-primary/5 px-2 py-0.5 rounded-md inline-block">
                               {item.category}
                             </span>
                           </div>
                           <div className="text-right">
-                             <p className="font-black text-slate-900">${item.price}</p>
-                             <ChevronRight className="w-4 h-4 ml-auto text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                             <p className="font-black text-slate-900 dark:text-white">${item.price}</p>
+                             <ChevronRight className="w-4 h-4 ml-auto text-slate-300 dark:text-slate-600 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                           </div>
                         </button>
                       </motion.div>
@@ -626,10 +626,10 @@ export default function Navigation() {
                   </div>
                 ) : !isSearching && (
                   <div className="p-20 text-center flex flex-col items-center">
-                    <div className="w-20 h-20 bg-slate-50 rounded-[32px] flex items-center justify-center mb-6">
-                      <UtensilsCrossed className="w-10 h-10 text-slate-200" />
+                    <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-[32px] flex items-center justify-center mb-6">
+                      <UtensilsCrossed className="w-10 h-10 text-slate-200 dark:text-slate-700" />
                     </div>
-                    <h3 className="text-xl font-black text-slate-900 mb-2">No flavors found</h3>
+                    <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">No flavors found</h3>
                     <p className="text-slate-400 font-medium max-w-xs mx-auto">
                       We couldn&apos;t find anything matching &quot;{searchQuery}&quot;. Try generic terms like &quot;Pizza&quot; or &quot;Drink&quot;.
                     </p>
@@ -638,14 +638,14 @@ export default function Navigation() {
               </div>
 
               {/* Keyboard Shortcut Hint */}
-              <div className="px-8 py-5 bg-slate-50 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+              <div className="px-8 py-5 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-2">
-                    <kbd className="px-2 py-1 bg-white rounded-md border border-slate-200 text-[10px]">ESC</kbd>
+                    <kbd className="px-2 py-1 bg-white dark:bg-slate-700 rounded-md border border-slate-200 dark:border-slate-600 text-[10px] text-foreground">ESC</kbd>
                     Close
                   </span>
                   <span className="flex items-center gap-2">
-                    <kbd className="px-2 py-1 bg-white rounded-md border border-slate-200 text-[10px]">↵</kbd>
+                    <kbd className="px-2 py-1 bg-white dark:bg-slate-700 rounded-md border border-slate-200 dark:border-slate-600 text-[10px] text-foreground">↵</kbd>
                     Search
                   </span>
                 </div>

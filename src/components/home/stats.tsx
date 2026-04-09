@@ -37,7 +37,7 @@ export default function Statistics() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} className="py-24 bg-slate-50 relative overflow-hidden">
+    <section ref={ref} className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors relative overflow-hidden">
       {/* Decorative Circles */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -ml-32 -mt-32 blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full -mr-48 -mb-48 blur-3xl" />
@@ -50,15 +50,15 @@ export default function Statistics() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group text-center"
+              className="bg-white dark:bg-slate-900 p-8 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 hover:shadow-2xl dark:shadow-none hover:-translate-y-2 transition-all duration-300 group text-center"
             >
               <div className={`w-16 h-16 ${stat.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                 {stat.icon}
               </div>
-              <h3 className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">
+              <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">
                 {stat.value}
               </h3>
-              <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">
+              <p className="text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-widest">
                 {stat.label}
               </p>
             </motion.div>

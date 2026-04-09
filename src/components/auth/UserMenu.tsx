@@ -110,7 +110,7 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2.5 p-1.5 pr-3 rounded-full transition-all ${isOpen ? "bg-gray-100" : "hover:bg-gray-50"}`}
+        className={`flex items-center gap-2.5 p-1.5 pr-3 rounded-full transition-all  text-gray-900  ${isOpen ? "bg-gray-100 text-gray-900" : "hover:bg-gray-50 dark:text-white dark:hover:text-gray-900"}`}
       >
         {/* Avatar */}
         <div className="relative w-10 h-10 flex-shrink-0">
@@ -132,7 +132,7 @@ export default function UserMenu({ onLinkClick }: { onLinkClick?: () => void }) 
 
         {/* User Info - Hidden on smaller screens */}
         <div className="hidden xl:block text-left">
-          <p className="text-sm font-semibold text-gray-900 leading-tight">{session.user?.name?.split(" ")[0] || "User"}</p>
+          <p className="text-sm font-semibold  leading-tight">{session.user?.name?.split(" ")[0] || "User"}</p>
         </div>
 
         {/* Chevron */}
