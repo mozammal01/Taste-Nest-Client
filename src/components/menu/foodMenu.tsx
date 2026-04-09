@@ -9,7 +9,7 @@ import { useMenu } from "./MenuContext";
 import type { CurrentUser } from "@/lib/auth";
 
 import { useRouter } from "next/navigation";
-import { X, Search as SearchIcon } from "lucide-react";
+import { X, Search as SearchIcon, ArrowUpDown, ChevronDown } from "lucide-react";
 
 interface FoodMenuProps {
   items: MenuItem[];
@@ -80,15 +80,19 @@ export default function FoodMenu({ items, user, search }: FoodMenuProps) {
       );
     }
 
-    if (!category || category === "all") {
-      return filtered;
+    const sort = params.get("sort");
+
+    let sorted = [...filtered];
+    if (sort === "price-low") {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (sort === "price-high") {
+      sorted.sort((a, b) => b.price - a.price);
+    } else if (sort === "newest") {
+      sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
 
-    const lowerCategory = category.toLowerCase().trim();
-    return filtered.filter((item) => 
-      item.category?.toLowerCase().trim() === lowerCategory
-    );
-  }, [items, category, search]);
+    return sorted;
+  }, [items, category, search, params]);
 
   const clearSearch = () => {
     const newParams = new URLSearchParams(params.toString());
