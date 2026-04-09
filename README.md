@@ -1,77 +1,90 @@
-# TasteNest Client
+# TasteNest 🍽️
 
-TasteNest is a full-stack restaurant web application. This repository contains the frontend built with Next.js and Tailwind CSS.
+TasteNest is a feature-rich, production-ready, and professional restaurant web application. Built with a modern modular stack divided into a Next.js client and an Express/Prisma server. 
 
-## Project Description
+## 🌐 Live URLs
+- **Frontend Live URL**: _Add your deployed Vercel frontend URL here_
+- **Backend Live API**: _Add your deployed backend Vercel URL here_
 
-The client app provides:
+## 🔑 Admin Credentials
+To access the Super Admin Dashboard and manage the restaurant, log in using the following credentials:
+- **Email:** `mozammalhaq01@gmail.com`
+- **Password:** *(Use the password you created during registration)*
 
-- Public marketing homepage with modern responsive sections
-- User authentication (Better Auth with email/password and social login)
-- Menu browsing and category filtering
-- Cart management and order flow
-- Role-based dashboard navigation for admin and user
+> **Note**: This account is structurally assigned as the `super_admin`. It grants full system authority, meaning you can manage other admin roles, view revenue charts, and utilize cascade delete functions safely.
 
-## Tech Stack
+---
 
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Better Auth (client-side integration)
+## 🚀 Key Features
 
-## Live URL
+### 🎨 Global UI & Design
+- **Rich Aesthetics**: Vibrant color schemes, curated typography, and an automatic **Dark Mode** with 100% color contrast support.
+- **Glassmorphism & Animations**: Smooth hover transitions, Framer Motion scrolling reveals, and dynamic loading states.
+- **Fully Responsive**: Uncompromising layout integrity across mobile, tablet, and desktop devices.
+- **Robust Forms**: Real-time validation, success states, loaders, and intelligent error handling across all inputs.
 
-- Frontend Live URL: _Add your deployed frontend URL here_
+### 🏠 Intelligent Frontend Hub
+- **Advanced Navigation**: Sticky transparent header that morphs on scroll with a responsive slide-out mobile menu.
+- **AI Smart Search**: Type-ahead AI-driven search suggestions that intelligently predict dishes based on live intent.
+- **Menu Filtering**: Live `Min` / `Max` price range filter sliders and categorical sorting powered by instantaneous URL queries.
+- **Trust & Social Elements**: Customer testimonials, Master Chef profiles, and engaging newsletter integration blocks.
 
-## Features
+### 🛡️ Authentication & Security
+- **Modern Auth**: Secure Email & Password registration alongside advanced Social OAuth (Google & Facebook via Better Auth).
+- **Strict Role Hierarchy**: Implements `user`, `admin`, and `super_admin` tiers.
+- **Lockdown Protections**: Standard admins can manage food, but are visually and functionally locked from modifying or deleting fellow administrators.
 
-- Responsive homepage with navbar, footer, and multiple sections
-- Sign up / sign in with protected routes
-- Role-based UI behavior (admin vs user)
-- CRUD integration for menu management (admin)
-- Cart operations with real backend API integration
-- Loading states and toast-based error feedback
+### 📊 Super Admin Dashboard
+- **Data Visualization**: Real-time interactive revenue charts and pie graphs mapping out distribution parameters using `Recharts`.
+- **Order Management**: Streamlined panel to process incoming reservations and food deliveries instantly.
+- **Cascade Safe Deletion**: Prompts confirmation prior to wiping users, safely managing Prisma foreign key relations associated with their historical orders.
 
-## Setup Instructions
+### 📑 Professional Pages
+- **Contact Center**: Rich structural layout featuring business hours, local contacts, and a direct message form widget.
+- **Help & FAQ**: Expandable accordion-style interface to resolve common queries dynamically.
+- **Privacy Policy**: Detailed documentation covering data flow and application integrity.
+- **Graceful Degradation**: Beautiful "Under Construction" boundaries mapped out for future features (e.g., localized App Store routing).
 
-### 1. Clone repository
+---
 
+## 🛠️ Tech Stack
+
+**Frontend Repository:**
+- **Framework**: Next.js 15 (App Router)
+- **Library**: React 19 + TypeScript
+- **Styling**: Tailwind CSS v4 + Lucide React Icons
+- **Animation & Data**: Framer Motion & Recharts
+- **Auth Interface**: Better Auth (Client Integration)
+
+**Backend Repository:**
+- **Engine**: Node.js & Express setup
+- **Database**: PostgreSQL with Prisma ORM
+- **Validation**: Zod (Schema & Input sanitization)
+- **Services**: Stripe Gateway Integration
+
+---
+
+## ⚙️ Local Development Setup
+
+### 1. Clone repositories (Client and Server)
 ```bash
 git clone <your-frontend-repo-url>
-cd tastenest-client
 ```
 
-### 2. Install dependencies
-
+### 2. Install Dependencies
 ```bash
 pnpm install
 ```
 
-### 3. Configure environment variables
-
-Create a `.env` file in project root:
-
+### 3. Environment Variables
+Create a `.env` file at the root of the frontend folder:
 ```env
 NEXT_PUBLIC_BASE_URL=http://localhost:5000
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 BETTER_AUTH_URL=http://localhost:5000
 ```
 
-### 4. Run development server
-
+### 4. Run the Client
 ```bash
 pnpm dev
 ```
-
-### 5. Build for production
-
-```bash
-pnpm build
-pnpm start
-```
-
-## Related Links
-
-- Backend Repository: _Add your backend repo URL here_
-- Backend Live URL: _Add your backend live URL here_
