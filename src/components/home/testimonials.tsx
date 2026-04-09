@@ -45,7 +45,7 @@ export default function Testimonials() {
               <div className="h-px w-8 bg-primary" />
               <p className="text-primary font-black text-xs uppercase tracking-[0.3em]">Testimonials & Reviews</p>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tighter leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 dark:text-white tracking-tighter leading-tight">
               Our Customer <span className="text-primary italic">Feedback</span>
             </h2>
           </div>
@@ -61,7 +61,7 @@ export default function Testimonials() {
           className="hidden lg:block w-1/2 relative h-[600px]"
         >
           {/* Main Large Image */}
-          <div className="absolute top-0 right-0 w-3/4 h-3/4 rounded-[40px] overflow-hidden shadow-2xl border-8 border-white group">
+          <div className="absolute top-0 right-0 w-3/4 h-3/4 rounded-[40px] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800 group">
             <Image 
               className="object-cover transition-transform duration-700 group-hover:scale-110" 
               src={redImg} 
@@ -74,7 +74,7 @@ export default function Testimonials() {
           <motion.div 
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-10 left-0 w-1/2 h-1/2 rounded-[32px] overflow-hidden shadow-2xl border-8 border-white group z-10"
+            className="absolute bottom-10 left-0 w-1/2 h-1/2 rounded-[32px] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800 group z-10"
           >
             <Image 
               src={coffeeImg} 
@@ -88,7 +88,7 @@ export default function Testimonials() {
           <motion.div 
             animate={{ x: [0, 20, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-1/4 -right-10 w-1/3 h-1/3 rounded-[24px] overflow-hidden shadow-2xl border-4 border-white group z-20"
+            className="absolute top-1/4 -right-10 w-1/3 h-1/3 rounded-[24px] overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 group z-20"
           >
             <Image 
               src={strawberryImg} 

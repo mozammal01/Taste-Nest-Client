@@ -266,8 +266,8 @@ export default function Navigation() {
           y: 0,
           top: isScrolled ? 0 : 32,
           backgroundColor: isScrolled 
-            ? "var(--nav-bg-scrolled, rgba(255, 255, 255, 0.95))" 
-            : "var(--nav-bg-initial, rgba(255, 255, 255, 0.4))",
+            ? "var(--nav-bg-scrolled)" 
+            : "var(--nav-bg-initial)",
           backdropFilter: isScrolled ? "blur(20px)" : "blur(8px)",
           boxShadow: isScrolled
             ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"

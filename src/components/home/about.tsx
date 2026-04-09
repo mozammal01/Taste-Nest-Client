@@ -37,7 +37,7 @@ export default function About() {
             className="flex flex-col gap-4 lg:w-[50%] space-y-4"
           >
             <p className="text-primary font-extrabold text-lg uppercase tracking-widest">Our Story & Philosophy</p>
-            <h2 className="md:text-6xl text-4xl font-extrabold leading-tight text-gray-900">Crafting Moments Through <span className="text-primary italic">Authentic</span> Flavors</h2>
+            <h2 className="md:text-6xl text-4xl font-extrabold leading-tight text-slate-900 dark:text-white">Crafting Moments Through <span className="text-primary italic">Authentic</span> Flavors</h2>
           </motion.div>
           <motion.div
             ref={ref}
@@ -48,10 +48,10 @@ export default function About() {
             transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
             className="lg:w-[60%] lg:pl-40 mt-5 lg:mt-0"
           >
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
               Founded on the belief that dining is an art form, TasteNest has evolved from a small family kitchen into a sanctuary for food lovers. We celebrate the intersection of traditional techniques and modern innovation, sourcing only the finest organic ingredients from local sustainable producers.
             </p>
-            <p className="text-gray-600 leading-relaxed mt-4">
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed mt-4">
               Our philosophy is simple: honor the ingredient, respect the season, and create memories that linger long after the final course. Whether it&apos;s a quiet morning espresso or a grand evening feast, every moment here is crafted with passion.
             </p>
             <div className="flex gap-4 items-center mt-5">
@@ -59,7 +59,7 @@ export default function About() {
                 <Image src={authorImg} alt="author profile" width={50} height={50} />
               </div>
               <div className="flex flex-col gap-1">
-                <p className="font-bold text-2xl text-gray-900">Chef Julian Marco</p>
+                <p className="font-bold text-2xl text-slate-900 dark:text-white">Chef Julian Marco</p>
                 <p className="text-primary font-medium">Founder & Executive Chef</p>
               </div>
             </div>
@@ -74,7 +74,7 @@ export default function About() {
             viewport={!isDesktop ? { once: true, amount: 0.1 } : undefined}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
-            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
+            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-slate-50 dark:bg-slate-900 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
               <Image 
                 src={restaurantImg} 
                 alt="restaurant interior" 

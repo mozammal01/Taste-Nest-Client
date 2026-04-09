@@ -18,7 +18,7 @@ export default function Footer() {
   }
 
   return (
-    <footer id="contact" className="bg-slate-50 relative overflow-hidden py-16 md:py-24">
+    <footer id="contact" className="bg-slate-50 dark:bg-slate-950 relative overflow-hidden py-16 md:py-24 transition-colors">
       {/* Background Decorations - Hidden on small screens */}
       <div className="absolute inset-x-0 bottom-0 pointer-events-none opacity-40 md:opacity-100 flex justify-between items-end">
         <div className="relative w-32 h-32 md:w-64 md:h-64">
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* About Column */}
           <div>
-            <h4 className="text-xl font-black text-slate-950 mb-8 flex items-center gap-2">
+            <h4 className="text-xl font-black text-slate-950 dark:text-white mb-8 flex items-center gap-2">
               About <div className="h-1 flex-1 bg-secondary rounded-full" />
             </h4>
             <ul className="space-y-4">
@@ -60,8 +60,8 @@ export default function Footer() {
                 { name: "Experience", href: "/under-construction" }
               ].map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="group flex items-center gap-3 font-bold text-slate-600 hover:text-primary transition-all">
-                    <Image src={leftArrow} alt="arrow" width={12} height={12} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  <Link href={link.href} className="group flex items-center gap-3 font-bold text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-all">
+                    <Image src={leftArrow} alt="arrow" width={12} height={12} className="opacity-40 dark:opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all brightness-0 dark:invert" />
                     <span>{link.name}</span>
                   </Link>
                 </li>
@@ -83,8 +83,8 @@ export default function Footer() {
                 { name: "Artisan Desserts", href: "/menu?category=dessert" }
               ].map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="group flex items-center gap-3 font-bold text-slate-600 hover:text-primary transition-all">
-                    <Image src={leftArrow} alt="arrow" width={12} height={12} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  <Link href={link.href} className="group flex items-center gap-3 font-bold text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-all">
+                    <Image src={leftArrow} alt="arrow" width={12} height={12} className="opacity-40 dark:opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all brightness-0 dark:invert" />
                     <span>{link.name}</span>
                   </Link>
                 </li>
@@ -98,9 +98,9 @@ export default function Footer() {
               Newsletter <div className="h-1 flex-1 bg-secondary rounded-full" />
             </h4>
             <div className="space-y-6">
-              <p className="text-slate-500 font-medium">Join our curated list for exclusive tasting events and culinary news.</p>
+              <p className="text-slate-500 dark:text-slate-400 font-medium">Join our curated list for exclusive tasting events and culinary news.</p>
               <div className="space-y-3">
-                <Input className="w-full h-14 rounded-2xl bg-white border-slate-200 focus:ring-primary focus:border-primary px-6 font-bold" type="email" placeholder="Your email address" />
+                <Input className="w-full h-14 rounded-2xl bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus:ring-primary focus:border-primary px-6 font-bold text-slate-900 dark:text-white" type="email" placeholder="Your email address" />
                 <AnimatedButton variant="slide" className="w-full h-14 rounded-2xl">
                   Subscribe Now
                 </AnimatedButton>
@@ -110,8 +110,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-20 pt-10 border-t-2 border-slate-100">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm font-black text-slate-400 tracking-tighter">
+        <div className="mt-20 pt-10 border-t-2 border-slate-100 dark:border-slate-900">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm font-black text-slate-400 dark:text-slate-500 tracking-tighter">
             <p>
               <span className="text-primary tracking-normal">© 2026 TASTENEST</span> | CRAFTED WITH PASSION
             </p>

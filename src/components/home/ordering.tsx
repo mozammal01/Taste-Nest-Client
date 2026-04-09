@@ -15,7 +15,7 @@ export default function Ordering() {
   return (
     <div id="ordering" style={{ backgroundImage: `url(${backgroundImg.src})` }} className="bg-cover bg-center py-24 md:py-32 relative mt-40">
       {/* Overlay for better readability */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-white/60 dark:bg-slate-950/80 backdrop-blur-[2px]" />
       
       <div className="container mx-auto relative z-10 px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
@@ -29,10 +29,10 @@ export default function Ordering() {
           >
             <div className="space-y-4">
               <p className="text-primary font-black text-xs uppercase tracking-[0.3em]">Next-Gen Delivery</p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tighter leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 dark:text-white tracking-tighter leading-tight">
                 TasteNest in Your <span className="text-primary italic">Pocket</span>
               </h2>
-              <p className="text-slate-500 font-medium text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-slate-500 dark:text-slate-400 font-medium text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Experience artisanal dining delivered to your doorstep. Our mobile app brings the full TasteNest experience with exclusive offers and real-time tracking.
               </p>
             </div>
@@ -48,7 +48,7 @@ export default function Ordering() {
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white">
                     <Sparkles className="w-5 h-5" />
                   </div>
-                  <span className="font-bold text-slate-700">{text}</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">{text}</span>
                 </div>
               ))}
             </div>
@@ -99,7 +99,7 @@ export default function Ordering() {
                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                  className="absolute -top-10 -right-12 z-20"
                >
-                 <Image src={saladImg} alt="Salad" width={220} height={220} className="rounded-full shadow-2xl border-4 border-white" />
+                 <Image src={saladImg} alt="Salad" width={220} height={220} className="rounded-full shadow-2xl border-4 border-white dark:border-slate-800" />
                </motion.div>
 
                <motion.div 
@@ -107,7 +107,7 @@ export default function Ordering() {
                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                  className="absolute -bottom-12 -left-16 z-20"
                >
-                 <Image src={pizzaImg} alt="Pizza" width={240} height={160} className="rounded-3xl shadow-2xl border-4 border-white" />
+                 <Image src={pizzaImg} alt="Pizza" width={240} height={160} className="rounded-3xl shadow-2xl border-4 border-white dark:border-slate-800" />
                </motion.div>
 
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10" />
