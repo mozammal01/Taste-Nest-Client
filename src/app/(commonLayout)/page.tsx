@@ -6,6 +6,8 @@ import OurExperts from "@/components/home/ourExperts";
 import News from "@/components/home/news";
 import Ordering from "@/components/home/ordering";
 import Categories from "@/components/home/categories";
+import Statistics from "@/components/home/stats";
+import FAQ from "@/components/home/faq";
 import { getCurrentUser } from "@/lib/auth";
 
 import { Suspense } from "react";
@@ -40,12 +42,20 @@ export default async function Home() {
         <OurExperts />
       </Suspense>
 
+      <Suspense fallback={<SectionSkeleton lines={2} />}>
+        <Statistics />
+      </Suspense>
+
       <Suspense fallback={<div className="h-[350px] bg-primary/5 flex items-center justify-center"><Loading variant="dots" size="lg" /></div>}>
         <Ordering />
       </Suspense>
 
       <Suspense fallback={<SectionSkeleton lines={2} />}>
         <News />
+      </Suspense>
+
+      <Suspense fallback={<div className="py-24 bg-white flex items-center justify-center"><Loading variant="food" size="lg" /></div>}>
+        <FAQ />
       </Suspense>
     </>
   );

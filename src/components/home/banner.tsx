@@ -20,7 +20,7 @@ export default function Banner() {
         backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url(${bannerImage.src})`,
         backgroundAttachment: 'fixed'
       }}
-      className="bg-cover bg-center min-h-[90vh] flex items-center relative overflow-hidden"
+      className="bg-cover bg-center min-h-[70vh] flex items-center relative overflow-hidden"
     >
       {/* Decorative Blur */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/20 blur-[120px] rounded-full -mr-20 -mt-20 anim-pulse" />
