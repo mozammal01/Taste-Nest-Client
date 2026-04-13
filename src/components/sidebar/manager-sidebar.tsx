@@ -12,8 +12,7 @@ import {
   ShoppingCart, 
   CalendarCheck, 
   Home,
-  User,
-  Settings
+  User
 } from "lucide-react";
 
 const navItems = [

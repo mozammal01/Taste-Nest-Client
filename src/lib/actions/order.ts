@@ -38,3 +38,24 @@ export async function getMyOrders() {
     });
     return result;
 }
+
+export async function getAllOrders() {
+    const result = await handleFetch(`${API_URL}/order`, {
+      cache: "no-store",
+    });
+    return result;
+}
+
+export async function updateOrderStatus(orderId: number, status: string) {
+    const result = await handleFetch(`${API_URL}/order/${orderId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+    
+    if (result.success) {
+      revalidatePath("/admin/orders");
+      revalidatePath("/manager/orders");
+    }
+    
+    return result;
+}

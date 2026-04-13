@@ -41,7 +41,30 @@ export async function cancelReservation(id: number) {
 
   if (result.success) {
     revalidatePath("/user/reservations");
+    revalidatePath("/admin/reservations");
+    revalidatePath("/manager/reservations");
   }
 
   return result;
+}
+
+export async function getAllReservations() {
+    const result = await handleFetch(`${API_URL}/reservation`, {
+      cache: "no-store",
+    });
+    return result;
+}
+
+export async function updateReservationStatus(id: number, status: string) {
+    const result = await handleFetch(`${API_URL}/reservation/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+
+    if (result.success) {
+      revalidatePath("/admin/reservations");
+      revalidatePath("/manager/reservations");
+    }
+
+    return result;
 }

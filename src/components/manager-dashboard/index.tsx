@@ -1,15 +1,14 @@
-import { getCurrentUser, requireManager } from "@/lib/auth";
+import { requireManager } from "@/lib/auth";
 import { 
-  Package, 
-  Utensils, 
-  Clock,
-  CheckCircle2,
   Calendar,
   ChevronRight,
-  TrendingUp,
   ArrowRight,
   ShoppingCart,
-  CalendarCheck
+  CalendarCheck,
+  Package,
+  Utensils,
+  CheckCircle2,
+  Clock
 } from "lucide-react";
 import Link from "next/link";
 import { headers } from "next/headers";
@@ -100,7 +99,7 @@ export default async function ManagerDashboard() {
           </div>
         </div>
 
-        {/* Reservations Counter (Mocked or real if available) */}
+        {/* Total Users Managed */}
         <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 group relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 -translate-y-8 translate-x-8 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors" />
           <div className="flex justify-between items-start mb-6">
@@ -109,8 +108,8 @@ export default async function ManagerDashboard() {
             </div>
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">Table Reservations</p>
-            <p className="text-3xl font-black text-slate-900 dark:text-white">--</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">Total Members</p>
+            <p className="text-3xl font-black text-slate-900 dark:text-white">{stats?.users?.toLocaleString() || "0"}</p>
           </div>
         </div>
       </div>
