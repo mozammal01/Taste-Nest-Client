@@ -3,7 +3,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export type UserRole = "super_admin" | "admin" | "user" | (string & {});
+export type UserRole = "super_admin" | "admin" | "manager" | "user" | (string & {});
 
 export interface RewardRecord {
   type: 'earn' | 'redeem';
@@ -99,6 +99,26 @@ export async function requireAuth(options?: { callbackUrl?: string; message?: st
 export async function requireAdmin(options?: { redirectTo?: string }) {
   const user = await requireAuth();
   if (user.role === "admin" || user.role === "super_admin") return user;
+  redirect(options?.redirectTo ?? "/unauthorized");
+}
+
+/**
+ * Redirects to /unauthorized if the user is not a manager or admin.
+ */
+export async function requireManager(options?: { redirectTo?: string }) {
+  const user = await requireAuth();
+  if (user.role === "manager" || user.role === "admin" || user.role === "super_admin") return user;
+  redirect(options?.redirectTo ?? "/unauthorized");
+}
+
+/**
+ * Redirects to /unauthorized if the user is not a staff member (manager or admin).
+ * Staff role includes anyone who can access the management dashboards.
+ */
+export async function requireStaff(options?: { redirectTo?: string }) {
+  const user = await requireAuth();
+  const staffRoles: UserRole[] = ["admin", "super_admin", "manager"];
+  if (staffRoles.includes(user.role)) return user;
   redirect(options?.redirectTo ?? "/unauthorized");
 }
 

@@ -101,6 +101,7 @@ export default function UserActions({ userId, userName, currentRole, currentUser
               className="bg-transparent text-[11px] font-black uppercase tracking-widest text-slate-700 outline-none px-3 py-1.5 cursor-pointer font-outfit"
             >
               <option value="user">Member</option>
+              <option value="manager">Manager</option>
               <option value="admin">Admin</option>
               {currentUserRole === 'super_admin' && <option value="super_admin">Super Admin</option>}
             </select>

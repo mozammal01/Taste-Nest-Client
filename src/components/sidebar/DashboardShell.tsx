@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AdminSidebar from "./admin-sidebar";
 import UserSidebar from "./user-sidebar";
+import ManagerSidebar from "./manager-sidebar";
 import { CurrentUser } from "@/lib/auth";
 
 interface DashboardShellProps {
@@ -18,6 +19,12 @@ export default function DashboardShell({ children, user }: DashboardShellProps) 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const renderSidebar = () => {
+    if (user?.role === "admin" || user?.role === "super_admin") return <AdminSidebar />;
+    if (user?.role === "manager") return <ManagerSidebar userName={user?.name} />;
+    return <UserSidebar userName={user?.name} />;
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-slate-950 relative text-slate-900 dark:text-slate-100">
@@ -46,7 +53,7 @@ export default function DashboardShell({ children, user }: DashboardShellProps) 
 
       {/* Sidebar for Desktop */}
       <div className="hidden lg:flex sticky top-0 h-screen overflow-y-auto">
-        {user?.role === "admin" ? <AdminSidebar /> : <UserSidebar userName={user?.name} />}
+        {renderSidebar()}
       </div>
 
       {/* Mobile Sidebar Overlay */}
@@ -68,20 +75,20 @@ export default function DashboardShell({ children, user }: DashboardShellProps) 
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
-              className="lg:hidden fixed inset-y-0 left-0 w-[288px] bg-white z-[60] shadow-2xl flex flex-col"
+              className="lg:hidden fixed inset-y-0 left-0 w-[288px] bg-white dark:bg-slate-900 z-[60] shadow-2xl flex flex-col"
             >
               {/* Close Button Inside Drawer */}
               <div className="absolute right-4 top-4 z-[70]">
                   <button
                       onClick={toggleSidebar}
-                      className="p-2 bg-slate-50 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
+                      className="p-2 bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all"
                   >
                       <X size={20} />
                   </button>
               </div>
               
               <div className="flex-1 overflow-y-auto h-full" onClick={() => setIsSidebarOpen(false)}>
-                {user?.role === "admin" ? <AdminSidebar /> : <UserSidebar userName={user?.name} />}
+                {renderSidebar()}
               </div>
             </motion.div>
           </>
