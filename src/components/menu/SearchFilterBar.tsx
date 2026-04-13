@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X, SlidersHorizontal, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";

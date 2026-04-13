@@ -8,6 +8,7 @@ import instaIcon from "@/../public/icons/instaIcon.png";
 import { motion } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 export default function News() {
   return (
@@ -73,6 +74,68 @@ export default function News() {
             </div>
           </Link>
         </div>
+
+        {/* AI Recommendations Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-24 p-8 md:p-12 bg-linear-to-br from-slate-900 to-slate-950 rounded-[48px] border border-slate-800 relative overflow-hidden group"
+        >
+          {/* Animated Background Glow */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-all duration-700" />
+          
+          <div className="relative z-10">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                  </span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">AI Smart Insights</span>
+                </div>
+                <h3 className="text-3xl md:text-4xl font-black text-white leading-tight">
+                  Tailored <span className="text-primary italic">Just For You</span>
+                </h3>
+                <p className="text-slate-400 font-medium max-w-lg">
+                  Our TasteNest AI analyzes your flavor profiles to suggest the most relevant culinary stories and trends.
+                </p>
+              </div>
+              <AnimatedButton variant="slide" className="h-14 rounded-2xl px-8 border-white/10 hover:border-primary/50">
+                Update Preferences
+              </AnimatedButton>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { title: "Mastering Umami", category: "Technique", readTime: "5 min" },
+                { title: "Wine Pairing Guide", category: "Sommelier", readTime: "8 min" },
+                { title: "Secret Pasta Flour", category: "Ingredients", readTime: "4 min" }
+              ].map((item, idx) => (
+                <div 
+                  key={idx}
+                  className="p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl hover:bg-white/10 hover:border-primary/30 transition-all cursor-pointer group/card"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-lg">
+                      {item.category}
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                      {item.readTime}
+                    </span>
+                  </div>
+                  <h4 className="text-xl font-bold text-white group-hover/card:text-primary transition-colors mb-4">
+                    {item.title}
+                  </h4>
+                  <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest">
+                    Read Intelligence <ChevronRight className="w-3 h-3 group-hover/card:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* End Footer Call Action */}

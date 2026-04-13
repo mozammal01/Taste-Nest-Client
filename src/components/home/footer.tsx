@@ -98,7 +98,9 @@ export default function Footer() {
               Newsletter <div className="h-1 flex-1 bg-secondary rounded-full" />
             </h4>
             <div className="space-y-6">
-              <p className="text-slate-500 dark:text-slate-400 font-medium">Join our curated list for exclusive tasting events and culinary news.</p>
+              <p className="text-slate-500 dark:text-slate-400 font-medium">
+                Subscribe for <span className="text-primary font-bold italic underline decoration-primary/30">Smart Recommendations</span> tailored to your taste by our TasteNest AI.
+              </p>
               <div className="space-y-3">
                 <Input className="w-full h-14 rounded-2xl bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus:ring-primary focus:border-primary px-6 font-bold text-slate-900 dark:text-white" type="email" placeholder="Your email address" />
                 <AnimatedButton variant="slide" className="w-full h-14 rounded-2xl">

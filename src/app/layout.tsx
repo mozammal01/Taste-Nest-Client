@@ -4,6 +4,7 @@ import "./globals.css";
 import SessionProvider from "@/components/providers/SessionProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import AIChatbot from "@/components/shared/AIChatbot";
 
 const roboto = Roboto({
   variable: "--font-roboto-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
           <SessionProvider>
             {children}
             <ToastProvider />
+            <AIChatbot />
           </SessionProvider>
         </ThemeProvider>
       </body>

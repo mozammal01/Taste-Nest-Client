@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { 
   ShoppingCart, 
   Check, 
-  AlertCircle, 
   Star, 
   Clock, 
   ShieldCheck, 
@@ -21,7 +20,6 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { createCartItem } from "@/lib/actions/cart";
 import { useSession } from "@/lib/auth-client";
 import type { MenuItem } from "@/types/menuItems";
-import Link from "next/link";
 
 interface ItemDetailsProps {
   item: MenuItem;
