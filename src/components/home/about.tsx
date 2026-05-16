@@ -16,20 +16,20 @@ export default function About() {
       <div className="flex flex-col gap-10">
         <div className="block lg:flex justify-between gap-10 px-5 lg:px-0">
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ type: "spring", bounce: 0.2, duration: 1 }}
             className="flex flex-col gap-4 lg:w-[50%] space-y-4"
           >
             <p className="text-primary font-extrabold text-lg uppercase tracking-widest">Our Story & Philosophy</p>
             <h2 className="md:text-6xl text-4xl font-extrabold leading-tight text-slate-900 dark:text-white">Crafting Moments Through <span className="text-primary italic">Authentic</span> Flavors</h2>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ type: "spring", bounce: 0.2, duration: 1, delay: 0.2 }}
             className="lg:w-[60%] lg:pl-40 mt-5 lg:mt-0"
           >
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -49,12 +49,30 @@ export default function About() {
             </div>
           </motion.div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl mx-auto gap-8 lg:gap-12 my-16 px-6">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 }
+            }
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl mx-auto gap-8 lg:gap-12 my-16 px-6"
+        >
           <motion.div
-            initial={{ opacity: 0, y: -100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            variants={{
+              hidden: { opacity: 0, y: 60, scale: 0.8, rotate: -5 },
+              visible: { 
+                opacity: 1, 
+                y: 0, 
+                scale: 1, 
+                rotate: 0,
+                transition: { type: "spring", bounce: 0.4, duration: 1 }
+              }
+            }}
           >
             <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-slate-50 dark:bg-slate-900 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
               <Image 
@@ -76,10 +94,15 @@ export default function About() {
             </div>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            variants={{
+              hidden: { opacity: 0, y: 60, scale: 0.8 },
+              visible: { 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                transition: { type: "spring", bounce: 0.4, duration: 1 }
+              }
+            }}
           >
             <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
               <Image 
@@ -101,10 +124,16 @@ export default function About() {
             </div>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            variants={{
+              hidden: { opacity: 0, y: 60, scale: 0.8, rotate: 5 },
+              visible: { 
+                opacity: 1, 
+                y: 0, 
+                scale: 1, 
+                rotate: 0,
+                transition: { type: "spring", bounce: 0.4, duration: 1 }
+              }
+            }}
           >
             <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
               <Image 
@@ -125,7 +154,7 @@ export default function About() {
               </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
