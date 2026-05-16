@@ -37,21 +37,42 @@ export default function Ordering() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1
+                  }
+                }
+              }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4"
+            >
               {[
                 "Higher Reach - Minimal Effort",
                 "Showcase your Brand",
                 "Exclusive offers & discounts",
                 "Real-time Order Tracking"
               ].map((text, i) => (
-                <div key={i} className="flex items-center justify-center lg:justify-start gap-4 group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white">
+                <motion.div 
+                  key={i} 
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
+                  }}
+                  className="flex items-center justify-center lg:justify-start gap-4 group cursor-default"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white group-hover:rotate-12">
                     <Sparkles className="w-5 h-5" />
                   </div>
-                  <span className="font-bold text-slate-700 dark:text-slate-300">{text}</span>
-                </div>
+                  <span className="font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">{text}</span>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-8">
               <Link href="/under-construction">
@@ -76,17 +97,17 @@ export default function Ordering() {
           </motion.div>
 
           {/* Right Content - Hidden on small, visible from lg */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="w-full lg:w-1/2 relative hidden lg:flex items-center justify-center h-[500px] xl:h-[600px]"
-          >
+          <div className="w-full lg:w-1/2 relative hidden lg:flex items-center justify-center h-[500px] xl:h-[600px]">
             <div className="relative w-full h-full max-w-[600px]">
                <motion.div 
+                 initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                 viewport={{ once: true }}
                  animate={{ y: [0, -20, 0] }}
-                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                 transition={{ 
+                   y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                   default: { type: "spring", stiffness: 50, damping: 20, delay: 0.2 }
+                 }}
                  className="absolute inset-0 z-10 flex items-center justify-center"
                >
                  <div className="relative w-[300px] h-[400px] md:w-[380px] md:h-[450px]">
@@ -95,16 +116,30 @@ export default function Ordering() {
                </motion.div>
                
                <motion.div 
-                 animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                 initial={{ opacity: 0, scale: 0, x: 50 }}
+                 whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                 viewport={{ once: true }}
+                 animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                 transition={{ 
+                   scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+                   rotate: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+                   default: { type: "spring", stiffness: 80, damping: 15, delay: 0.5 }
+                 }}
                  className="absolute -top-10 -right-12 z-20"
                >
                  <Image src={saladImg} alt="Salad" width={220} height={220} className="rounded-full shadow-2xl border-4 border-white dark:border-slate-800" />
                </motion.div>
 
                <motion.div 
-                 animate={{ scale: [1, 1.05, 1], rotate: [0, -5, 0] }}
-                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                 initial={{ opacity: 0, scale: 0, x: -50 }}
+                 whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                 viewport={{ once: true }}
+                 animate={{ scale: [1, 1.05, 1], rotate: [0, -5, 5, 0] }}
+                 transition={{ 
+                   scale: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 },
+                   rotate: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 },
+                   default: { type: "spring", stiffness: 80, damping: 15, delay: 0.7 }
+                 }}
                  className="absolute -bottom-12 -left-16 z-20"
                >
                  <Image src={pizzaImg} alt="Pizza" width={240} height={160} className="rounded-3xl shadow-2xl border-4 border-white dark:border-slate-800" />
@@ -112,7 +147,7 @@ export default function Ordering() {
 
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10" />
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
