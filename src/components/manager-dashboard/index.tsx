@@ -16,7 +16,8 @@ import { headers } from "next/headers";
 async function getManagerStats() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
   const headersList = await headers();
-  const headersObj = Object.fromEntries(headersList.entries());
+  const cookieHeader = headersList.get('cookie') || '';
+  const headersObj = { Cookie: cookieHeader };
 
   try {
     const res = await fetch(`${API_URL}/admin/stats`, {

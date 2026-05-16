@@ -42,6 +42,7 @@ export async function updateMyProfile(formData: FormData) {
 }
 
 export async function deleteUser(userId: string, force: boolean = false) {
+  if (!API_URL) return { success: false, message: "Server configuration error" };
   const cookieStore = await cookies();
   const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
@@ -52,6 +53,11 @@ export async function deleteUser(userId: string, force: boolean = false) {
         Cookie: allCookies,
       },
     });
+
+    const contentType = res.headers.get("content-type");
+    if (contentType && !contentType.includes("application/json")) {
+        return { success: false, message: `Server error: ${res.status}. Check backend logs.` };
+    }
 
     const data = await res.json();
     if (data.success) {
@@ -64,12 +70,14 @@ export async function deleteUser(userId: string, force: boolean = false) {
     }
     
     return { success: false, message: data.message || "Failed to delete user" };
-  } catch {
+  } catch (error) {
+    console.error("[deleteUser Error]:", error);
     return { success: false, message: "Something went wrong" };
   }
 }
 
 export async function updateUserRole(userId: string, role: string) {
+  if (!API_URL) return { success: false, message: "Server configuration error" };
   const cookieStore = await cookies();
   const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
@@ -83,13 +91,19 @@ export async function updateUserRole(userId: string, role: string) {
       body: JSON.stringify({ role }),
     });
 
+    const contentType = res.headers.get("content-type");
+    if (contentType && !contentType.includes("application/json")) {
+        return { success: false, message: `Server error: ${res.status}. Check backend logs.` };
+    }
+
     const data = await res.json();
     if (data.success) {
       revalidatePath("/admin/users");
       return { success: true };
     }
     return { success: false, message: data.message || "Failed to update role" };
-  } catch {
+  } catch (error) {
+    console.error("[updateUserRole Error]:", error);
     return { success: false, message: "Something went wrong" };
   }
 }

@@ -24,8 +24,9 @@ async function getAdminStats() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
   const headersList = await headers();
   
-  // Forward all headers especially Cookie and Host for authentication
-  const headersObj = Object.fromEntries(headersList.entries());
+  // Forward only the Cookie header for authentication
+  const cookieHeader = headersList.get('cookie') || '';
+  const headersObj = { Cookie: cookieHeader };
 
   try {
     const res = await fetch(`${API_URL}/admin/stats`, {

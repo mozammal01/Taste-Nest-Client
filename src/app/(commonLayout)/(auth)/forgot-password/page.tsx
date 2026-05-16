@@ -154,7 +154,7 @@ export default function ForgotPasswordPage() {
             
             <div className="p-5 bg-gray-50 rounded-[28px] border border-gray-100 flex items-start gap-4">
                <HelpCircle className="w-5 h-5 text-primary shrink-0" />
-               <p className="text-[11px] text-gray-500 font-medium leading-relaxed leading-[1.6]">
+               <p className="text-[11px] text-gray-500 font-medium leading-relaxed">
                   Haven&apos;t received the code? Check your spam folder or try again in a few minutes.
                </p>
             </div>
