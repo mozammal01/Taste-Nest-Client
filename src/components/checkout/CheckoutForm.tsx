@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { 
-  CreditCard, 
   MapPin, 
   Phone, 
   CheckCircle2, 
@@ -14,14 +13,13 @@ import {
   Lock,
   Truck,
   CreditCardIcon,
-  ShoppingBag,
   AlertCircle
 } from "lucide-react";
 import { z } from "zod";
 import { AnimatedButton } from "@/components/shared/AnimatedButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+
 import type { CartItemWithDetails } from "@/types/cartItem";
 import { createOrder } from "@/lib/actions/order";
 import { createPaymentIntent } from "@/lib/actions/payment";

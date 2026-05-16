@@ -11,13 +11,12 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import logo from "@/../public/logo/logo.png";
-import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import { z } from "zod";
 import { loginSchema } from "@/zod/auth.schema";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import { User, ShieldCheck, Mail, Lock, Eye, EyeOff, Sparkles } from "lucide-react";
+import { User, ShieldCheck, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function SigninLeftSide() {
   const ref = useRef(null);

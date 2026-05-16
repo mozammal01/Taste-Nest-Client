@@ -20,6 +20,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { createCartItem } from "@/lib/actions/cart";
 import { useSession } from "@/lib/auth-client";
 import type { MenuItem } from "@/types/menuItems";
+import { cn } from "@/lib/utils";
 
 interface ItemDetailsProps {
   item: MenuItem;
@@ -272,6 +273,84 @@ export function ItemDetails({ item }: ItemDetailsProps) {
               <span className="text-xs font-bold uppercase underline cursor-pointer">Live Support</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Requirement 4: Separate Sections for Specifications & Reviews */}
+      <div className="mt-24 grid grid-cols-1 lg:grid-cols-3 gap-16">
+        {/* Specifications Section */}
+        <div className="lg:col-span-2 space-y-10">
+          <div>
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Chef&apos;s <span className="text-primary italic">Specifications</span></h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+               {[
+                 { label: "Ingredients", value: "Prime Cut, Himalayan Salt, Organic Herbs" },
+                 { label: "Nutritional Value", value: "450 Calories / 35g Protein" },
+                 { label: "Preparation Time", value: "25 Minutes" },
+                 { label: "Allergens", value: "None (Gluten Free Available)" },
+                 { label: "Chef Recommendation", value: "Medium Rare" },
+                 { label: "Signature Style", value: "Wood-Fired Grilling" }
+               ].map((spec, i) => (
+                 <div key={i} className="flex justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                   <span className="text-xs font-black uppercase text-slate-400 tracking-wider">{spec.label}</span>
+                   <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{spec.value}</span>
+                 </div>
+               ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Authentic <span className="text-primary italic">Guest Reviews</span></h3>
+            <div className="space-y-6">
+              {[
+                { name: "John Doe", date: "2 days ago", rating: 5, comment: "Absolutely incredible! The flavors were perfectly balanced." },
+                { name: "Sarah Smith", date: "1 week ago", rating: 4, comment: "Fantastic atmosphere and the food was top-notch." }
+              ].map((review, i) => (
+                <div key={i} className="p-6 rounded-[24px] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs">
+                        {review.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-slate-900 dark:text-white">{review.name}</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{review.date}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, j) => (
+                        <Star key={j} className={cn("w-3 h-3", j < review.rating ? "text-yellow-500 fill-yellow-500" : "text-slate-200")} />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-500 italic leading-relaxed">&quot;{review.comment}&quot;</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Highlight Section */}
+        <div className="lg:col-span-1">
+           <div className="sticky top-24 p-8 rounded-[40px] bg-primary text-white space-y-6 shadow-2xl shadow-primary/20">
+              <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
+                 <ShieldCheck className="w-8 h-8" />
+              </div>
+              <h4 className="text-2xl font-black tracking-tight">TasteNest Quality Guarantee</h4>
+              <p className="text-white/80 font-medium text-sm leading-relaxed">
+                Every dish is prepared using fresh, locally sourced ingredients. Our master chefs ensure the highest standards of hygiene and culinary excellence.
+              </p>
+              <div className="pt-4 border-t border-white/20 grid grid-cols-2 gap-4">
+                 <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-1">Cleanliness</p>
+                    <p className="text-lg font-black italic">100%</p>
+                 </div>
+                 <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-1">Chef Rating</p>
+                    <p className="text-lg font-black italic">A++</p>
+                 </div>
+              </div>
+           </div>
         </div>
       </div>
     </div>

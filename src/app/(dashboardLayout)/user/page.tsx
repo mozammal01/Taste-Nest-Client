@@ -10,7 +10,6 @@ import {
   User, 
   Mail, 
   Fingerprint,
-  ChevronRight,
   TrendingUp,
   Award
 } from "lucide-react";

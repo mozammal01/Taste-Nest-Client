@@ -3,7 +3,6 @@
 import { useState } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +13,6 @@ import { Mail, ShieldCheck, ArrowLeft, ArrowRight, HelpCircle } from "lucide-rea
 import logo from "@/../public/logo/logo.png";
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -38,7 +36,7 @@ export default function ForgotPasswordPage() {
 
       toast.success("Reset code sent to your email!");
       setIsSuccess(true);
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
       toast.error("Something went wrong. Please try again.");
     } finally {

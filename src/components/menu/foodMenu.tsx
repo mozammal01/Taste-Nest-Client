@@ -2,7 +2,7 @@
 
 import { FoodMenuCard } from "./foodMenuCard";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import type { MenuItem } from "@/types/menuItems";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMenu } from "./MenuContext";
@@ -63,6 +63,8 @@ export default function FoodMenu({ items, user, search, minPrice, maxPrice }: Fo
   const router = useRouter();
   const category = params.get("category");
   const { isLoading, stopLoading } = useMenu();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   // Stop loading after items have been updated from the server
   useEffect(() => {
@@ -109,6 +111,13 @@ export default function FoodMenu({ items, user, search, minPrice, maxPrice }: Fo
 
     return sorted;
   }, [items, search, minPrice, maxPrice, params]);
+
+
+  // Pagination calculations
+  const totalItems = displayedItems.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedItems = displayedItems.slice(startIndex, startIndex + itemsPerPage);
 
   const clearSearch = () => {
     const newParams = new URLSearchParams(params.toString());
@@ -183,7 +192,7 @@ export default function FoodMenu({ items, user, search, minPrice, maxPrice }: Fo
           transition={{ duration: 0.3 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
         >
-          {displayedItems.map((item, index) => (
+          {paginatedItems.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
@@ -198,6 +207,37 @@ export default function FoodMenu({ items, user, search, minPrice, maxPrice }: Fo
             </motion.div>
           ))}
         </motion.div>
+      )}
+
+      {/* Pagination Footer */}
+      {totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between pt-12 border-t border-slate-100 dark:border-slate-800 gap-6">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
+            Showing <span className="text-primary">{startIndex + 1}-{Math.min(startIndex + itemsPerPage, totalItems)}</span> of {totalItems} Delicacies
+          </p>
+          
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage <= 1}
+              className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary/20 transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" /></svg>
+            </button>
+
+            <div className="bg-white dark:bg-slate-900 px-6 h-12 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-center text-sm font-black text-slate-900 dark:text-white shadow-xl shadow-slate-200/40 dark:shadow-none font-outfit">
+               <span className="text-primary italic mr-1">{currentPage}</span> / <span className="opacity-40">{totalPages}</span>
+            </div>
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage >= totalPages}
+              className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary/20 transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

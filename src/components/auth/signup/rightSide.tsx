@@ -13,11 +13,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import logo from "@/../public/logo/logo.png";
 import GoogleIcon from "@/components/icons/GoogleIcon";
-import GithubIcon from "@/components/icons/GithubIcon";
 import { z } from "zod";
 import { registerSchema } from "@/zod/auth.schema";
 import { toast } from "sonner";
-import { Mail, ShieldCheck, Loader2, ArrowRight, X, User, Phone, CheckCircle2 } from "lucide-react";
+import { Mail, ShieldCheck, Loader2, ArrowRight, X, User, Phone } from "lucide-react";
 
 export default function SignupRightSide() {
   const ref = useRef(null);

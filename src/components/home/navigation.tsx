@@ -137,11 +137,10 @@ export default function Navigation() {
 
   const navItems = [
     { id: "home", label: "Home", href: "/", isSection: false },
-    { id: "about", label: "About", href: "about", isSection: true },
-    { id: "menu", label: "Menu", href: "menu", isSection: true },
-    { id: "experts", label: "Experts", href: "experts", isSection: true },
-    { id: "news", label: "Blogs", href: "news", isSection: true },
-    { id: "contact", label: "Contact", href: "contact", isSection: true },
+    { id: "about", label: "About", href: "/about", isSection: false },
+    { id: "menu", label: "Menu", href: "/menu", isSection: false },
+    { id: "blog", label: "Journal", href: "/blog", isSection: false },
+    { id: "contact", label: "Contact", href: "/contact", isSection: false },
   ];
 
   const [activeSection, setActiveSection] = useState("home");
