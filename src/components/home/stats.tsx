@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import { Utensils, Users, Award, Clock } from "lucide-react";
 
 const stats = [
@@ -29,6 +30,42 @@ const stats = [
     color: "bg-purple-100 text-purple-600",
   },
 ];
+
+function AnimatedNumber({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  
+  const match = value.match(/(\d+)(.*)/);
+  const num = match ? parseInt(match[1], 10) : 0;
+  const suffix = match ? match[2] : "";
+
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, {
+    damping: 40,
+    stiffness: 80,
+  });
+
+  useEffect(() => {
+    if (isInView) {
+      motionValue.set(num);
+    }
+  }, [isInView, motionValue, num]);
+
+  useEffect(() => {
+    return springValue.on("change", (latest) => {
+      if (ref.current) {
+        ref.current.textContent = Intl.NumberFormat("en-US").format(Math.floor(latest));
+      }
+    });
+  }, [springValue]);
+
+  return (
+    <span className="inline-flex items-center justify-center">
+      <span ref={ref}>0</span>
+      <span>{suffix}</span>
+    </span>
+  );
+}
 
 export default function Statistics() {
   return (
@@ -66,7 +103,7 @@ export default function Statistics() {
                 {stat.icon}
               </div>
               <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">
-                {stat.value}
+                <AnimatedNumber value={stat.value} />
               </h3>
               <p className="text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-widest">
                 {stat.label}
