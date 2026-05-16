@@ -3,20 +3,17 @@ import bannerImage from "@/../public/banner/bannerImg.png";
 import pizzaImg from "@/../public/banner/pizza.png";
 import WeeklySpecialCard from "../ui/weekly-special-card";
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { AnimatedButton } from "../ui/animated-button";
 
 import Image from "next/image";
 
 export default function Banner() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0 }}
-      animate={{ opacity: isInView ? 1 : 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
       transition={{ duration: 1 }}
       className="relative min-h-[70vh] flex items-center overflow-hidden"
     >
@@ -37,7 +34,8 @@ export default function Banner() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
           <motion.div
             initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-white w-full lg:w-3/5 space-y-8 text-center lg:text-left"
           >
@@ -79,7 +77,8 @@ export default function Banner() {
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
-            animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.8, rotate: 0 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.4, type: "spring", bounce: 0.3 }}
             className="w-full lg:w-2/5 max-w-[500px] relative hidden lg:block"
           >

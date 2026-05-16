@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { signIn, signUp, emailOtp } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
@@ -21,8 +21,6 @@ import { toast } from "sonner";
 import { Mail, ShieldCheck, Loader2, ArrowRight, X, User, Phone } from "lucide-react";
 
 export default function SignupRightSide() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -167,9 +165,9 @@ export default function SignupRightSide() {
   return (
     <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-linear-to-br from-gray-50 to-white">
       <motion.div
-        ref={ref}
         initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >

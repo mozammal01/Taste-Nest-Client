@@ -4,12 +4,9 @@ import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/com
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Testimonial } from "@/Interfaces/shared-interface";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const [api, setApi] = useState<CarouselApi>();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -30,9 +27,9 @@ export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <Carousel
@@ -44,8 +41,8 @@ export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
         className="w-full max-w-xl mx-auto"
       >
         <CarouselContent>
-          {feedbacks.map((testimonial, i) => (
-            <CarouselItem key={i}>
+          {feedbacks.map((testimonial) => (
+            <CarouselItem key={testimonial.author}>
               <Card className="border-2 border-secondary rounded-2xl">
                 <CardContent className="p-6 h-[200px] flex flex-col justify-between">
                   <div className="text-start text-gray-600 font-semibold text-xl">{testimonial.review}</div>
@@ -62,9 +59,9 @@ export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
 
       {/* Pagination dots */}
       <div className="flex justify-center gap-2 mt-4">
-        {feedbacks.map((_, i) => (
+        {feedbacks.map((feedback, i) => (
           <button
-            key={i}
+            key={feedback.author}
             className={cn("w-3 h-3 rounded-full transition-all duration-300", selectedIndex === i ? "bg-primary scale-125 shadow-lg shadow-primary/20" : "bg-gray-300 dark:bg-slate-700")}
             onClick={() => api?.scrollTo(i)}
           />

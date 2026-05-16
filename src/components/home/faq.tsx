@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, HelpCircle } from "lucide-react";
-import { useRef } from "react";
-import { useInView } from "framer-motion";
 
 const faqs = [
   {
@@ -31,16 +29,15 @@ const faqs = [
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} id="faq" className="py-24 bg-background dark:bg-slate-950 relative overflow-hidden transition-colors">
+    <section id="faq" className="py-24 bg-background dark:bg-slate-950 relative overflow-hidden transition-colors">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
             className="text-center mb-16 space-y-4"
           >
@@ -59,9 +56,10 @@ export default function FAQ() {
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <motion.div
-                key={index}
+                key={faq.question}
                 initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={`rounded-[24px] border-2 transition-all duration-300 overflow-hidden ${
                   openIndex === index 

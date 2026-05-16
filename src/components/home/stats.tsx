@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Utensils, Users, Award, Clock } from "lucide-react";
-import { useRef } from "react";
-import { useInView } from "framer-motion";
 
 const stats = [
   {
@@ -33,11 +31,8 @@ const stats = [
 ];
 
 export default function Statistics() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
-
   return (
-    <section ref={ref} className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors relative overflow-hidden">
+    <section className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors relative overflow-hidden">
       {/* Decorative Circles */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -ml-32 -mt-32 blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full -mr-48 -mb-48 blur-3xl" />
@@ -46,9 +41,10 @@ export default function Statistics() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <motion.div
-              key={index}
+              key={stat.label}
               initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="bg-white dark:bg-slate-900 p-8 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 hover:shadow-2xl dark:shadow-none hover:-translate-y-2 transition-all duration-300 group text-center"
             >

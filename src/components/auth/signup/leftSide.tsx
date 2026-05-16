@@ -81,8 +81,8 @@ export default function SignupLeftSide() {
       transition={{ duration: 0.6, delay: 1 }}
       className="mt-10 space-y-4"
     >
-      {["Exclusive member discounts", "Priority table reservations", "Special event invitations"].map((feature, index) => (
-        <div key={index} className="flex items-center gap-3">
+      {["Exclusive member discounts", "Priority table reservations", "Special event invitations"].map((feature) => (
+        <div key={feature} className="flex items-center gap-3">
           <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center">
             <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

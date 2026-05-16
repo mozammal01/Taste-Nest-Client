@@ -3,8 +3,8 @@ import BurgerIcon from "../icons/BurgerIcon";
 import CoffeeIcon from "../icons/CoffeeIcon";
 import DessertIcon from "../icons/DessertIcon";
 import SteakIcon from "../icons/SteakIcon";
-import { useRef, useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import mask from "@/../public/categories/mask.png";
@@ -20,8 +20,6 @@ const categories = [
 ];
 
 export default function FullMenuCategories() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const params = useSearchParams();
   const router = useRouter();
   const { startLoading } = useMenu();
@@ -57,9 +55,9 @@ export default function FullMenuCategories() {
 
   return (
     <motion.div
-      ref={ref}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
       variants={{
         visible: {
           transition: {

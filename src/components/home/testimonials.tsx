@@ -5,35 +5,32 @@ import strawberryImg from "@/../public/testimonials/strawberry.png";
 import Image from "next/image";
 import Feedback from "../Feedback/Feedback";
 import { Testimonial } from "@/Interfaces/shared-interface";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    author: "Eleanor Vance",
+    review: "The Madagascar Vanilla Cheesecake is a masterclass in balance; the texture is sublime and the crust provides a perfect buttery snap.",
+  },
+  {
+    author: "Marcus Thorne",
+    review: "Rarely do you find a Ribeye with such consistent marbling. The bone marrow butter elevates the whole experience to another level.",
+  },
+  {
+    author: "Isabella Rossi",
+    review: "A truly atmospheric dining experience. The Single-Origin Espresso has a clarity of flavor that is hard to find even in specialty cafes.",
+  },
+  {
+    author: "Julian Ames",
+    review: "The Signature Burger isn't just a meal; it's a gourmet journey. The truffle aioli is the subtle hero that brings everything together.",
+  },
+  {
+    author: "Sophia Chen",
+    review: "Impeccable service and an even more impressive wine list. TasteNest has become our go-to for celebrating life's milestones.",
+  },
+];
 
 export default function Testimonials() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
-  const testimonials: Testimonial[] = [
-    {
-      author: "Eleanor Vance",
-      review: "The Madagascar Vanilla Cheesecake is a masterclass in balance; the texture is sublime and the crust provides a perfect buttery snap.",
-    },
-    {
-      author: "Marcus Thorne",
-      review: "Rarely do you find a Ribeye with such consistent marbling. The bone marrow butter elevates the whole experience to another level.",
-    },
-    {
-      author: "Isabella Rossi",
-      review: "A truly atmospheric dining experience. The Single-Origin Espresso has a clarity of flavor that is hard to find even in specialty cafes.",
-    },
-    {
-      author: "Julian Ames",
-      review: "The Signature Burger isn't just a meal; it's a gourmet journey. The truffle aioli is the subtle hero that brings everything together.",
-    },
-    {
-      author: "Sophia Chen",
-      review: "Impeccable service and an even more impressive wine list. TasteNest has become our go-to for celebrating life's milestones.",
-    },
-  ];
 
   return (
     <div id="testimonials" className="container mx-auto my-20 px-6">
@@ -49,14 +46,14 @@ export default function Testimonials() {
               Our Customer <span className="text-primary italic">Feedback</span>
             </h2>
           </div>
-          <Feedback feedbacks={testimonials} />
+          <Feedback feedbacks={TESTIMONIALS} />
         </div>
 
         {/* Visual Section - Hidden on mobile, visible on large screens */}
         <motion.div
-          ref={ref}
           initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="hidden lg:block w-1/2 relative h-[600px]"
         >

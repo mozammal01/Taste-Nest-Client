@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { signIn } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,8 +20,6 @@ import { useEffect } from "react";
 import { User, ShieldCheck, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function SigninLeftSide() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -134,9 +132,9 @@ export default function SigninLeftSide() {
   return (
     <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-linear-to-br from-white to-gray-50">
       <motion.div
-        ref={ref}
         initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >

@@ -11,8 +11,8 @@ import {
 import { Lens } from "@/components/ui/lens";
 import Image from "next/image";
 import { AnimatedButton } from "../ui/animated-button";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { MenuItem } from "@/types/menuItems";
 import { deleteMenuItem } from "@/lib/actions/menu";
@@ -33,8 +33,6 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
   const { data: session } = useSession();
   const user = session?.user || serverUser;
   const currentRole = userRole || (user as { role?: string })?.role;
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -151,9 +149,9 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
       className="h-full"
     >
