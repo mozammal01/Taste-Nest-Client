@@ -48,11 +48,17 @@ export async function getAIChatResponse(userMessage: string) {
       }),
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.error?.message || "Failed to fetch Gemini response");
+      const text = await response.text();
+      try {
+        const errorData = JSON.parse(text);
+        throw new Error(errorData.error?.message || "Failed to fetch Gemini response");
+      } catch {
+        throw new Error(`Failed to fetch Gemini response: ${response.status} ${response.statusText}`);
+      }
     }
+
+    const data = await response.json();
 
     // Extracting the text response from Gemini's specific JSON structure
     const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;

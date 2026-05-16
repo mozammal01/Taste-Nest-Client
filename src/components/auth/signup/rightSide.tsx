@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import { signIn, signUp, emailOtp } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ export default function SignupRightSide() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -147,9 +149,14 @@ export default function SignupRightSide() {
   // Handle Social Sign In
   const handleSocialSignUp = async (provider: "google" | "facebook") => {
     try {
+      const callbackParam = searchParams.get("callbackUrl") || "/";
+      const finalCallbackURL = callbackParam.startsWith("http") 
+        ? callbackParam 
+        : `${window.location.origin}${callbackParam.startsWith("/") ? "" : "/"}${callbackParam}`;
+
       await signIn.social({
         provider,
-        callbackURL: window.location.origin,
+        callbackURL: finalCallbackURL,
       });
     } catch (err) {
       console.error(`${provider} sign up error:`, err);

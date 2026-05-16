@@ -56,7 +56,8 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
           icon: <AlertCircle className="w-5 h-5" />,
         });
       }
-    } catch {
+    } catch (error) {
+      console.error("[confirmDelete Error]:", error);
       toast.error("An unexpected error occurred. Please try again.", {
         icon: <AlertCircle className="w-5 h-5" />,
       });
@@ -98,7 +99,8 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
       } else {
         toast.error(result.message);
       }
-    } catch {
+    } catch (error) {
+      console.error("[handleOrderNow Error]:", error);
       toast.error("Failed to process order. Please try again.");
     } finally {
       setIsOrderingNow(false);
@@ -139,7 +141,8 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
           icon: <AlertCircle className="w-5 h-5" />,
         });
       }
-    } catch {
+    } catch (error) {
+      console.error("[handleAddToCart Error]:", error);
       toast.error("Failed to add item to cart. Please try again.");
     } finally {
       setIsAddingToCart(false);

@@ -26,6 +26,20 @@ interface ItemDetailsProps {
   item: MenuItem;
 }
 
+const DEFAULT_SPECS = [
+  { label: "Ingredients", value: "Prime Cut, Himalayan Salt, Organic Herbs" },
+  { label: "Nutritional Value", value: "450 Calories / 35g Protein" },
+  { label: "Preparation Time", value: "25 Minutes" },
+  { label: "Allergens", value: "None (Gluten Free Available)" },
+  { label: "Chef Recommendation", value: "Medium Rare" },
+  { label: "Signature Style", value: "Wood-Fired Grilling" }
+];
+
+const DEFAULT_REVIEWS = [
+  { name: "John Doe", date: "2 days ago", rating: 5, comment: "Absolutely incredible! The flavors were perfectly balanced." },
+  { name: "Sarah Smith", date: "1 week ago", rating: 4, comment: "Fantastic atmosphere and the food was top-notch." }
+];
+
 export function ItemDetails({ item }: ItemDetailsProps) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -58,7 +72,8 @@ export function ItemDetails({ item }: ItemDetailsProps) {
       } else {
         toast.error(result.message);
       }
-    } catch {
+    } catch (error) {
+      console.error("[handleAddToCart Error]:", error);
       toast.error("Failed to add to cart");
     } finally {
       setIsAddingToCart(false);
@@ -86,7 +101,8 @@ export function ItemDetails({ item }: ItemDetailsProps) {
       } else {
         toast.error(result.message);
       }
-    } catch {
+    } catch (error) {
+      console.error("[handleOrderNow Error]:", error);
       toast.error("Failed to process order");
     } finally {
       setIsOrderingNow(false);
@@ -283,15 +299,8 @@ export function ItemDetails({ item }: ItemDetailsProps) {
           <div>
             <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Chef&apos;s <span className="text-primary italic">Specifications</span></h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-               {[
-                 { label: "Ingredients", value: "Prime Cut, Himalayan Salt, Organic Herbs" },
-                 { label: "Nutritional Value", value: "450 Calories / 35g Protein" },
-                 { label: "Preparation Time", value: "25 Minutes" },
-                 { label: "Allergens", value: "None (Gluten Free Available)" },
-                 { label: "Chef Recommendation", value: "Medium Rare" },
-                 { label: "Signature Style", value: "Wood-Fired Grilling" }
-               ].map((spec, i) => (
-                 <div key={i} className="flex justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+               {DEFAULT_SPECS.map((spec) => (
+                 <div key={spec.label} className="flex justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
                    <span className="text-xs font-black uppercase text-slate-400 tracking-wider">{spec.label}</span>
                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{spec.value}</span>
                  </div>
@@ -302,11 +311,8 @@ export function ItemDetails({ item }: ItemDetailsProps) {
           <div>
             <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Authentic <span className="text-primary italic">Guest Reviews</span></h3>
             <div className="space-y-6">
-              {[
-                { name: "John Doe", date: "2 days ago", rating: 5, comment: "Absolutely incredible! The flavors were perfectly balanced." },
-                { name: "Sarah Smith", date: "1 week ago", rating: 4, comment: "Fantastic atmosphere and the food was top-notch." }
-              ].map((review, i) => (
-                <div key={i} className="p-6 rounded-[24px] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+              {DEFAULT_REVIEWS.map((review) => (
+                <div key={review.name} className="p-6 rounded-[24px] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
                   <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs">

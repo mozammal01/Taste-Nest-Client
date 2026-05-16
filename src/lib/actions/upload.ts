@@ -29,14 +29,22 @@ export async function uploadMenuImage(formData: FormData): Promise<UploadResult>
       body: formData,
     });
 
+    const contentType = res.headers.get("content-type");
+    if (!res.ok || !contentType?.includes("application/json")) {
+      const text = await res.text();
+      console.error(`UPLOAD ERROR [${res.status}]:`, text);
+      return { success: false, message: `Upload failed: ${res.status}` };
+    }
+
     const result = (await res.json()) as { success?: boolean; message?: string; data?: { url?: string } };
 
-    if (!res.ok || !result.success || !result.data?.url) {
+    if (!result.success || !result.data?.url) {
       return { success: false, message: result.message || "Failed to upload image." };
     }
 
     return { success: true, message: result.message || "Uploaded", url: result.data.url };
-  } catch {
+  } catch (error) {
+    console.error("[uploadMenuImage Error]:", error);
     return { success: false, message: "Failed to upload image. Please try again." };
   }
 }
