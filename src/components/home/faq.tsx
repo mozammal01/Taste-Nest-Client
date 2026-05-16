@@ -53,14 +53,27 @@ export default function FAQ() {
             </p>
           </motion.div>
 
-          <div className="space-y-4">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+            }}
+            className="space-y-4"
+          >
             {faqs.map((faq, index) => (
               <motion.div
                 key={faq.question}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                variants={{
+                  hidden: { opacity: 0, x: -50 },
+                  visible: { 
+                    opacity: 1, 
+                    x: 0, 
+                    transition: { type: "spring", bounce: 0.4, duration: 0.8 } 
+                  }
+                }}
                 className={`rounded-[24px] border-2 transition-all duration-300 overflow-hidden ${
                   openIndex === index 
                     ? "border-primary bg-primary/5 shadow-lg shadow-primary/5" 
@@ -100,7 +113,7 @@ export default function FAQ() {
                 </AnimatePresence>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -51,10 +51,10 @@ export default function Testimonials() {
 
         {/* Visual Section - Hidden on mobile, visible on large screens */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, scale: 0.8, x: 50 }}
+          whileInView={{ opacity: 1, scale: 1, x: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ type: "spring", bounce: 0.4, duration: 1 }}
           className="hidden lg:block w-1/2 relative h-[600px]"
         >
           {/* Main Large Image */}

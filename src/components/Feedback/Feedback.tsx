@@ -27,10 +27,10 @@ export default function Feedback({ feedbacks }: { feedbacks: Testimonial[] }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -100 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: -50 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
+      transition={{ type: "spring", bounce: 0.2, duration: 1 }}
     >
       <Carousel
         setApi={setApi}

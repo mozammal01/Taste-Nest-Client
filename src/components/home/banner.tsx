@@ -33,32 +33,57 @@ export default function Banner() {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
           <motion.div
-            initial={{ opacity: 0, y: -100 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+              }
+            }}
             className="text-white w-full lg:w-3/5 space-y-8 text-center lg:text-left"
           >
             <div className="space-y-4">
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.4 } }
+                }}
                 className="text-primary font-black text-sm uppercase tracking-[0.4em]"
               >
                 Welcome to TasteNest
               </motion.p>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tighter">
+              <motion.h1 
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.4 } }
+                }}
+                className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tighter"
+              >
                 Artisan Flavors & <br />
                 <span className="text-secondary italic">Atmospheric</span> <br />
                 Sessions
-              </h1>
-              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+              </motion.h1>
+              <motion.p 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.4 } }
+                }}
+                className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium"
+              >
                 Experience the pinnacle of culinary artistry at TasteNest, where every ingredient tells a story of local farms and global inspiration.
-              </p>
+              </motion.p>
             </div>
             
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-4">
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.4 } }
+              }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-4"
+            >
               <Link href="#menu">
                 <AnimatedButton className="min-w-[200px] h-16 rounded-2xl text-lg font-black" variant="ripple" size="lg">
                   Explore Menu
@@ -72,7 +97,7 @@ export default function Banner() {
                 <span className="font-bold opacity-80 group-hover:opacity-100 transition-opacity">Watch Story</span>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.div

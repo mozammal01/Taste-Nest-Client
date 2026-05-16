@@ -11,12 +11,26 @@ export default function Menu() {
       <div className="md:mb-20">
         <SubTitle title="Discover Menu" />
       </div>
-      <div className="flex flex-col md:flex-row justify-center items-center gap-20 md:gap-10 my-20 px-4">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+        }}
+        className="flex flex-col md:flex-row justify-center items-center gap-20 md:gap-10 my-20 px-4"
+      >
         <motion.div
-          initial={{ opacity: 0, y: -100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          variants={{
+            hidden: { opacity: 0, scale: 0.8, x: -50 },
+            visible: { 
+              opacity: 1, 
+              scale: 1, 
+              x: 0,
+              transition: { type: "spring", bounce: 0.4, duration: 1 } 
+            }
+          }}
           className="w-full relative"
         >
           <Image src={bbqImg} alt="steaks and BBQ menu" width={600} height={500} />
@@ -35,10 +49,15 @@ export default function Menu() {
           </div>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          variants={{
+            hidden: { opacity: 0, scale: 0.8, x: 50 },
+            visible: { 
+              opacity: 1, 
+              scale: 1, 
+              x: 0,
+              transition: { type: "spring", bounce: 0.4, duration: 1 } 
+            }
+          }}
           className="w-full relative"
         >
           <Image src={cocktailImg} alt="cocktails menu" width={600} height={500} />
@@ -56,7 +75,7 @@ export default function Menu() {
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }
