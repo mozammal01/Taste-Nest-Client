@@ -42,9 +42,9 @@ export default function Menu() {
             </p>
           </div>
           <div className="absolute w-full h-full top-24 md:top-40 lg:top-52 left-5">
-            <div className="bg-secondary rounded-full h-24 w-24 p-4 flex flex-col items-center justify-center">
-              <span className="text-3xl font-extrabold text-primary">$120</span>
-              <span className="text-sm font-extrabold">person</span>
+            <div className="bg-secondary rounded-full h-24 w-24 p-4 flex flex-col items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+              <span className="text-2xl font-black text-slate-950">$120</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-800">/ person</span>
             </div>
           </div>
         </motion.div>
@@ -69,9 +69,9 @@ export default function Menu() {
             </p>
           </div>
           <div className="absolute w-full h-full top-24 md:top-40 lg:top-52 left-5">
-            <div className="bg-secondary rounded-full h-24 w-24 p-4 flex flex-col items-center justify-center">
-              <span className="text-3xl font-extrabold text-primary">$120</span>
-              <span className="text-sm font-extrabold">person</span>
+            <div className="bg-secondary rounded-full h-24 w-24 p-4 flex flex-col items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+              <span className="text-2xl font-black text-slate-950">$120</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-800">/ person</span>
             </div>
           </div>
         </motion.div>
