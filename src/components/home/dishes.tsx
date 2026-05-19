@@ -55,7 +55,7 @@ export default function Dishes() {
                         {dish.price}
                       </span>
                       <span className="text-2xl font-black text-primary">
-                        ${dish.discountPrice}
+                        {dish.discountPrice}
                       </span>
                     </div>
                   </div>
