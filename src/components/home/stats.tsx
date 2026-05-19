@@ -9,25 +9,25 @@ const stats = [
     icon: <Utensils className="w-8 h-8" />,
     value: "150+",
     label: "Delicious Dishes",
-    color: "bg-blue-100 text-blue-600",
+    color: "bg-blue-100 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400",
   },
   {
     icon: <Users className="w-8 h-8" />,
     value: "25k+",
     label: "Happy Customers",
-    color: "bg-green-100 text-green-600",
+    color: "bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400",
   },
   {
     icon: <Award className="w-8 h-8" />,
     value: "15+",
     label: "Culinary Awards",
-    color: "bg-yellow-100 text-yellow-600",
+    color: "bg-yellow-100 dark:bg-yellow-950/30 text-yellow-600 dark:text-yellow-400",
   },
   {
     icon: <Clock className="w-8 h-8" />,
     value: "12+",
     label: "Years of Passion",
-    color: "bg-purple-100 text-purple-600",
+    color: "bg-purple-100 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400",
   },
 ];
 
