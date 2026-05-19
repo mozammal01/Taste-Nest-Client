@@ -197,20 +197,22 @@ export default function News() {
           <div className="absolute inset-0 bg-linear-to-b from-primary/10 to-primary/30" />
           
           <div className="relative z-10 space-y-8">
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0]
-              }} 
-              transition={{ 
-                duration: 5, 
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="bg-white/10 backdrop-blur-xl rounded-full p-6 w-20 h-20 flex justify-center items-center mx-auto border border-white/20 shadow-2xl"
-            >
-              <Image src={instaIcon} alt="Instagram" width={32} height={32} />
-            </motion.div>
+            <Link href="/under-construction">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }} 
+                transition={{ 
+                  duration: 5, 
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="bg-white/10 backdrop-blur-xl rounded-full p-6 w-20 h-20 flex justify-center items-center mx-auto border border-white/20 shadow-2xl hover:scale-110 hover:bg-white/20 transition-all duration-300 cursor-pointer"
+              >
+                <Image src={instaIcon} alt="Instagram" width={32} height={32} />
+              </motion.div>
+            </Link>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
