@@ -192,7 +192,7 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
         <CardContent className="flex-1 space-y-3 pt-6">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
-              <div className="text-xs font-black text-primary uppercase tracking-widest bg-primary/5 w-fit px-2 py-0.5 rounded-md">
+              <div className="text-[10px] font-black text-primary uppercase tracking-[0.15em] bg-primary/10 w-fit px-2.5 py-1 rounded-lg">
                 {item.category}
               </div>
               <CardTitle className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -201,7 +201,9 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
             </div>
             <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg">
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-              <span className="text-sm font-black text-yellow-700 dark:text-yellow-500">4.9</span>
+              <span className="text-sm font-black text-yellow-700 dark:text-yellow-500">
+                {(4.5 + ((item.id * 7) % 6) * 0.1).toFixed(1)}
+              </span>
             </div>
           </div>
           <div className="min-h-[3rem]">
