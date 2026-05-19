@@ -1,17 +1,49 @@
 import Banner from "@/components/home/banner";
 import About from "@/components/home/about";
 import MenuDishes from "@/components/home/menu&dishes";
-import Testimonials from "@/components/home/testimonials";
-import OurExperts from "@/components/home/ourExperts";
-import News from "@/components/home/news";
-import Ordering from "@/components/home/ordering";
 import Categories from "@/components/home/categories";
-import Statistics from "@/components/home/stats";
-import FAQ from "@/components/home/faq";
 import { getCurrentUser } from "@/lib/auth";
 
 import { Suspense } from "react";
 import { Loading, HeroSkeleton, SectionSkeleton } from "@/components/ui/loading";
+import dynamic from "next/dynamic";
+
+const Testimonials = dynamic(() => import("@/components/home/testimonials"), {
+  loading: () => (
+    <div className="h-[500px] bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center gap-6 animate-pulse">
+      <div className="h-4 w-32 bg-gray-200 dark:bg-slate-800 rounded-full" />
+      <div className="h-10 w-64 bg-gray-200 dark:bg-slate-800 rounded-2xl" />
+    </div>
+  )
+});
+
+const OurExperts = dynamic(() => import("@/components/home/ourExperts"), {
+  loading: () => <SectionSkeleton lines={3} />
+});
+
+const Statistics = dynamic(() => import("@/components/home/stats"), {
+  loading: () => <SectionSkeleton lines={2} />
+});
+
+const Ordering = dynamic(() => import("@/components/home/ordering"), {
+  loading: () => (
+    <div className="h-[350px] bg-primary/5 flex items-center justify-center rounded-[32px]">
+      <Loading variant="dots" size="lg" />
+    </div>
+  )
+});
+
+const News = dynamic(() => import("@/components/home/news"), {
+  loading: () => <SectionSkeleton lines={2} />
+});
+
+const FAQ = dynamic(() => import("@/components/home/faq"), {
+  loading: () => (
+    <div className="py-24 bg-white dark:bg-slate-950 flex items-center justify-center">
+      <Loading variant="food" size="lg" />
+    </div>
+  )
+});
 
 export default async function Home() {
   const user = await getCurrentUser();
