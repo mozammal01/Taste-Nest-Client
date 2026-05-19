@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { motion, useInView, useMotionValue, animate } from "framer-motion";
 import { Utensils, Users, Award, Clock } from "lucide-react";
 
 const stats = [
@@ -40,24 +40,21 @@ function AnimatedNumber({ value }: { value: string }) {
   const suffix = match ? match[2] : "";
 
   const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, {
-    damping: 40,
-    stiffness: 80,
-  });
 
   useEffect(() => {
     if (isInView) {
-      motionValue.set(num);
+      const controls = animate(motionValue, num, {
+        duration: 1.2,
+        ease: "easeOut",
+        onUpdate: (latest) => {
+          if (ref.current) {
+            ref.current.textContent = Intl.NumberFormat("en-US").format(Math.floor(latest));
+          }
+        }
+      });
+      return () => controls.stop();
     }
   }, [isInView, motionValue, num]);
-
-  useEffect(() => {
-    return springValue.on("change", (latest) => {
-      if (ref.current) {
-        ref.current.textContent = Intl.NumberFormat("en-US").format(Math.floor(latest));
-      }
-    });
-  }, [springValue]);
 
   return (
     <span className="inline-flex items-center justify-center">
