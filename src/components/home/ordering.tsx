@@ -76,7 +76,7 @@ export default function Ordering() {
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-8">
               <Link href="/under-construction">
-                <AnimatedButton variant="threeDimensional" size="lg" className="min-w-[180px]">
+                <AnimatedButton variant="threeDimensional" size="xl" className="min-w-[180px]">
                   <Image src={playIcon} alt="Google Play" width={20} height={20} />
                   <div className="text-left flex flex-col items-start leading-none ml-2">
                     <span className="text-[10px] uppercase font-bold opacity-60">Get it on</span>
@@ -85,7 +85,7 @@ export default function Ordering() {
                 </AnimatedButton>
               </Link>
               <Link href="/under-construction">
-                <AnimatedButton size="lg" variant="threeDimensional" className="min-w-[180px]">
+                <AnimatedButton size="xl" variant="threeDimensional" className="min-w-[180px]">
                   <Image src={appleIcon} alt="Apple Store" width={20} height={20} />
                   <div className="text-left flex flex-col items-start leading-none ml-2">
                     <span className="text-[10px] uppercase font-bold opacity-60">Download on</span>
