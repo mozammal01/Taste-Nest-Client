@@ -104,7 +104,7 @@ export default function About() {
               }
             }}
           >
-            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
+            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-slate-50 dark:bg-slate-900 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
               <Image 
                 src={cocktailImg} 
                 alt="cocktail drinks" 
@@ -135,7 +135,7 @@ export default function About() {
               }
             }}
           >
-            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-gray-50 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
+            <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl border border-white/20 bg-slate-50 dark:bg-slate-900 flex items-center justify-center aspect-[4/5] md:aspect-[3/4]">
               <Image 
                 src={drinkImg} 
                 alt="refreshing drinks" 
