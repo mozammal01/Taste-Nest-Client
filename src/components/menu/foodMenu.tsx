@@ -10,6 +10,7 @@ import type { CurrentUser } from "@/lib/auth";
 
 import { useRouter } from "next/navigation";
 import { X, Search as SearchIcon } from "lucide-react";
+import FlavorWheel from "./FlavorWheel";
 
 interface FoodMenuProps {
   items: MenuItem[];
@@ -239,6 +240,7 @@ export default function FoodMenu({ items, user, search, minPrice, maxPrice }: Fo
           </div>
         </div>
       )}
+      <FlavorWheel items={items} />
     </div>
   );
 }
