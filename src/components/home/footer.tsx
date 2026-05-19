@@ -71,7 +71,7 @@ export default function Footer() {
 
           {/* Menu Column */}
           <div>
-            <h4 className="text-xl font-black text-slate-950 mb-8 flex items-center gap-2">
+            <h4 className="text-xl font-black text-slate-950 dark:text-white mb-8 flex items-center gap-2">
               Menu <div className="h-1 flex-1 bg-secondary rounded-full" />
             </h4>
             <ul className="space-y-4">
@@ -94,7 +94,7 @@ export default function Footer() {
 
           {/* Newsletter Column */}
           <div>
-            <h4 className="text-xl font-black text-slate-950 mb-8 flex items-center gap-2">
+            <h4 className="text-xl font-black text-slate-950 dark:text-white mb-8 flex items-center gap-2">
               Newsletter <div className="h-1 flex-1 bg-secondary rounded-full" />
             </h4>
             <div className="space-y-6">
