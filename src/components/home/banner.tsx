@@ -89,14 +89,12 @@ export default function Banner() {
                   Explore Menu
                 </AnimatedButton>
               </Link>
-              <div className="flex items-center gap-4 group cursor-pointer">
-                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all">
+              <Link href="/under-construction" className="flex items-center gap-4 group cursor-pointer">
+                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-slate-900 group-hover:scale-110 transition-all duration-300">
                   <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-current border-b-[6px] border-b-transparent ml-1" />
                 </div>
-                <Link href='under-construction'>
                 <span className="font-bold opacity-80 group-hover:opacity-100 transition-opacity">Watch Story</span>
-                </Link>
-              </div>
+              </Link>
             </motion.div>
           </motion.div>
 
