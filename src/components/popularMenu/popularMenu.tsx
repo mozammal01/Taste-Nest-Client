@@ -127,7 +127,7 @@ export default function PopularMenu() {
                   <motion.div
                     onClick={() => setActive(cat.id)}
                     className={cn(
-                      "hidden md:flex flex-col justify-center items-center gap-2 border dark:border-slate-800 shadow-sm rounded-xl cursor-pointer p-8 relative overflow-hidden transition-colors duration-300",
+                      "hidden md:flex flex-col justify-center items-center gap-2 border border-slate-100 dark:border-slate-800/80 hover:border-primary/50 dark:hover:border-primary/40 shadow-sm rounded-2xl cursor-pointer p-8 relative overflow-hidden transition-all duration-300",
                       active === cat.id ? "bg-primary border-primary" : "bg-white dark:bg-slate-900",
                       "w-[190px] h-[190px]",
                     )}
