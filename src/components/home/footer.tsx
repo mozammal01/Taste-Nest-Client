@@ -8,6 +8,7 @@ import { Input } from "../ui/input";
 import { AnimatedButton } from "../ui/animated-button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -117,10 +118,16 @@ export default function Footer() {
             <p>
               <span className="text-primary tracking-normal">© 2026 TASTENEST</span> | CRAFTED WITH PASSION
             </p>
-            <div className="flex items-center gap-8">
-              <Link href="/under-construction" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Facebook</Link>
-              <Link href="/under-construction" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Instagram</Link>
-              <Link href="/under-construction" className="hover:text-primary transition-colors uppercase tracking-[0.2em] text-[10px]">Twitter</Link>
+             <div className="flex items-center gap-4">
+              <Link href="/under-construction" className="p-2.5 rounded-full bg-slate-100 hover:bg-primary dark:bg-slate-900 dark:hover:bg-primary text-slate-500 hover:text-white dark:text-slate-400 dark:hover:text-white transition-all duration-300 shadow-sm hover:-translate-y-1">
+                <Facebook className="w-4 h-4" />
+              </Link>
+              <Link href="/under-construction" className="p-2.5 rounded-full bg-slate-100 hover:bg-primary dark:bg-slate-900 dark:hover:bg-primary text-slate-500 hover:text-white dark:text-slate-400 dark:hover:text-white transition-all duration-300 shadow-sm hover:-translate-y-1">
+                <Instagram className="w-4 h-4" />
+              </Link>
+              <Link href="/under-construction" className="p-2.5 rounded-full bg-slate-100 hover:bg-primary dark:bg-slate-900 dark:hover:bg-primary text-slate-500 hover:text-white dark:text-slate-400 dark:hover:text-white transition-all duration-300 shadow-sm hover:-translate-y-1">
+                <Twitter className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>
