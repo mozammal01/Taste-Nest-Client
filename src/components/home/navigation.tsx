@@ -320,7 +320,7 @@ export default function Navigation() {
             </Link>
 
             {/* Desktop Navigation Items */}
-            <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md rounded-full p-1.5 border border-slate-200/50 shadow-sm">
+            <div className="flex items-center gap-1 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-full p-1.5 border border-slate-200/50 dark:border-slate-800/80 shadow-sm">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
@@ -357,9 +357,9 @@ export default function Navigation() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2.5 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
               >
-                <Search className="w-5 h-5 text-gray-600" />
+                <Search className="w-5 h-5 text-gray-600 dark:text-slate-300" />
               </motion.button>
 
               {/* Cart */}
@@ -367,9 +367,9 @@ export default function Navigation() {
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="relative p-2.5 rounded-full hover:bg-gray-100 transition-colors"
+                  className="relative p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                 >
-                  <ShoppingCart className="w-5 h-5 text-gray-600" />
+                  <ShoppingCart className="w-5 h-5 text-gray-600 dark:text-slate-300" />
                   <AnimatePresence mode="wait">
                     {cartItemCount > 0 && (
                       <motion.span
@@ -390,7 +390,7 @@ export default function Navigation() {
               <ThemeToggle />
 
               {/* Divider */}
-              <div className="w-px h-8 bg-gray-200" />
+              <div className="w-px h-8 bg-gray-200 dark:bg-slate-850" />
 
               {/* User Menu */}
               <UserMenu onLinkClick={() => setIsMobileMenuOpen(false)} />
@@ -410,9 +410,9 @@ export default function Navigation() {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 rounded-full hover:bg-gray-100"
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800"
               >
-                <Search className="w-5 h-5 text-gray-600" />
+                <Search className="w-5 h-5 text-gray-600 dark:text-slate-300" />
               </motion.button>
 
               {/* Theme Toggle */}
@@ -422,9 +422,9 @@ export default function Navigation() {
               <Link href="/cart">
                 <motion.div
                   whileTap={{ scale: 0.9 }}
-                  className="relative p-2 rounded-full hover:bg-gray-100"
+                  className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800"
                 >
-                  <ShoppingCart className="w-5 h-5 text-gray-600" />
+                  <ShoppingCart className="w-5 h-5 text-gray-600 dark:text-slate-300" />
                   {cartItemCount > 0 && (
                     <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
@@ -437,7 +437,7 @@ export default function Navigation() {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleMobileMenu}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                 aria-label="Toggle menu"
               >
                 <AnimatePresence mode="wait">
