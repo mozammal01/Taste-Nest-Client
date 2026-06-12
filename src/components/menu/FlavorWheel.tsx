@@ -282,7 +282,7 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                               </div>
                               <button
                                 onClick={() => handleAddToCart(selectedItem.id)}
-                                className="bg-white hover:bg-slate-50 text-slate-900 px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-md hover:scale-[1.03] active:scale-97 transition-all shrink-0 font-bold"
+                                className="bg-white hover:bg-slate-50 text-slate-900 px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-md hover:scale-[1.03] active:scale-97 transition-all shrink-0"
                               >
                                 <ShoppingCart className="w-4 h-4 text-red-500" />
                                 Add & Apply
