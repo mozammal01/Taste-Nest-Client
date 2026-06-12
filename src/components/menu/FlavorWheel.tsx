@@ -21,22 +21,20 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
   const [showPromo, setShowPromo] = useState(false);
   const router = useRouter();
 
-  // Filter 6 featured items for the wheel
-  const wheelItems = items.slice(0, 6);
+  // Filter 4 items for the wheel layout
+  const wheelItems = items.slice(0, 4);
 
   const spinThePlate = () => {
-    if (isSpinning || wheelItems.length === 0) return;
-
+    if (isSpinning) return;
     setIsSpinning(true);
-    setShowPromo(false);
-    setSelectedItem(null);
-
     // Random landing index
     const randomIndex = Math.floor(Math.random() * wheelItems.length);
-    // Base 5 full spins (1800 degrees) plus the alignment offset
-    // Each segment is 360 / 6 = 60 degrees. Segment 0 is at top (0-60 deg)
     const segmentAngle = 360 / wheelItems.length;
-    const targetAngle = 1800 + (randomIndex * segmentAngle) + (segmentAngle / 2);
+    const targetOffset = randomIndex * segmentAngle + segmentAngle / 2;
+
+    // Next rotation must add to the current accumulated rotation
+    const baseRotation = Math.ceil(rotation / 360) * 360 + 1800;
+    const targetAngle = baseRotation + (360 - targetOffset);
 
     setRotation(targetAngle);
 
@@ -53,6 +51,9 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
 
   const handleAddToCart = async (id: number) => {
     try {
+      // Auto-apply promo code to localStorage
+      localStorage.setItem("appliedPromoCode", "CHEFSPIN10");
+
       const result = await createCartItem({
         menuItemId: id,
         quantity: 1,
@@ -129,10 +130,10 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                   </div>
 
                   {/* The Spinner Wheel */}
-                  <div className="relative w-[300px] h-[300px] md:w-[320px] md:h-[320px] shrink-0">
+                  <div className="relative w-[300px] h-[300px] md:w-[320px] md:h-[320px] shrink-0 animate-in fade-in zoom-in-95 duration-700">
                     {/* Arrow Indicator */}
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 text-primary drop-shadow-[0_4px_10px_rgba(244,63,94,0.4)]">
-                      <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[20px] border-t-primary" />
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 text-red-500 drop-shadow-[0_4px_10px_rgba(239,68,68,0.5)]">
+                      <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[16px] border-t-red-500 animate-pulse" />
                     </div>
 
                     <motion.div
@@ -142,30 +143,32 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                           ? { ease: [0.25, 0.1, 0.25, 1], duration: 4.5 }
                           : { type: "spring", stiffness: 100 }
                       }
-                      className="w-full h-full rounded-full border-8 border-slate-900 dark:border-slate-800 bg-slate-900 relative overflow-hidden shadow-2xl flex items-center justify-center"
+                      className="w-full h-full rounded-full border-8 border-slate-900 dark:border-slate-800 bg-[#0c1020] dark:bg-[#0f172a] relative overflow-hidden shadow-2xl flex items-center justify-center"
                     >
                       {wheelItems.map((item, idx) => {
                         const angle = 360 / wheelItems.length;
-                        const rotationAngle = idx * angle;
+                        const rotationAngle = idx * angle + angle / 2;
 
                         return (
                           <div
                             key={item.id}
-                            className="absolute w-full h-full"
+                            className="absolute w-full h-full animate-in fade-in duration-500"
                             style={{
                               transform: `rotate(${rotationAngle}deg)`,
                               transformOrigin: "50% 50%",
                             }}
                           >
                             {/* Segment Line Divider */}
-                            <div className="absolute top-0 left-1/2 w-0.5 h-1/2 bg-white/20 dark:bg-white/10 origin-bottom -translate-x-1/2" />
+                            <div 
+                              className="absolute top-0 left-1/2 w-[1.5px] h-1/2 bg-slate-700/40 origin-bottom -translate-x-1/2" 
+                              style={{ transform: `rotate(${-angle / 2}deg)` }}
+                            />
 
                             {/* Food Thumbnail on Segment */}
                             <div
                               className="absolute top-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
-                              style={{ transform: "rotate(30deg)", transformOrigin: "center" }}
                             >
-                              <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/50 shadow-md">
+                              <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white dark:border-slate-800 shadow-md">
                                 <Image
                                   src={item.image}
                                   alt={item.name}
@@ -187,9 +190,9 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                     <button
                       onClick={spinThePlate}
                       disabled={isSpinning}
-                      className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-linear-to-r from-primary to-secondary text-white font-black text-xs flex items-center justify-center shadow-[0_10px_25px_rgba(244,63,94,0.5)] border-4 border-slate-900 dark:border-slate-800 hover:scale-105 active:scale-95 disabled:scale-95 disabled:opacity-90 cursor-pointer transition-transform z-20"
+                      className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 text-white font-black text-xs flex items-center justify-center shadow-[0_10px_25px_rgba(244,63,94,0.5)] border-4 border-slate-900 dark:border-slate-800 hover:scale-105 active:scale-95 disabled:scale-95 disabled:opacity-90 cursor-pointer transition-transform z-20"
                     >
-                      {isSpinning ? "SPINNING" : "SPIN"}
+                      SPIN
                     </button>
                   </div>
                 </div>
@@ -230,18 +233,18 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                         className="space-y-6 text-center lg:text-left"
                       >
                         <div className="space-y-1">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-secondary bg-secondary/15 px-3 py-1 rounded-full">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-[#ca8a04] bg-[#fef9c3] px-3.5 py-1 rounded-full border border-yellow-200/50">
                             Chef&apos;s Recommendation Selected!
                           </span>
                           <h4 className="text-3xl font-black text-slate-900 dark:text-white mt-3">
                             {selectedItem.name}
                           </h4>
-                          <p className="text-xs font-bold text-primary">{selectedItem.category}</p>
+                          <p className="text-xs font-bold text-rose-500">{selectedItem.category}</p>
                         </div>
 
                         {/* Interactive Dish card inside popup */}
-                        <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80">
-                          <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white">
+                        <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-950/40 p-4 rounded-[20px] border border-slate-100 dark:border-slate-800/80">
+                          <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white dark:border-slate-800 shadow-sm">
                             <Image
                               src={selectedItem.image}
                               alt={selectedItem.name}
@@ -250,10 +253,10 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                             />
                           </div>
                           <div className="flex-1 text-left">
-                            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 line-clamp-2">
+                            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                               {selectedItem.content}
                             </p>
-                            <span className="text-lg font-black text-primary italic mt-1 inline-block">
+                            <span className="text-xl font-black text-rose-500 italic mt-1 inline-block">
                               ${selectedItem.price}
                             </span>
                           </div>
@@ -264,24 +267,24 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-linear-to-r from-primary to-secondary p-5 rounded-2xl text-white shadow-lg relative overflow-hidden"
+                            className="bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 p-5 rounded-2xl text-white shadow-lg relative overflow-hidden"
                           >
-                            {/* Decorative sparkes background */}
+                            {/* Decorative sparkles background */}
                             <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full translate-x-10 -translate-y-10 scale-150 blur-xl" />
                             <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
                               <div className="text-left">
-                                <p className="text-[9px] font-black tracking-widest uppercase opacity-80">
+                                <p className="text-[9px] font-black tracking-widest uppercase opacity-90">
                                   10% Coupon Code
                                 </p>
-                                <p className="text-xl font-black tracking-wider uppercase mt-1">
+                                <p className="text-2xl font-black tracking-wider uppercase mt-0.5">
                                   CHEFSPIN10
                                 </p>
                               </div>
                               <button
                                 onClick={() => handleAddToCart(selectedItem.id)}
-                                className="bg-white hover:bg-slate-50 text-slate-900 px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-md hover:scale-105 active:scale-95 transition-all"
+                                className="bg-white hover:bg-slate-50 text-slate-900 px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-md hover:scale-[1.03] active:scale-97 transition-all shrink-0 font-bold"
                               >
-                                <ShoppingCart className="w-4 h-4 text-primary" />
+                                <ShoppingCart className="w-4 h-4 text-red-500" />
                                 Add & Apply
                               </button>
                             </div>

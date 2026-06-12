@@ -18,12 +18,42 @@ interface CartProps {
 export default function Cart({ items }: CartProps) {
   const router = useRouter();
   const [isClearing, setIsClearing] = useState(false);
+  const [promoInput, setPromoInput] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("appliedPromoCode");
+      return saved === "CHEFSPIN10" ? "CHEFSPIN10" : "";
+    }
+    return "";
+  });
+  const [activeCoupon, setActiveCoupon] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("appliedPromoCode");
+      return saved === "CHEFSPIN10" ? "CHEFSPIN10" : "";
+    }
+    return "";
+  });
 
-  // Calculate totals
+
+
+  const handleApplyPromo = () => {
+    if (promoInput.trim().toUpperCase() === "CHEFSPIN10") {
+      setActiveCoupon("CHEFSPIN10");
+      localStorage.setItem("appliedPromoCode", "CHEFSPIN10");
+      toast.success("10% Chef Discount applied successfully!");
+    } else {
+      toast.error("Invalid promo code. Try CHEFSPIN10!");
+    }
+  };
+
+  // Calculate totals with promo discount
   const subtotal = items.reduce((acc, item) => acc + item.menuItem.price * item.quantity, 0);
-  const deliveryFee = items.some((item) => item.menuItem.freeDelivery) ? 0 : subtotal > 50 ? 0 : 4.99;
-  const tax = subtotal * 0.1; // 10% tax
-  const total = subtotal + deliveryFee + tax;
+  const hasDiscount = activeCoupon === "CHEFSPIN10";
+  const discountAmount = hasDiscount ? subtotal * 0.1 : 0;
+  const subtotalAfterDiscount = subtotal - discountAmount;
+
+  const deliveryFee = items.some((item) => item.menuItem.freeDelivery) ? 0 : subtotalAfterDiscount > 50 ? 0 : 4.99;
+  const tax = subtotalAfterDiscount * 0.1; // 10% tax
+  const total = subtotalAfterDiscount + deliveryFee + tax;
 
   const handleClearCart = async () => {
     if (!confirm("Are you sure you want to clear your cart?")) return;
@@ -122,6 +152,13 @@ export default function Cart({ items }: CartProps) {
               <span className="font-medium">${subtotal.toFixed(2)}</span>
             </div>
 
+            {hasDiscount && (
+              <div className="flex justify-between text-green-600 font-medium bg-green-50/50 p-2.5 rounded-xl border border-green-100/50">
+                <span>Discount (10% CHEFSPIN10)</span>
+                <span>-${discountAmount.toFixed(2)}</span>
+              </div>
+            )}
+
             <div className="flex justify-between text-gray-600">
               <span>Delivery Fee</span>
               {deliveryFee === 0 ? (
@@ -136,10 +173,10 @@ export default function Cart({ items }: CartProps) {
               <span className="font-medium">${tax.toFixed(2)}</span>
             </div>
 
-            {deliveryFee > 0 && subtotal < 50 && (
+            {deliveryFee > 0 && subtotalAfterDiscount < 50 && (
               <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 text-sm">
                 <p className="text-amber-700">
-                  Add <span className="font-bold">${(50 - subtotal).toFixed(2)}</span> more for free delivery!
+                  Add <span className="font-bold">${(50 - subtotalAfterDiscount).toFixed(2)}</span> more for free delivery!
                 </p>
               </div>
             )}
@@ -158,12 +195,23 @@ export default function Cart({ items }: CartProps) {
               <input
                 type="text"
                 placeholder="Enter promo code"
-                className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                value={promoInput}
+                onChange={(e) => setPromoInput(e.target.value)}
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:bg-slate-800 dark:border-slate-700 dark:text-white"
               />
-              <Button variant="outline" className="px-4">
+              <Button 
+                variant="outline" 
+                className="px-4 hover:bg-primary hover:text-white dark:border-slate-700 transition-colors"
+                onClick={handleApplyPromo}
+              >
                 Apply
               </Button>
             </div>
+            {hasDiscount && (
+              <p className="text-xs text-green-600 font-bold mt-2 flex items-center gap-1.5">
+                ✓ Promo code applied! Saved 10%.
+              </p>
+            )}
           </div>
 
           {/* Checkout Button */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -53,12 +53,18 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
     phone: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Initialize coupon from localStorage as a constant
+  const activeCoupon: string = typeof window !== "undefined" ? (localStorage.getItem("appliedPromoCode") === "CHEFSPIN10" ? "CHEFSPIN10" : "") : "";
 
-  // Calculate totals
+  // Calculate totals with promo discount
   const subtotal = items.reduce((acc, item) => acc + Number(item.menuItem.price) * item.quantity, 0);
-  const deliveryFee = items.some((item) => item.menuItem.freeDelivery) ? 0 : subtotal > 50 ? 0 : 4.99;
-  const tax = subtotal * 0.1; // 10% tax
-  const totalAmount = subtotal + deliveryFee + tax;
+  const hasDiscount = activeCoupon === "CHEFSPIN10";
+  const discountAmount = hasDiscount ? subtotal * 0.1 : 0;
+  const subtotalAfterDiscount = subtotal - discountAmount;
+  const deliveryFee = items.some((item) => item.menuItem.freeDelivery) ? 0 : subtotalAfterDiscount > 50 ? 0 : 4.99;
+  const tax = subtotalAfterDiscount * 0.1; // 10% tax
+  const totalAmount = subtotalAfterDiscount + deliveryFee + tax;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
