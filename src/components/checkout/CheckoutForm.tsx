@@ -4,11 +4,11 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { 
-  MapPin, 
-  Phone, 
-  CheckCircle2, 
-  ArrowRight, 
+import {
+  MapPin,
+  Phone,
+  CheckCircle2,
+  ArrowRight,
   Loader2,
   Lock,
   Truck,
@@ -53,9 +53,14 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
     phone: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
-  // Initialize coupon from localStorage as a constant
-  const activeCoupon: string = typeof window !== "undefined" ? (localStorage.getItem("appliedPromoCode") === "CHEFSPIN10" ? "CHEFSPIN10" : "") : "";
+
+  const [promoError, setPromoError] = useState<string>("");
+  const [promoErrorDetails, setPromoErrorDetails] = useState<string>("");
+  const [showFullError, setShowFullError] = useState<boolean>(false);
+
+
+  // Initialize coupon from localStorage
+  const [activeCoupon, setActiveCoupon] = useState(() => typeof window !== "undefined" ? (localStorage.getItem("appliedPromoCode") || "") : "");
 
   // Calculate totals with promo discount
   const subtotal = items.reduce((acc, item) => acc + Number(item.menuItem.price) * item.quantity, 0);
@@ -69,7 +74,7 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error for this field
     if (errors[name]) {
       setErrors(prev => {
@@ -158,7 +163,7 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
       >
         <div className="relative">
           <div className="absolute inset-0 bg-green-500/20 blur-3xl rounded-full transform scale-150 animate-pulse" />
-          <motion.div 
+          <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", damping: 12, stiffness: 200 }}
@@ -202,7 +207,7 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
     <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
       {/* Left Column: Details */}
       <div className="lg:col-span-7 space-y-12">
-        {/* Step 1: Destination */}
+
         <section className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
@@ -211,11 +216,11 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
             </h2>
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Step 01 / 02</span>
           </div>
-          
+
           <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-8 group hover:border-primary/20 transition-all duration-500">
             <div className="space-y-3">
-              <Label 
-                htmlFor="address" 
+              <Label
+                htmlFor="address"
                 className={cn(
                   "text-[10px] font-black uppercase tracking-[0.2em] transition-colors",
                   errors.address ? "text-red-500" : "text-slate-400"
@@ -233,15 +238,15 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
                   onChange={handleChange}
                   className={cn(
                     "pl-14 h-16 transition-all rounded-2xl font-bold text-slate-700 dark:text-white border-2",
-                    errors.address 
-                      ? "border-red-500 bg-red-50/10" 
+                    errors.address
+                      ? "border-red-500 bg-red-50/10"
                       : "border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 focus:border-primary/30 focus:bg-white dark:focus:bg-slate-800"
                   )}
                 />
               </div>
               <AnimatePresence mode="wait">
                 {errors.address && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
@@ -255,8 +260,8 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
             </div>
 
             <div className="space-y-3">
-              <Label 
-                htmlFor="phone" 
+              <Label
+                htmlFor="phone"
                 className={cn(
                   "text-[10px] font-black uppercase tracking-[0.2em] transition-colors",
                   errors.phone ? "text-red-500" : "text-slate-400"
@@ -275,15 +280,15 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
                   onChange={handleChange}
                   className={cn(
                     "pl-14 h-16 transition-all rounded-2xl font-bold text-slate-700 dark:text-white border-2",
-                    errors.phone 
-                      ? "border-red-500 bg-red-50/10" 
+                    errors.phone
+                      ? "border-red-500 bg-red-50/10"
                       : "border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 focus:border-primary/30 focus:bg-white dark:focus:bg-slate-800"
                   )}
                 />
               </div>
               <AnimatePresence mode="wait">
                 {errors.phone && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
@@ -309,12 +314,12 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
-            <div 
+            <div
               onClick={() => setPaymentMethod("cod")}
               className={cn(
                 "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
-                paymentMethod === "cod" 
-                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/5" 
+                paymentMethod === "cod"
+                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
                   : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
               )}
             >
@@ -336,12 +341,12 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
               </div>
             </div>
 
-            <div 
+            <div
               onClick={() => setPaymentMethod("card")}
               className={cn(
                 "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
-                paymentMethod === "card" 
-                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/5" 
+                paymentMethod === "card"
+                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
                   : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
               )}
             >
@@ -368,14 +373,14 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
 
             <AnimatePresence mode="wait">
               {paymentMethod === "card" && clientSecret ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="pt-8 mt-6 border-t border-slate-100 dark:border-slate-800"
                 >
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <StripePaymentForm 
-                      clientSecret={clientSecret} 
+                    <StripePaymentForm
+                      clientSecret={clientSecret}
                       amount={totalAmount}
                       isProcessing={isSubmitting}
                       setIsProcessing={setIsSubmitting}
@@ -451,7 +456,7 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Contribution (10%)</span>
                 <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${tax.toFixed(2)}</span>
               </div>
-              
+
               <div className="pt-8 border-t-2 border-dashed border-slate-100 dark:border-slate-800 mt-2">
                 <div className="flex justify-between items-end">
                   <div className="space-y-1.5">
@@ -494,12 +499,261 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
               <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" width={28} height={16} />
               <div className="h-4 w-px bg-slate-300" />
               <span className="text-[10px] font-black uppercase tracking-widest">PCI DSS</span>
+              <section className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+                    <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+                    Transaction
+                  </h2>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Step 02 / 02</span>
+                </div>
+
+                <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
+                  <div
+                    onClick={() => setPaymentMethod("cod")}
+                    className={cn(
+                      "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
+                      paymentMethod === "cod"
+                        ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
+                        : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
+                    )}
+                  >
+                    <div className={cn(
+                      "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110",
+                      paymentMethod === "cod" ? "bg-white dark:bg-slate-800 text-primary shadow-lg shadow-primary/10" : "bg-slate-50 dark:bg-slate-800 text-slate-400"
+                    )}>
+                      <Truck className="w-7 h-7" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-sm">Hand-to-Hand</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Cash on Delivery</p>
+                    </div>
+                    <div className={cn(
+                      "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                      paymentMethod === "cod" ? "border-primary bg-primary" : "border-slate-200 dark:border-slate-700"
+                    )}>
+                      {paymentMethod === "cod" && <CheckCircle2 className="w-3 h-3 text-white" />}
+                    </div>
+                  </div>
+
+                  <div
+                    onClick={() => setPaymentMethod("card")}
+                    className={cn(
+                      "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
+                      paymentMethod === "card"
+                        ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
+                        : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
+                    )}
+                  >
+                    <div className={cn(
+                      "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110",
+                      paymentMethod === "card" ? "bg-white dark:bg-slate-800 text-primary shadow-lg shadow-primary/10" : "bg-slate-50 dark:bg-slate-800 text-slate-400"
+                    )}>
+                      <CreditCardIcon className="w-7 h-7" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-sm">Digital Vault</p>
+                        <span className="text-[8px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Swift</span>
+                      </div>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Stripe Integrated</p>
+                    </div>
+                    <div className={cn(
+                      "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                      paymentMethod === "card" ? "border-primary bg-primary" : "border-slate-200 dark:border-slate-700"
+                    )}>
+                      {paymentMethod === "card" && <CheckCircle2 className="w-3 h-3 text-white" />}
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {paymentMethod === "card" && clientSecret ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="pt-8 mt-6 border-t border-slate-100 dark:border-slate-800"
+                      >
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                          <StripePaymentForm
+                            clientSecret={clientSecret}
+                            amount={totalAmount}
+                            isProcessing={isSubmitting}
+                            setIsProcessing={setIsSubmitting}
+                            onSuccess={handleOrderSubmission}
+                            address={formData.address}
+                            phone={formData.phone}
+                          />
+                        </Elements>
+                      </motion.div>
+                    ) : paymentMethod === "card" && isSubmitting && (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-12 gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-[32px]">
+                        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Securing Payment Channel...</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </section>
             </div>
+
+            {/* Right Column: Manifest */}
+            <div className="lg:col-span-5">
+              <div className="sticky top-12 space-y-8">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+                  <div className="w-1.5 h-6 bg-slate-900 dark:bg-white rounded-full"></div>
+                  Manifest
+                </h2>
+
+                <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 border border-slate-100 dark:border-slate-800 shadow-sm border-b-primary/30 border-b-4 group overflow-hidden">
+                  <div className="space-y-6 mb-8 max-h-[350px] overflow-y-auto pr-3 custom-scrollbar">
+                    {items.map((item) => (
+                      <motion.div layout key={item.id} className="flex gap-4 group/item">
+                        <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border-2 border-slate-50 dark:border-slate-800 group-hover/item:border-primary/20 transition-all duration-500 shrink-0">
+                          <Image
+                            src={item.menuItem.image || "/placeholder.png"}
+                            alt={item.menuItem.name}
+                            fill
+                            className="object-cover group-hover/item:scale-110 transition-transform duration-700"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <h4 className="font-black text-slate-900 dark:text-white truncate tracking-tight uppercase text-xs">{item.menuItem.name}</h4>
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <span className="text-[10px] font-black text-primary bg-primary/5 dark:bg-primary/10 px-2 py-0.5 rounded-full ring-1 ring-primary/10">x{item.quantity}</span>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                              @ ${Number(item.menuItem.price).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex flex-col justify-center items-end">
+                          <p className="font-black text-slate-900 dark:text-white tracking-tighter text-sm">
+                            ${(Number(item.menuItem.price) * item.quantity).toFixed(2)}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-4 pt-8 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex justify-between items-center group/line">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Net Origin</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between items-center group/line">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Logistics</span>
+                      {deliveryFee === 0 ? (
+                        <span className="text-[9px] font-black uppercase text-green-500 bg-green-50 dark:bg-green-900/20 px-2.5 py-1 rounded-full ring-1 ring-green-500/20">Complimentary</span>
+                      ) : (
+                        <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${deliveryFee.toFixed(2)}</span>
+                      )}
+                    </div>
+                    <div className="flex justify-between items-center group/line">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/line:text-slate-600 transition-colors">Contribution (10%)</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">${tax.toFixed(2)}</span>
+                    </div>
+
+                    <div className="pt-8 border-t-2 border-dashed border-slate-100 dark:border-slate-800 mt-2">
+                      <div className="flex justify-between items-end">
+                        <div className="space-y-1.5">
+                          <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Total Valuation</span>
+                          <div className="flex items-center gap-2 text-slate-400">
+                            <Lock className="w-3 h-3" />
+                            <span className="text-[9px] font-bold uppercase tracking-widest">Guaranteed Safe</span>
+                          </div>
+                        </div>
+                        <span className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter italic border-b-4 border-primary">
+                          ${totalAmount.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {paymentMethod === "cod" && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                      >
+                        <AnimatedButton
+                          type="submit"
+                          disabled={isSubmitting}
+                          isLoading={isSubmitting}
+                          size="xl"
+                          className="w-full mt-10 font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/20"
+                        >
+                          Authenticate Order
+                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </AnimatedButton>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div className="mt-8 pt-8 flex items-center justify-center gap-6 opacity-30 grayscale hover:grayscale-0 transition-all duration-500 border-t border-slate-50 dark:border-slate-800">
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" width={32} height={12} />
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" width={28} height={16} />
+                    <div className="h-4 w-px bg-slate-300" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">PCI DSS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            {promoError && (
+              <motion.div
+                className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg max-w-sm w-full"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+                >
+                  <h3 className="text-lg font-bold mb-4">Error</h3>
+                  <p>{promoError}</p>
+                  <button
+                    className="mt-4 text-primary underline"
+                    onClick={() => setShowFullError(!showFullError)}
+                  >
+                    {showFullError ? "Hide Details" : "Show Details"}
+                  </button>
+                  {showFullError && (
+                    <div className="mt-2">
+                      <pre className="whitespace-pre-wrap text-sm text-gray-600 dark:text-gray-300">
+                        {promoErrorDetails}
+                      </pre>
+                      <button
+                        className="mt-2 text-xs text-primary underline"
+                        onClick={() => {
+                          navigator.clipboard.writeText(promoErrorDetails);
+                          toast.success("Error details copied to clipboard");
+                        }}
+                      >
+                        Copy Details
+                      </button>
+                    </div>
+                  )}
+                  <button
+                    className="mt-4 w-full bg-primary hover:bg-primary/90 text-white py-2 rounded"
+                    onClick={() => {
+                      setPromoError("");
+                      setPromoErrorDetails("");
+                      setShowFullError(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                </motion.div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
     </form>
-  );
+
+  )
 }
-
-
