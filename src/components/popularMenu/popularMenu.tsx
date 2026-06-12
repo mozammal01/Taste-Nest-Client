@@ -107,7 +107,7 @@ const items: Record<
 };
 
 export default function PopularMenu() {
-  const [active, setActive] = useState("dessert");
+  const [active, setActive] = useState(categories[0].id);
 
   return (
     <div id="menu" className="w-full flex flex-col items-center gap-6">
