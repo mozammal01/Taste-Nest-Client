@@ -19,6 +19,9 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
   const [rotation, setRotation] = useState(0);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [showPromo, setShowPromo] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [errorDetails, setErrorDetails] = useState<string | null>(null);
+  const [showErrorDetails, setShowErrorDetails] = useState(false);
   const router = useRouter();
 
   // Filter 4 items for the wheel layout
@@ -73,8 +76,11 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
         toast.error(result.message || "Please sign in to order.");
       }
     } catch (error) {
-      console.error("[FlavorWheel AddToCart Error]:", error);
-      toast.error("An error occurred. Please try again.");
+      console.error("[FlavorWheel AddToCart Error]", error);
+      const errMsg = "An error occurred while adding to cart. Please try again.";
+      setError(errMsg);
+      setErrorDetails(error instanceof Error ? error.message : String(error));
+      toast.error(errMsg);
     }
   };
 
@@ -296,9 +302,52 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                 </div>
               </div>
             </motion.div>
-          </div>
+            </div>
         )}
-      </AnimatePresence>
-    </>
+          </AnimatePresence>
+          {/* Error Modal */}
+          <AnimatePresence>
+            {error && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ type: "spring", damping: 25 }}
+                  className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[24px] w-full max-w-md p-6 shadow-2xl"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">{error}</h3>
+                    <button
+                      onClick={() => {
+                        setError(null);
+                        setShowErrorDetails(false);
+                      }}
+                      className="text-slate-400 hover:text-slate-600"
+                      aria-label="Close"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  {errorDetails && (
+                    <>
+                      <button
+                        onClick={() => setShowErrorDetails(!showErrorDetails)}
+                        className="text-primary underline mb-2"
+                      >
+                        {showErrorDetails ? "Hide Details" : "Show Details"}
+                      </button>
+                      {showErrorDetails && (
+                        <pre className="bg-slate-100 dark:bg-slate-800 p-2 rounded overflow-auto text-sm text-slate-700 dark:text-slate-300">
+                          {errorDetails}
+                        </pre>
+                      )}
+                    </>
+                  )}
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+        </>
   );
 }
