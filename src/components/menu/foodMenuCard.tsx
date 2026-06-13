@@ -190,7 +190,7 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
               </span>
             </div>
           </div>
-          <div className="min-h-[3rem]">
+          <div className="min-h-12">
             <CardDescription className="line-clamp-2 text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
               {item.content}
             </CardDescription>

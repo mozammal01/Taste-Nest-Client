@@ -89,7 +89,7 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 left-8 z-40 bg-gradient-to-r from-primary to-secondary hover:from-primary/95 hover:to-secondary/95 text-white py-3 px-5 rounded-full shadow-[0_20px_50px_rgba(244,63,94,0.4)] flex items-center gap-2.5 cursor-pointer border border-white/20 font-black text-xs uppercase tracking-widest"
+        className="fixed bottom-24 left-8 z-40 bg-linear-to-r from-primary to-secondary hover:from-primary/95 hover:to-secondary/95 text-white py-3 px-5 rounded-full shadow-[0_20px_50px_rgba(244,63,94,0.4)] flex items-center gap-2.5 cursor-pointer border border-white/20 font-black text-xs uppercase tracking-widest"
       >
         <Sparkles className="w-4.5 h-4.5 animate-pulse" />
         <span>Plate of Fortune 🎡</span>
@@ -137,7 +137,7 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                   <div className="relative w-[300px] h-[300px] md:w-[320px] md:h-[320px] shrink-0 animate-in fade-in zoom-in-95 duration-700">
                     {/* Arrow Indicator */}
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 text-red-500 drop-shadow-[0_4px_10px_rgba(239,68,68,0.5)]">
-                      <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[16px] border-t-red-500 animate-pulse" />
+                      <div className="w-0 h-0 border-l-10 border-l-transparent border-r-10 border-r-transparent border-t-16 border-t-red-500 animate-pulse" />
                     </div>
 
                     <motion.div
@@ -194,7 +194,7 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                     <button
                       onClick={spinThePlate}
                       disabled={isSpinning}
-                      className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 text-white font-black text-xs flex items-center justify-center shadow-[0_10px_25px_rgba(244,63,94,0.5)] border-4 border-slate-900 dark:border-slate-800 hover:scale-105 active:scale-95 disabled:scale-95 disabled:opacity-90 cursor-pointer transition-transform z-20"
+                      className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-linear-to-r from-rose-500 via-orange-500 to-amber-500 text-white font-black text-xs flex items-center justify-center shadow-[0_10px_25px_rgba(244,63,94,0.5)] border-4 border-slate-900 dark:border-slate-800 hover:scale-105 active:scale-95 disabled:scale-95 disabled:opacity-90 cursor-pointer transition-transform z-20"
                     >
                       SPIN
                     </button>
@@ -271,7 +271,7 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 p-5 rounded-2xl text-white shadow-lg relative overflow-hidden"
+                            className="bg-linear-to-r from-red-500 via-orange-500 to-yellow-500 p-5 rounded-2xl text-white shadow-lg relative overflow-hidden"
                           >
                             {/* Decorative sparkles background */}
                             <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full translate-x-10 -translate-y-10 scale-150 blur-xl" />

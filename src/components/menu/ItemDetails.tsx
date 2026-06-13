@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useErrorModal } from "@/components/ui/ErrorModalContext";
 import { motion } from "framer-motion";
 import { 
   ShoppingCart, 
@@ -41,6 +42,7 @@ const DEFAULT_REVIEWS = [
 ];
 
 export function ItemDetails({ item }: ItemDetailsProps) {
+  const { showError } = useErrorModal();
   const { data: session } = useSession();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -50,9 +52,7 @@ export function ItemDetails({ item }: ItemDetailsProps) {
 
   const handleAddToCart = async () => {
     if (!session?.user) {
-      toast.error("Please sign in to add items to cart", {
-        action: { label: "Sign In", onClick: () => router.push("/signin") }
-      });
+      showError('Authentication Required', "Please sign in to add items to cart");
       return;
     }
 
@@ -70,11 +70,11 @@ export function ItemDetails({ item }: ItemDetailsProps) {
         });
         router.refresh();
       } else {
-        toast.error(result.message);
+        showError('Add to Cart Failed', result.message);
       }
     } catch (error) {
       console.error("[handleAddToCart Error]:", error);
-      toast.error("Failed to add to cart");
+      showError('Add to Cart Error', "Failed to add to cart");
     } finally {
       setIsAddingToCart(false);
     }
@@ -82,9 +82,7 @@ export function ItemDetails({ item }: ItemDetailsProps) {
 
   const handleOrderNow = async () => {
     if (!session?.user) {
-      toast.error("Please sign in to place an order", {
-        action: { label: "Sign In", onClick: () => router.push("/signin") }
-      });
+      showError('Authentication Required', "Please sign in to place an order");
       return;
     }
 
@@ -99,11 +97,11 @@ export function ItemDetails({ item }: ItemDetailsProps) {
         router.push("/cart");
         router.refresh();
       } else {
-        toast.error(result.message);
+        showError('Order Failed', result.message);
       }
     } catch (error) {
       console.error("[handleOrderNow Error]:", error);
-      toast.error("Failed to process order");
+      showError('Order Processing Error', "Failed to process order");
     } finally {
       setIsOrderingNow(false);
     }
