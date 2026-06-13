@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ErrorModalProvider } from "@/components/ui/ErrorModalContext";
 import { Roboto, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/providers/SessionProvider";
@@ -86,10 +87,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            {children}
-            <ToastProvider />
-            <AIChatbot />
-            <ScrollToTop />
+            <ErrorModalProvider>
+              {children}
+              <ToastProvider />
+              <AIChatbot />
+              <ScrollToTop />
+            </ErrorModalProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>
