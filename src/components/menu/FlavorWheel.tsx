@@ -79,7 +79,6 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
       const errMsg = "An error occurred while adding to cart. Please try again.";
       const errDetails = error instanceof Error ? error.message : String(error);
       showError(errMsg, errDetails);
-      toast.error(errMsg);
     }
   };
 

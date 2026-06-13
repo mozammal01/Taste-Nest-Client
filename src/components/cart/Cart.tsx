@@ -9,7 +9,7 @@ import type { CartItemWithDetails } from "@/types/cartItem";
 import { clearCart } from "@/lib/actions/cart";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { toast } from "sonner";
+import { toast } from "sonner"; import { useErrorModal } from "@/components/ui/ErrorModalContext";
 
 interface CartProps {
   items: CartItemWithDetails[];
@@ -41,7 +41,7 @@ export default function Cart({ items }: CartProps) {
       localStorage.setItem("appliedPromoCode", "CHEFSPIN10");
       toast.success("10% Chef Discount applied successfully!");
     } else {
-      toast.error("Invalid promo code. Try CHEFSPIN10!");
+      showError('Error', "Something went wrong. Please try again.");
     }
   };
 
@@ -63,7 +63,7 @@ export default function Cart({ items }: CartProps) {
     if (result.success) {
       toast.success("Cart cleared successfully");
     } else {
-      toast.error(result.message);
+      showError('Error', result.message || "Failed to clear cart");
     }
     router.refresh();
     setIsClearing(false);
@@ -266,3 +266,7 @@ export default function Cart({ items }: CartProps) {
     </div>
   );
 }
+function showError(arg0: string, arg1: string) {
+  throw new Error("Function not implemented.");
+}
+
