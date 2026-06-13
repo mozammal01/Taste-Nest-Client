@@ -72,7 +72,7 @@ export default function FlavorWheel({ items }: FlavorWheelProps) {
         setIsOpen(false);
         router.refresh();
       } else {
-        toast.error(result.message || "Please sign in to order.");
+        showError('Error', result.message || "Please sign in to order.");
       }
     } catch (error) {
       console.error("[FlavorWheel AddToCart Error]", error);
