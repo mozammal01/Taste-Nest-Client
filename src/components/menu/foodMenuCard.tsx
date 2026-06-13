@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import type { MenuItem } from "@/types/menuItems";
 import { deleteMenuItem } from "@/lib/actions/menu";
 import { createCartItem } from "@/lib/actions/cart";
-import { toast } from "sonner";
+import { toast } from "sonner"; import { useErrorModal } from "@/components/ui/ErrorModalContext";
 import { ShoppingCart, Check, AlertCircle, Eye, Star } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
@@ -35,9 +35,10 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
   const currentRole = userRole || (user as { role?: string })?.role;
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { showError } = useErrorModal();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isOrderingNow, setIsOrderingNow] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const confirmDelete = async () => {
     setIsDeleting(true);
@@ -50,15 +51,11 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
         });
         router.refresh();
       } else {
-        toast.error(result.message || "Failed to delete item", {
-          icon: <AlertCircle className="w-5 h-5" />,
-        });
+        showError('Error', result.message || "Failed to delete item");
       }
     } catch (error) {
       console.error("[confirmDelete Error]:", error);
-      toast.error("An unexpected error occurred. Please try again.", {
-        icon: <AlertCircle className="w-5 h-5" />,
-      });
+      showError('Error', "An unexpected error occurred. Please try again.");
     } finally {
       setIsDeleting(false);
       setShowDeleteModal(false);
@@ -75,12 +72,7 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
 
   const handleOrderNow = async () => {
     if (!user) {
-      toast.error("Please sign in to place an order", {
-        action: {
-          label: "Sign In",
-          onClick: () => router.push("/signin"),
-        },
-      });
+      showError('Error', "Please sign in to place an order");
       return;
     }
 
@@ -95,11 +87,11 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
         router.push("/cart");
         router.refresh();
       } else {
-        toast.error(result.message);
+        showError('Error', result.message);
       }
     } catch (error) {
       console.error("[handleOrderNow Error]:", error);
-      toast.error("Failed to process order. Please try again.");
+      showError('Error', "Failed to process order. Please try again.");
     } finally {
       setIsOrderingNow(false);
     }
@@ -107,13 +99,7 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
 
   const handleAddToCart = async (id: number) => {
     if (!user) {
-      toast.error("Please sign in to add items to cart", {
-        icon: <AlertCircle className="w-5 h-5" />,
-        action: {
-          label: "Sign In",
-          onClick: () => router.push("/signin"),
-        },
-      });
+      showError('Error', "Please sign in to add items to cart");
       return;
     }
 
@@ -135,13 +121,11 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
         });
         router.refresh();
       } else {
-        toast.error(result.message, {
-          icon: <AlertCircle className="w-5 h-5" />,
-        });
+        showError('Error', result.message);
       }
     } catch (error) {
       console.error("[handleAddToCart Error]:", error);
-      toast.error("Failed to add item to cart. Please try again.");
+      showError('Error', "Failed to add item to cart. Please try again.");
     } finally {
       setIsAddingToCart(false);
     }
@@ -294,3 +278,5 @@ export function FoodMenuCard({ item, userRole, user: serverUser }: FoodMenuCardP
     </motion.div>
   );
 }
+
+

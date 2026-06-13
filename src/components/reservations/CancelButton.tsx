@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cancelReservation } from "@/lib/actions/reservation";
-import { toast } from "sonner";
+import { toast } from "sonner"; import { useErrorModal } from "@/components/ui/ErrorModalContext";
 import { ChevronRight, Loader2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function CancelButton({ id, status }: { id: number, status: string }) {
   const [isPending, setIsPending] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
+  const { showError } = useErrorModal();
   const handleCancel = async () => {
     setIsPending(true);
     try {
@@ -19,10 +19,10 @@ export default function CancelButton({ id, status }: { id: number, status: strin
         toast.success("Reservation cancelled successfully");
         setShowConfirm(false);
       } else {
-        toast.error(result.message || "Failed to cancel reservation");
+        showError('Error', result.message || "Failed to cancel reservation");
       }
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      showError('Error', "Something went wrong. Please try again.");
     } finally {
       setIsPending(false);
     }

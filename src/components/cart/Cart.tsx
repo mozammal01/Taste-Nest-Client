@@ -18,6 +18,7 @@ interface CartProps {
 export default function Cart({ items }: CartProps) {
   const router = useRouter();
   const [isClearing, setIsClearing] = useState(false);
+  const { showError } = useErrorModal();
   const [promoInput, setPromoInput] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("appliedPromoCode");
@@ -266,7 +267,5 @@ export default function Cart({ items }: CartProps) {
     </div>
   );
 }
-function showError(arg0: string, arg1: string) {
-  throw new Error("Function not implemented.");
-}
+
 
