@@ -19,10 +19,11 @@ export default function CancelButton({ id, status }: { id: number, status: strin
         toast.success("Reservation cancelled successfully");
         setShowConfirm(false);
       } else {
-        showError('Error', result.message || "Failed to cancel reservation");
+        showError(result)
       }
-    } catch {
-      showError('Error', "Something went wrong. Please try again.");
+    } catch (error) {
+      // Pass the caught error object to showError so that the message can be extracted.
+      showError(error);
     } finally {
       setIsPending(false);
     }
