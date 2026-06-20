@@ -6,15 +6,10 @@ import { getErrorMessage, extractMessageFromString } from '@/lib/getErrorMessage
 interface ErrorModalProps {
   isOpen: boolean;
   title: string;
-  description: any;
   onClose: () => void;
 }
 
-export function ErrorModal({ isOpen, title, description, onClose }: ErrorModalProps) {
-  const [showDetails, setShowDetails] = useState(false);
-
-  console.log(description)
-
+export function ErrorModal({ isOpen, title, onClose }: ErrorModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -44,29 +39,11 @@ export function ErrorModal({ isOpen, title, description, onClose }: ErrorModalPr
               <X className="w-6 h-6" />
             </button>
             {/* Header */}
-            <div className="flex flex-col items-center space-y-6">
+            <div className="flex flex-col items-center space-y-6 w-full">
               <AlertCircle className="w-16 h-16 text-red-600" />
               <h2 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-primary to-primary/80 text-center mb-4 leading-tight">
                 {title}
               </h2>
-              <button
-                onClick={() => setShowDetails(!showDetails)}
-                className="text-sm font-medium text-primary underline mb-2"
-              >
-                {showDetails ? "Hide Details" : "Error Details"}
-              </button>
-              <AnimatePresence>
-                {showDetails && (
-                  <motion.p
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="text-base text-slate-600 dark:text-slate-300 text-center max-w-md whitespace-pre-wrap"
-                  >
-                    {description}
-                  </motion.p>
-                )}
-              </AnimatePresence>
               {/* Action */}
               <button
                 onClick={onClose}
@@ -94,7 +71,6 @@ export function ErrorModalProvider({ children }: { children: ReactNode }) {
     title: "",
     description: {},
   });
-  console.log(modalState)
 
   /**
  * Show an error modal.
@@ -128,7 +104,7 @@ export function ErrorModalProvider({ children }: { children: ReactNode }) {
         // Not a valid JSON – fall back to treating it as a plain title.
         // Swap title and description so the descriptive message is the main title.
         const cleanTitle = typeof description === 'string' ? extractMessageFromString(description) : (description ?? titleOrError);
-        setModalState({ isOpen: true, title: cleanTitle, description: description ? titleOrError : '' });
+        setModalState({ isOpen: true, title: cleanTitle, description: description ?? '' });
         return;
       }
     }
@@ -154,7 +130,6 @@ export function ErrorModalProvider({ children }: { children: ReactNode }) {
       <ErrorModal
         isOpen={modalState.isOpen}
         title={modalState.title}
-        description={modalState.description}
         onClose={close}
       />
     </ErrorModalContext.Provider>
