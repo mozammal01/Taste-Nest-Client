@@ -60,7 +60,7 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
 
 
   // Initialize coupon from localStorage
-  const [activeCoupon, setActiveCoupon] = useState(() => typeof window !== "undefined" ? (localStorage.getItem("appliedPromoCode") || "") : "");
+  const [activeCoupon] = useState(() => typeof window !== "undefined" ? (localStorage.getItem("appliedPromoCode") || "") : "");
 
   // Calculate totals with promo discount
   const subtotal = items.reduce((acc, item) => acc + Number(item.menuItem.price) * item.quantity, 0);
@@ -499,101 +499,6 @@ export default function CheckoutForm({ items }: CheckoutFormProps) {
               <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" width={28} height={16} />
               <div className="h-4 w-px bg-slate-300" />
               <span className="text-[10px] font-black uppercase tracking-widest">PCI DSS</span>
-              <section className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
-                    <div className="w-1.5 h-6 bg-primary rounded-full"></div>
-                    Transaction
-                  </h2>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Step 02 / 02</span>
-                </div>
-
-                <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
-                  <div
-                    onClick={() => setPaymentMethod("cod")}
-                    className={cn(
-                      "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
-                      paymentMethod === "cod"
-                        ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
-                        : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
-                    )}
-                  >
-                    <div className={cn(
-                      "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110",
-                      paymentMethod === "cod" ? "bg-white dark:bg-slate-800 text-primary shadow-lg shadow-primary/10" : "bg-slate-50 dark:bg-slate-800 text-slate-400"
-                    )}>
-                      <Truck className="w-7 h-7" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-sm">Hand-to-Hand</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Cash on Delivery</p>
-                    </div>
-                    <div className={cn(
-                      "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
-                      paymentMethod === "cod" ? "border-primary bg-primary" : "border-slate-200 dark:border-slate-700"
-                    )}>
-                      {paymentMethod === "cod" && <CheckCircle2 className="w-3 h-3 text-white" />}
-                    </div>
-                  </div>
-
-                  <div
-                    onClick={() => setPaymentMethod("card")}
-                    className={cn(
-                      "group flex items-center gap-4 p-6 rounded-3xl cursor-pointer transition-all duration-500 border-2",
-                      paymentMethod === "card"
-                        ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
-                        : "border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700"
-                    )}
-                  >
-                    <div className={cn(
-                      "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110",
-                      paymentMethod === "card" ? "bg-white dark:bg-slate-800 text-primary shadow-lg shadow-primary/10" : "bg-slate-50 dark:bg-slate-800 text-slate-400"
-                    )}>
-                      <CreditCardIcon className="w-7 h-7" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-sm">Digital Vault</p>
-                        <span className="text-[8px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Swift</span>
-                      </div>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Stripe Integrated</p>
-                    </div>
-                    <div className={cn(
-                      "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
-                      paymentMethod === "card" ? "border-primary bg-primary" : "border-slate-200 dark:border-slate-700"
-                    )}>
-                      {paymentMethod === "card" && <CheckCircle2 className="w-3 h-3 text-white" />}
-                    </div>
-                  </div>
-
-                  <AnimatePresence mode="wait">
-                    {paymentMethod === "card" && clientSecret ? (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="pt-8 mt-6 border-t border-slate-100 dark:border-slate-800"
-                      >
-                        <Elements stripe={stripePromise} options={{ clientSecret }}>
-                          <StripePaymentForm
-                            clientSecret={clientSecret}
-                            amount={totalAmount}
-                            isProcessing={isSubmitting}
-                            setIsProcessing={setIsSubmitting}
-                            onSuccess={handleOrderSubmission}
-                            address={formData.address}
-                            phone={formData.phone}
-                          />
-                        </Elements>
-                      </motion.div>
-                    ) : paymentMethod === "card" && isSubmitting && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-12 gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-[32px]">
-                        <Loader2 className="w-10 h-10 text-primary animate-spin" />
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Securing Payment Channel...</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </section>
             </div>
 
             {/* Right Column: Manifest */}

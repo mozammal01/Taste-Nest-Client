@@ -23,22 +23,23 @@ export function getErrorMessage(error: unknown): string {
   }
 
   // Axios‑style error (error.response?.data?.message)
-  if (typeof error === 'object' && error !== null && 'response' in (error as any)) {
-    const resp = (error as any).response;
-    if (resp && typeof resp === 'object' && 'data' in resp) {
-      const data = resp.data;
-      if (data && typeof data === 'object' && 'message' in data) {
-        if (typeof data.message === 'string') {
-          return extractMessageFromString(data.message);
+  if (typeof error === 'object' && error !== null && 'response' in (error as Record<string, unknown>)) {
+    const resp = (error as Record<string, unknown>).response;
+    if (resp && typeof resp === 'object' && 'data' in (resp as Record<string, unknown>)) {
+      const data = (resp as Record<string, unknown>).data;
+      if (data && typeof data === 'object' && 'message' in (data as Record<string, unknown>)) {
+        const msg = (data as Record<string, unknown>).message;
+        if (typeof msg === 'string') {
+          return extractMessageFromString(msg);
         }
-        return extractMessageFromString(JSON.stringify(data.message));
+        return extractMessageFromString(JSON.stringify(msg));
       }
     }
   }
 
   // Fetch‑style error where the thrown value is already the parsed JSON body
-  if (typeof error === 'object' && error !== null && 'message' in (error as any)) {
-    const msg = (error as any).message;
+  if (typeof error === 'object' && error !== null && 'message' in (error as Record<string, unknown>)) {
+    const msg = (error as Record<string, unknown>).message;
     if (typeof msg === 'string') {
       return extractMessageFromString(msg);
     }

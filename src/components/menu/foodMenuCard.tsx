@@ -18,7 +18,7 @@ import type { MenuItem } from "@/types/menuItems";
 import { deleteMenuItem } from "@/lib/actions/menu";
 import { createCartItem } from "@/lib/actions/cart";
 import { toast } from "sonner"; import { useErrorModal } from "@/components/ui/ErrorModalContext";
-import { ShoppingCart, Check, AlertCircle, Eye, Star } from "lucide-react";
+import { ShoppingCart, Check, Eye, Star } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
 import { DeleteConfirmationModal } from "../ui/delete-confirmation-modal";

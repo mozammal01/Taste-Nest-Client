@@ -60,13 +60,13 @@ export function ErrorModal({ isOpen, title, onClose }: ErrorModalProps) {
 }
 
 interface ContextProps {
-  showError: (titleOrError: string | unknown, description?: any) => void;
+  showError: (titleOrError: string | unknown, description?: unknown) => void;
 }
 
 const ErrorModalContext = createContext<ContextProps | undefined>(undefined);
 
 export function ErrorModalProvider({ children }: { children: ReactNode }) {
-  const [modalState, setModalState] = useState<{ isOpen: boolean; title: string; description: any }>({
+  const [modalState, setModalState] = useState<{ isOpen: boolean; title: string; description: unknown }>({
     isOpen: false,
     title: "",
     description: {},
@@ -85,7 +85,7 @@ export function ErrorModalProvider({ children }: { children: ReactNode }) {
    * If the first argument is an error object, we use a generic title "Error" and place the extracted
    * message in the description, so the UI displays the backend message in the description area.
    */
-  const showError = (titleOrError: unknown, description?: any) => {
+  const showError = (titleOrError: unknown, description?: unknown) => {
     // If caller provides a custom title (string) and there is no description JSON,
     // keep backward‑compatible behavior.
     if (typeof titleOrError === 'string' && typeof description === 'undefined') {
@@ -102,8 +102,9 @@ export function ErrorModalProvider({ children }: { children: ReactNode }) {
         return;
       } catch {
         // Not a valid JSON – fall back to treating it as a plain title.
-        // Swap title and description so the descriptive message is the main title.
-        const cleanTitle = typeof description === 'string' ? extractMessageFromString(description) : (description ?? titleOrError);
+        const cleanTitle = typeof description === 'string'
+          ? extractMessageFromString(description)
+          : (typeof description === 'undefined' ? titleOrError : String(description));
         setModalState({ isOpen: true, title: cleanTitle, description: description ?? '' });
         return;
       }
